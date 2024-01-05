@@ -1,7 +1,9 @@
-﻿namespace Pattern.Application.Services.Emails
+﻿using Pattern.Application.Services.Emails.Dtos;
+
+namespace Pattern.Application.Services.Emails
 {
-    public interface IEmailSender
-    {
-        void SendEmail(MessageForEmail message);
-    }
+	public interface IEmailSender
+	{
+		public Task SendEmailAsync(SendEmailDto sendEmailDto);
+	}
 }
