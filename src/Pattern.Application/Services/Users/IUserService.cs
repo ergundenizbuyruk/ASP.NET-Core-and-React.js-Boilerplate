@@ -8,7 +8,7 @@ namespace Pattern.Application.Services.Users
 		public Task<ResponseDto<UserDto>> GetUserAsync(Guid userId);
 		public Task<ResponseDto<List<UserDto>>> GetAllUserAsync();
 		public Task<ResponseDto<UserDto>> AddUserAsync(CreateUserDto userDto);
-		public Task<ResponseDto<UserDto>> UpdateUserAsync(UpdateUserDto updateUser);
+		public Task<ResponseDto<UserDto>> UpdateProfileAsync(UpdateProfileDto updateProfileDto, Guid userId);
 		public Task<ResponseDto<NoContentDto>> DeleteUserAsync(Guid userId);
 		public Task<ResponseDto<NoContentDto>> GeneratePasswordResetTokenAndSendEmailAsync(string userEmail);
 		public Task<ResponseDto<NoContentDto>> GenerateChangeEmailTokenAndSendEmailAsync(Guid userId, string newEmail);

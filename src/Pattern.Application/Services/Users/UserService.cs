@@ -40,6 +40,7 @@ namespace Pattern.Application.Services.Users
 		public async Task<ResponseDto<UserDto>> AddUserAsync(CreateUserDto userDto)
 		{
 			var user = ObjectMapper.Map<User>(userDto);
+			user.IsActive = true;
 
 			var result = await userManager.CreateAsync(user, userDto.Password);
 
@@ -54,18 +55,18 @@ namespace Pattern.Application.Services.Users
 			return ResponseDto<UserDto>.Success(ObjectMapper.Map<UserDto>(user), 201);
 		}
 
-		public async Task<ResponseDto<UserDto>> UpdateUserAsync(UpdateUserDto updateUser)
+		public async Task<ResponseDto<UserDto>> UpdateProfileAsync(UpdateProfileDto updateProfileDto, Guid userId)
 		{
-			var user = await userManager.FindByIdAsync(updateUser.Id.ToString());
+			var user = await userManager.FindByIdAsync(userId.ToString());
 			if (user == null)
 			{
 				return ResponseDto<UserDto>.Fail("Kullanıcı Bulunamadı", 404);
 			}
 
-			user.FirstName = updateUser.FirstName;
-			user.LastName = updateUser.LastName;
-			user.BirthDate = updateUser.BirthDate;
-			user.PhoneNumber = updateUser.PhoneNumber;
+			user.FirstName = updateProfileDto.FirstName;
+			user.LastName = updateProfileDto.LastName;
+			user.BirthDate = updateProfileDto.BirthDate;
+			user.PhoneNumber = updateProfileDto.PhoneNumber;
 
 			var result = await userManager.UpdateAsync(user);
 			if (!result.Succeeded)

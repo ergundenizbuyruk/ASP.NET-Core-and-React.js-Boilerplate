@@ -44,6 +44,7 @@ namespace Pattern.Application.Services.Emails
 				});
 			}
 
+			emailMessage.Body = bodyBuilder.ToMessageBody();
 			return emailMessage;
 		}
 		private async Task SendAsync(MimeMessage emailMessage)

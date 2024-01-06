@@ -36,11 +36,10 @@ namespace Pattern.API.Controllers
 
 		[HttpPut]
 		[Authorize]
-		public async Task<IActionResult> UpdateProfile(UpdateUserDto updateUserDto)
+		public async Task<IActionResult> UpdateProfile(UpdateProfileDto updateProfileDto)
 		{
 			var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-			updateUserDto.Id = userId;
-			var result = await userService.UpdateUserAsync(updateUserDto);
+			var result = await userService.UpdateProfileAsync(updateProfileDto, userId);
 			return ActionResultInstance(result);
 		}
 

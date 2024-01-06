@@ -28,8 +28,10 @@ builder.Services.AddIdentity<User, Role>(options =>
 	options.Password.RequireUppercase = true;
 	options.Password.RequireLowercase = true;
 	options.Password.RequireDigit = true;
-	options.SignIn.RequireConfirmedPhoneNumber = true;
+	options.SignIn.RequireConfirmedPhoneNumber = false;
 	options.SignIn.RequireConfirmedEmail = true;
+	options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+	options.Lockout.MaxFailedAccessAttempts = 5;
 })
 	.AddEntityFrameworkStores<ApplicationDbContext>()
 	.AddDefaultTokenProviders()
