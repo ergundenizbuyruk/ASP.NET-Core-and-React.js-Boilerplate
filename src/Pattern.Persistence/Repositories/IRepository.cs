@@ -7,7 +7,8 @@
         Task<TEntity> GetAsync(TPrimaryKey Id);
         Task<TEntity> CreateAsync(TEntity Entity);
         TEntity Update(TEntity Entity);
-        void Delete(TEntity Entity);
+        TEntity SetValuesAndUpdate(TEntity EntityFromDb, TEntity EntityFromDto);
+		void Delete(TEntity Entity);
         void HardDelete(TEntity Entity);
     }
 }

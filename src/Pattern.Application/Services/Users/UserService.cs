@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Pattern.Application.Services.Base;
 using Pattern.Application.Services.Emails;
 using Pattern.Application.Services.Users.Dtos;
 using Pattern.Core.Entites.Authentication;
@@ -9,7 +10,7 @@ using Pattern.Persistence.UnitOfWork;
 
 namespace Pattern.Application.Services.Users
 {
-	public class UserService : BaseService, IUserService
+    public class UserService : BaseService, IUserService
 	{
 		private readonly UserManager<User> userManager;
 		private readonly IEmailService emailService;

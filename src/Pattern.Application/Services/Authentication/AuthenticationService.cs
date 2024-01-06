@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Pattern.Application.Services.Authentication.Dtos;
+using Pattern.Application.Services.Base;
 using Pattern.Core.Entites.Authentication;
 using Pattern.Core.Responses;
 using Pattern.Persistence.Repositories;
@@ -9,7 +10,7 @@ using Pattern.Persistence.UnitOfWork;
 
 namespace Pattern.Application.Services.Authentication
 {
-	public class AuthenticationService : BaseService, IAuthenticationService
+    public class AuthenticationService : BaseService, IAuthenticationService
 	{
 		private readonly ITokenService tokenService;
 		private readonly UserManager<User> userManager;
