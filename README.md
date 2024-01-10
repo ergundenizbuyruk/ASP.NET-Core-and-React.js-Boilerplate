@@ -23,15 +23,13 @@ I'm still developing
 - Your service classes that inherit from the **CrudService** class have CRUD operations and are automatically added to the IoC container. You do not need to write AddScoped in Program.cs file. You can review the sample code below.
 
 ```
-public class MyService : CrudService<MyEntity, int, MyEntityDto, MyCreateEntityDto, MyUpdateEntityDto>, IMyService
-{
-public MyService(IUnitOfWork unitOfWork, IMapper objectMapper, IRepository<MyEntity, int> repository) : base(unitOfWork, objectMapper, repository)
-{
-}
+public class MyService : CrudService<MyEntity, int, MyEntityDto, MyCreateEntityDto, MyUpdateEntityDto>, IMyService {
+    public MyService(IUnitOfWork unitOfWork, IMapper objectMapper, IRepository<MyEntity, int> repository) : base(unitOfWork, objectMapper, repository)
+    {
+    }
 }
 
-public interface IMyService : ICrudService<MyEntity, int, MyEntityDto, MyCreateEntityDto, MyUpdateEntityDto>
-{
+public interface IMyService : ICrudService<MyEntity, int, MyEntityDto, MyCreateEntityDto, MyUpdateEntityDto {
 }
 ```
 
@@ -42,15 +40,13 @@ public interface IMyService : ICrudService<MyEntity, int, MyEntityDto, MyCreateE
 - If you do not want CRUD services, you can create service classes as follows.
 
 ```
-public class MyService : ApplicationService, IMyService
-{
-public MyService(IUnitOfWork unitOfWork, IMapper objectMapper) : base(unitOfWork, objectMapper)
-{
-}
+public class MyService : ApplicationService, IMyService {
+    public MyService(IUnitOfWork unitOfWork, IMapper objectMapper) : base(unitOfWork, objectMapper)
+    {
+    }
 }
 
-public interface IMyService : IApplicationService
-{
+public interface IMyService : IApplicationService {
 }
 ```
 
