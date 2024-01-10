@@ -25,9 +25,19 @@ namespace Pattern.Persistence.Repositories
 			return _dbSet.AsQueryable<TEntity>();
 		}
 
-		public async Task<List<TEntity>> GetAllAsync()
+		public async Task<List<TEntity>> GetAllAsync(int? page, int? pageSize)
 		{
-			return await _dbSet.ToListAsync();
+			if (page is null || pageSize is null)
+			{
+				return await _dbSet.ToListAsync();
+			}
+
+			int skipAmount = ((int)page - 1) * (int)pageSize;
+
+			return await _dbSet
+				.Skip(skipAmount)
+				.Take((int)pageSize)
+				.ToListAsync();
 		}
 
 		public async Task<TEntity> GetAsync(TPrimaryKey Id)

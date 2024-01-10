@@ -1,12 +1,20 @@
 ﻿namespace Pattern.Core.Entites.BaseEntity
 {
-    public class EntityDto<TPrimaryKey>
-    {
-        public TPrimaryKey Id { get; set; }
-    }
+	public abstract class EntityDto<TPrimaryKey> : IEntityDto<TPrimaryKey>
+	{
+		public TPrimaryKey Id { get; set; }
 
-    public class EntityDto
-    {
-        public int Id { get; set; }
-    }
+		public EntityDto(TPrimaryKey id)
+		{
+			Id = id;
+		}
+	}
+
+	public abstract class EntityDto : EntityDto<int>, IEntityDto
+	{
+		public EntityDto(int id) : base(id)
+		{
+			Id = id;
+		}
+	}
 }

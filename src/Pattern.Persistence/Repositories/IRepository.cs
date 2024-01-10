@@ -3,8 +3,8 @@
     public interface IRepository<TEntity, TPrimaryKey> where TEntity : class
     {
         IQueryable<TEntity> GetAll();
-        Task<List<TEntity>> GetAllAsync();
-        Task<TEntity> GetAsync(TPrimaryKey Id);
+        Task<List<TEntity>> GetAllAsync(int? page, int? pageSize);
+		Task<TEntity> GetAsync(TPrimaryKey Id);
         Task<TEntity> CreateAsync(TEntity Entity);
         TEntity Update(TEntity Entity);
         TEntity SetValuesAndUpdate(TEntity EntityFromDb, TEntity EntityFromDto);
