@@ -1,4 +1,5 @@
-﻿using Pattern.Core.Entites.BaseEntity;
+﻿using Pattern.Application.Services.Base.Dtos;
+using Pattern.Core.Entites.BaseEntity;
 
 namespace Pattern.Application.Services.Users.Dtos
 {

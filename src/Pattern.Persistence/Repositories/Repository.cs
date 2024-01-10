@@ -25,14 +25,14 @@ namespace Pattern.Persistence.Repositories
 			return _dbSet.AsQueryable<TEntity>();
 		}
 
-		public async Task<List<TEntity>> GetAllAsync(int? page, int? pageSize)
+		public async Task<List<TEntity>> GetAllAsync(int? pageNumber, int? pageSize)
 		{
-			if (page is null || pageSize is null)
+			if (pageNumber is null || pageSize is null)
 			{
 				return await _dbSet.ToListAsync();
 			}
 
-			int skipAmount = ((int)page - 1) * (int)pageSize;
+			int skipAmount = ((int)pageNumber - 1) * (int)pageSize;
 
 			return await _dbSet
 				.Skip(skipAmount)

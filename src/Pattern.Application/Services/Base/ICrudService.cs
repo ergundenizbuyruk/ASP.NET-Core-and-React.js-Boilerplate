@@ -1,5 +1,6 @@
 ﻿using Pattern.Application.Services.Base.Dtos;
 using Pattern.Core.Entites.BaseEntity;
+using Pattern.Core.Responses;
 
 namespace Pattern.Application.Services.Base
 {
@@ -8,10 +9,10 @@ namespace Pattern.Application.Services.Base
 		where TEntityDto : IEntityDto<TPrimaryKey>
 		where TUpdateDto : IEntityDto<TPrimaryKey>
 	{
-		Task<TEntityDto> CreateAsync(TCreateDto createDto);
-		Task<TEntityDto> UpdateAsync(TUpdateDto updateAsync);
-		Task DeleteAsync(TPrimaryKey primaryKey);
-		Task<TEntityDto> GetAsync(TPrimaryKey primaryKey);
-		Task<List<TEntityDto>> GetAllAsync(GetAllDto? getAllDto);
+		Task<ResponseDto<TEntityDto>> CreateAsync(TCreateDto createDto);
+		Task<ResponseDto<TEntityDto>> UpdateAsync(TUpdateDto updateAsync);
+		Task<ResponseDto<NoContentDto>> DeleteAsync(TPrimaryKey primaryKey);
+		Task<ResponseDto<TEntityDto>> GetAsync(TPrimaryKey primaryKey);
+		Task<ResponseDto<List<TEntityDto>>> GetAllAsync(int? pageNumber, int? pageSize);
 	}
 }

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Pattern.API.Extensions;
+using Pattern.API.Middlewares;
 using Pattern.Application.Mapper;
 using Pattern.Application.Services.Emails;
-using Pattern.Application.Services.Users;
 using Pattern.Core.Entites.Authentication;
 using Pattern.Core.Entites.BaseEntity;
 using Pattern.Core.Localization;
@@ -78,7 +78,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseGlobalExceptionHandler();
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Pattern.Application.Services.Base.Dtos;
 using Pattern.Core.Entites.BaseEntity;
 using Pattern.Core.Exceptions;
+using Pattern.Core.Responses;
 using Pattern.Persistence.Repositories;
 using Pattern.Persistence.UnitOfWork;
 
@@ -20,15 +20,16 @@ namespace Pattern.Application.Services.Base
 			this.repository = repository;
 		}
 
-		public async Task<TEntityDto> CreateAsync(TCreateDto createDto)
+		public virtual async Task<ResponseDto<TEntityDto>> CreateAsync(TCreateDto createDto)
 		{
 			var entity = ObjectMapper.Map<TCreateDto, TEntity>(createDto);
 			await repository.CreateAsync(entity);
 			await SaveChangesAsync();
-			return ObjectMapper.Map<TEntity, TEntityDto>(entity);
+			TEntityDto entityDto = ObjectMapper.Map<TEntity, TEntityDto>(entity);
+			return ResponseDto<TEntityDto>.Success(entityDto, 201);
 		}
 
-		public async Task<TEntityDto> UpdateAsync(TUpdateDto updateAsync)
+		public virtual async Task<ResponseDto<TEntityDto>> UpdateAsync(TUpdateDto updateAsync)
 		{
 			var entity = ObjectMapper.Map<TUpdateDto, TEntity>(updateAsync);
 			var entityFromDb = await repository.GetAsync(entity.Id);
@@ -40,10 +41,11 @@ namespace Pattern.Application.Services.Base
 
 			repository.SetValuesAndUpdate(entityFromDb, entity);
 			await SaveChangesAsync();
-			return ObjectMapper.Map<TEntity, TEntityDto>(entity);
+			TEntityDto entityDto = ObjectMapper.Map<TEntity, TEntityDto>(entity);
+			return ResponseDto<TEntityDto>.Success(entityDto, 200);
 		}
 
-		public async Task DeleteAsync(TPrimaryKey primaryKey)
+		public virtual async Task<ResponseDto<NoContentDto>> DeleteAsync(TPrimaryKey primaryKey)
 		{
 			var entityFromDb = await repository.GetAsync(primaryKey);
 
@@ -53,9 +55,11 @@ namespace Pattern.Application.Services.Base
 			}
 
 			repository.Delete(entityFromDb);
+			await SaveChangesAsync();
+			return ResponseDto<NoContentDto>.Success(200);
 		}
 
-		public async Task<TEntityDto> GetAsync(TPrimaryKey primaryKey)
+		public virtual async Task<ResponseDto<TEntityDto>> GetAsync(TPrimaryKey primaryKey)
 		{
 			var entityFromDb = await repository.GetAsync(primaryKey);
 
@@ -64,19 +68,21 @@ namespace Pattern.Application.Services.Base
 				throw new EntityNotFoundException(nameof(TEntity));
 			}
 
-			return ObjectMapper.Map<TEntity, TEntityDto>(entityFromDb);
+			TEntityDto entityDto = ObjectMapper.Map<TEntity, TEntityDto>(entityFromDb);
+			return ResponseDto<TEntityDto>.Success(entityDto, 200);
 		}
 
-		public async Task<List<TEntityDto>> GetAllAsync(GetAllDto? getAllDto)
+		public virtual async Task<ResponseDto<List<TEntityDto>>> GetAllAsync(int? pageNumber, int? pageSize)
 		{
-			var entities = await repository.GetAllAsync(getAllDto?.PageCount, getAllDto?.PageSize);
+			var entities = await repository.GetAllAsync(pageNumber, pageSize);
 
 			if (entities == null)
 			{
 				throw new EntityNotFoundException(nameof(TEntity));
 			}
 
-			return ObjectMapper.Map<List<TEntity>, List<TEntityDto>>(entities);
+			var entityDtos = ObjectMapper.Map<List<TEntity>, List<TEntityDto>>(entities);
+			return ResponseDto<List<TEntityDto>>.Success(entityDtos, 200);
 		}
 	}
 }

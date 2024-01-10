@@ -1,4 +1,4 @@
-﻿namespace Pattern.Core.Entites.BaseEntity
+﻿namespace Pattern.Application.Services.Base.Dtos
 {
 	public interface IEntityDto : IEntityDto<int>
 	{
