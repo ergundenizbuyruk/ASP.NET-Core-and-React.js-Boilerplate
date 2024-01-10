@@ -1,9 +1,10 @@
-﻿using Pattern.Application.Services.Users.Dtos;
+﻿using Pattern.Application.Services.Base;
+using Pattern.Application.Services.Users.Dtos;
 using Pattern.Core.Responses;
 
 namespace Pattern.Application.Services.Users
 {
-	public interface IUserService
+	public interface IUserService : IApplicationService
 	{
 		public Task<ResponseDto<UserDto>> GetUserAsync(Guid userId);
 		public Task<ResponseDto<List<UserDto>>> GetAllUserAsync();

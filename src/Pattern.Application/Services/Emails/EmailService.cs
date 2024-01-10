@@ -1,16 +1,19 @@
-﻿using Microsoft.Extensions.Options;
+﻿using AutoMapper;
+using Microsoft.Extensions.Options;
+using Pattern.Application.Services.Base;
 using Pattern.Application.Services.Emails.Dtos;
 using Pattern.Core.Options;
+using Pattern.Persistence.UnitOfWork;
 using System.Web;
 
 namespace Pattern.Application.Services.Emails
 {
-	public class EmailService : IEmailService
+	public class EmailService : ApplicationService, IEmailService
 	{
 		private readonly IEmailSender emailSender;
 		private readonly FrontInformation frontInformation;
 
-		public EmailService(IEmailSender emailSender, IOptions<FrontInformation> frontInformation)
+		public EmailService(IUnitOfWork unitOfWork, IMapper objectMapper, IEmailSender emailSender, IOptions<FrontInformation> frontInformation) : base(unitOfWork, objectMapper)
 		{
 			this.emailSender = emailSender;
 			this.frontInformation = frontInformation.Value;

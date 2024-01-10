@@ -10,7 +10,7 @@ using Pattern.Persistence.UnitOfWork;
 
 namespace Pattern.Application.Services.Users
 {
-    public class UserService : BaseService, IUserService
+	public class UserService : ApplicationService, IUserService
 	{
 		private readonly UserManager<User> userManager;
 		private readonly IEmailService emailService;

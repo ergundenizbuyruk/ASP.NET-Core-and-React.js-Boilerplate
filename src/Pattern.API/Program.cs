@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Pattern.API.Extensions;
 using Pattern.API.Middlewares;
 using Pattern.Application.Mapper;
+using Pattern.Application.Services.Base;
 using Pattern.Application.Services.Emails;
 using Pattern.Core.Entites.Authentication;
 using Pattern.Core.Entites.BaseEntity;
@@ -66,8 +67,7 @@ builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("
 builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
 builder.Services.Configure<FrontInformation>(builder.Configuration.GetSection("FrontInformation"));
 builder.Services.AddRepositoriesForEntities(typeof(Entity).Assembly);
-builder.Services.AddServices();
-
+builder.Services.AddServices(typeof(ApplicationService).Assembly);
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

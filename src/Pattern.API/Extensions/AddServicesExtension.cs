@@ -1,21 +1,41 @@
-﻿using Pattern.Application.Services.Authentication;
+﻿using Pattern.Application.Services.Base;
 using Pattern.Application.Services.Emails;
-using Pattern.Application.Services.Users;
 using Pattern.Persistence.UnitOfWork;
+using System.Reflection;
 
 namespace Pattern.API.Extensions
 {
 	public static class AddServicesExtension
 	{
-		public static void AddServices(this IServiceCollection services)
+		public static void AddServices(this IServiceCollection services, Assembly assembly)
 		{
-			// It's manual for now but I will make it automatic in the future. It's just service classes not repositories class.
-			services.AddScoped<IAuthenticationService, AuthenticationService>();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
-			services.AddScoped<ITokenService, TokenService>();
-			services.AddScoped<IUserService, UserService>();
-			services.AddScoped<IEmailService, EmailService>();
 			services.AddScoped<IEmailSender, EmailSender>();
+
+			var appServiceClassType = typeof(ApplicationService);
+			var appServiceInterfaceType = typeof(IApplicationService);
+			var crudServiceInterfaceType = typeof(ICrudService<,,,,>);
+
+			// Get all service class types
+			var allServiceClassTypes = assembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract &&
+				type.BaseType != null && appServiceClassType.IsAssignableFrom(type));
+
+			// Get all service interface types
+			var allServiceInterfaceTypes = assembly.GetTypes().Where(type => type.IsInterface && appServiceInterfaceType.IsAssignableFrom(type) &&
+				type != appServiceInterfaceType && type != crudServiceInterfaceType);
+
+			// add scoped
+			foreach (var TServiceClass in allServiceClassTypes)
+			{
+				var interfaceTypes = allServiceInterfaceTypes.Where(serviceInterface => serviceInterface.IsAssignableFrom(TServiceClass)).ToList();
+
+				if (interfaceTypes.Count != 1)
+				{
+					throw new InvalidOperationException($"Service '{nameof(TServiceClass)}' must implement only one interface that implements ICrudService<,,,,> or IApplicationService");
+				}
+
+				services.AddScoped(interfaceTypes[0], TServiceClass);
+			}
 		}
 	}
 }

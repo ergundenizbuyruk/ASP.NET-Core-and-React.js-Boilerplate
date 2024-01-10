@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Pattern.Application.Services.Authentication.Dtos;
+using Pattern.Application.Services.Base;
 using Pattern.Core.Entites.Authentication;
 using Pattern.Core.Options;
+using Pattern.Persistence.UnitOfWork;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -11,16 +14,17 @@ using System.Text;
 
 namespace Pattern.Application.Services.Authentication
 {
-	public class TokenService : ITokenService
+	public class TokenService : ApplicationService, ITokenService
 	{
 		private readonly UserManager<User> _userManager;
 		private readonly CustomTokenOption _tokenOption;
 
-		public TokenService(UserManager<User> userManager, IOptions<CustomTokenOption> customTokenOption)
+		public TokenService(IUnitOfWork unitOfWork, IMapper objectMapper, UserManager<User> userManager, IOptions<CustomTokenOption> customTokenOption) : base(unitOfWork, objectMapper)
 		{
 			_userManager = userManager;
 			_tokenOption = customTokenOption.Value;
 		}
+
 		public string CreateRefreshToken()
 		{
 			var numberByte = new byte[32];
