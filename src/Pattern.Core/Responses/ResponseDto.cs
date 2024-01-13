@@ -1,9 +1,13 @@
-﻿namespace Pattern.Core.Responses
+﻿using System.Text.Json.Serialization;
+
+namespace Pattern.Core.Responses
 {
 	public class ResponseDto<T>
 	{
 		public T Data { get; private set; }
 		public int StatusCode { get; private set; }
+
+		[JsonIgnore]
 		public bool IsSuccessful { get; private set; }
 
 		public ErrorDto Error { get; private set; }

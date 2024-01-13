@@ -32,7 +32,7 @@ namespace Pattern.Application.Services.Base
 		public virtual async Task<ResponseDto<TEntityDto>> UpdateAsync(TUpdateDto updateAsync)
 		{
 			var entity = ObjectMapper.Map<TUpdateDto, TEntity>(updateAsync);
-			var entityFromDb = await repository.GetAsync(entity.Id);
+			var entityFromDb = await repository.GetByIdAsync(entity.Id);
 
 			if (entityFromDb == null)
 			{
@@ -47,7 +47,7 @@ namespace Pattern.Application.Services.Base
 
 		public virtual async Task<ResponseDto<NoContentDto>> DeleteAsync(TPrimaryKey primaryKey)
 		{
-			var entityFromDb = await repository.GetAsync(primaryKey);
+			var entityFromDb = await repository.GetByIdAsync(primaryKey);
 
 			if (entityFromDb == null)
 			{
@@ -61,7 +61,7 @@ namespace Pattern.Application.Services.Base
 
 		public virtual async Task<ResponseDto<TEntityDto>> GetAsync(TPrimaryKey primaryKey)
 		{
-			var entityFromDb = await repository.GetAsync(primaryKey);
+			var entityFromDb = await repository.GetByIdAsync(primaryKey);
 
 			if (entityFromDb == null)
 			{

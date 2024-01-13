@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -7,6 +8,7 @@ using Pattern.API.Middlewares;
 using Pattern.Application.Mapper;
 using Pattern.Application.Services.Base;
 using Pattern.Application.Services.Emails;
+using Pattern.Core.Authentication;
 using Pattern.Core.Entites.Authentication;
 using Pattern.Core.Entites.BaseEntity;
 using Pattern.Core.Localization;
@@ -23,45 +25,58 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddIdentity<User, Role>(options =>
 {
-	options.User.RequireUniqueEmail = true;
-	options.Password.RequireNonAlphanumeric = true;
-	options.Password.RequiredLength = 8;
-	options.Password.RequireUppercase = true;
-	options.Password.RequireLowercase = true;
-	options.Password.RequireDigit = true;
-	options.SignIn.RequireConfirmedPhoneNumber = false;
-	options.SignIn.RequireConfirmedEmail = true;
-	options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-	options.Lockout.MaxFailedAccessAttempts = 5;
+    options.User.RequireUniqueEmail = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireDigit = true;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+    options.SignIn.RequireConfirmedEmail = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+    options.Lockout.MaxFailedAccessAttempts = 5;
 })
-	.AddEntityFrameworkStores<ApplicationDbContext>()
-	.AddDefaultTokenProviders()
-	.AddErrorDescriber<LocalizationIdentityErrorDescriber>();
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders()
+    .AddErrorDescriber<LocalizationIdentityErrorDescriber>();
 
 builder.Services.AddAuthentication(options =>
 {
-	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
 {
-	var tokenOptions = builder.Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
-	opts.TokenValidationParameters = new TokenValidationParameters()
-	{
-		ValidIssuer = tokenOptions.Issuer,
-		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey)),
-		ValidateIssuerSigningKey = true,
-		ValidateAudience = true,
-		ValidateIssuer = true,
-		ValidAudience = tokenOptions.Audience,
-		ValidateLifetime = true,
-		ClockSkew = TimeSpan.Zero
-	};
+    var tokenOptions = builder.Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
+    opts.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidIssuer = tokenOptions.Issuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey)),
+        ValidateIssuerSigningKey = true,
+        ValidateAudience = true,
+        ValidateIssuer = true,
+        ValidAudience = tokenOptions.Audience,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
 });
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-	options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
-});
+builder.Services.AddAuthorization();
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//{
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+//});
+
+string mySqlConnectionStr = builder.Configuration.GetConnectionString("Default")!;
+builder.Services.AddDbContext<ApplicationDbContext>(
+    u => u.UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr),
+    options => options.EnableRetryOnFailure(
+        maxRetryCount: 5,
+        maxRetryDelay: TimeSpan.FromSeconds(30),
+        errorNumbersToAdd: null
+    )));
 
 builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("TokenOption"));
 builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
@@ -73,8 +88,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

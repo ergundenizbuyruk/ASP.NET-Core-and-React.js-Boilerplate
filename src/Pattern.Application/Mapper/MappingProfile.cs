@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Pattern.Application.Services.Roles.Dtos;
 using Pattern.Application.Services.Users.Dtos;
 using Pattern.Core.Entites.Authentication;
 
@@ -11,6 +12,9 @@ namespace Pattern.Application.Mapper
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<User, CreateUserDto>().ReverseMap();
             CreateMap<User, UpdateUserDto>().ReverseMap();
+
+            CreateMap<Permission, PermissionDto>();
+            CreateMap<Role, RoleDto>();
         }
     }
 }

@@ -6,10 +6,10 @@ namespace Pattern.Application.Services.Emails
 {
 	public class EmailSender : IEmailSender
 	{
-		private readonly EmailConfiguration _emailConfig;
+		private readonly EmailConfiguration emailConfig;
 		public EmailSender(IOptions<EmailConfiguration> emailConfig)
 		{
-			_emailConfig = emailConfig.Value;
+			this.emailConfig = emailConfig.Value;
 		}
 		public async Task SendEmailAsync(SendEmailDto sendEmailDto)
 		{
@@ -19,7 +19,7 @@ namespace Pattern.Application.Services.Emails
 		private MimeMessage CreateMailMessage(SendEmailDto sendEmailDto)
 		{
 			var emailMessage = new MimeMessage();
-			emailMessage.From.Add(new MailboxAddress(_emailConfig.Name, _emailConfig.From));
+			emailMessage.From.Add(new MailboxAddress(emailConfig.Name, emailConfig.From));
 
 			var To = new List<MailboxAddress>();
 			To.AddRange(sendEmailDto.To.Select(p => new MailboxAddress("", p)));
@@ -53,8 +53,8 @@ namespace Pattern.Application.Services.Emails
 			{
 				try
 				{
-					await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, MailKit.Security.SecureSocketOptions.None);
-					await client.AuthenticateAsync(_emailConfig.UserName, _emailConfig.Password);
+					await client.ConnectAsync(emailConfig.SmtpServer, emailConfig.Port, MailKit.Security.SecureSocketOptions.None);
+					await client.AuthenticateAsync(emailConfig.UserName, emailConfig.Password);
 					await client.SendAsync(emailMessage);
 					await client.DisconnectAsync(true);
 				}

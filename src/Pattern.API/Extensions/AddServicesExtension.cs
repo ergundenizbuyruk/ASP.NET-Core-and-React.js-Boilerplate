@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Pattern.API.Extensions
 {
-	public static class AddServicesExtension
+    public static class AddServicesExtension
 	{
 		public static void AddServices(this IServiceCollection services, Assembly assembly)
 		{
