@@ -1,9 +1,12 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Pattern.API.Extensions;
+using Pattern.API.Filters;
 using Pattern.API.Middlewares;
 using Pattern.Application.Mapper;
 using Pattern.Application.Services.Base;
@@ -18,10 +21,20 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidateFilterAttribute>();
+}).AddFluentValidation(options =>
+{
+    options.RegisterValidatorsFromAssemblyContaining<ApplicationService>();
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 
 builder.Services.AddIdentity<User, Role>(options =>
 {
