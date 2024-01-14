@@ -1,4 +1,4 @@
-# ASP.NET-Core-API-Pattern
+# ASP.NET-Core-and-React.js-Boilerplate
 
 My starter template project
 
