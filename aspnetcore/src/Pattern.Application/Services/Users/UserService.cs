@@ -7,6 +7,7 @@ using Pattern.Application.Services.Users.Dtos;
 using Pattern.Core.Entites.Authentication;
 using Pattern.Core.Responses;
 using Pattern.Persistence.UnitOfWork;
+using System.Web;
 
 namespace Pattern.Application.Services.Users
 {
@@ -51,7 +52,7 @@ namespace Pattern.Application.Services.Users
             }
 
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            await emailService.SendEmailConfirmEmailAsync(user.Email, user.Id, token);
+            await emailService.SendEmailConfirmEmailAsync(user.Email, user.Id, HttpUtility.UrlEncode(token));
 
             return ResponseDto<UserDto>.Success(ObjectMapper.Map<UserDto>(user), 201);
         }
@@ -66,7 +67,6 @@ namespace Pattern.Application.Services.Users
 
             user.FirstName = updateProfileDto.FirstName;
             user.LastName = updateProfileDto.LastName;
-            user.BirthDate = updateProfileDto.BirthDate;
             user.PhoneNumber = updateProfileDto.PhoneNumber;
 
             var result = await userManager.UpdateAsync(user);
@@ -105,7 +105,7 @@ namespace Pattern.Application.Services.Users
             }
 
             var token = await userManager.GeneratePasswordResetTokenAsync(userFromDb);
-            await emailService.SendPasswordResetEmailAsync(userFromDb.Email, userFromDb.Id, token);
+            await emailService.SendPasswordResetEmailAsync(userFromDb.Email, userFromDb.Id, HttpUtility.UrlEncode(token));
 
             return ResponseDto<NoContentDto>.Success(200);
         }
@@ -120,7 +120,7 @@ namespace Pattern.Application.Services.Users
             }
 
             string token = await userManager.GenerateChangeEmailTokenAsync(userFromDb, newEmail);
-            await emailService.SendChangeEmailAsync(userFromDb.Email, newEmail, token);
+            await emailService.SendChangeEmailAsync(userFromDb.Email, newEmail, HttpUtility.UrlEncode(token));
 
             return ResponseDto<NoContentDto>.Success(200);
         }
