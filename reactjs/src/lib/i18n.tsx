@@ -1,7 +1,7 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import Backend from 'i18next-http-backend';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import Backend from "i18next-http-backend";
+import LanguageDetector from "i18next-browser-languagedetector";
 import "i18next";
 
 declare module "i18next" {
@@ -9,7 +9,7 @@ declare module "i18next" {
     returnNull: false;
   }
 }
- 
+
 var i18nextLng = localStorage.getItem("i18nextLng");
 if (!i18nextLng) {
   localStorage.setItem("i18nextLng", "tr");
@@ -27,7 +27,7 @@ i18n
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
-    fallbackLng: 'tr',
+    fallbackLng: "tr",
     debug: false,
     returnNull: false,
     interpolation: {
@@ -38,10 +38,10 @@ i18n
     // }
   });
 
-i18n.changeLanguage("tr");
- 
+// i18n.changeLanguage("tr");
+
 export default i18n;
 export const languages = {
-    tr: "tr-TR",
-    en: "en-US"
-  };
+  tr: "tr-TR",
+  en: "en-US",
+};

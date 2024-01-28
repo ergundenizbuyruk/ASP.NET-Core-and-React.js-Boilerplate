@@ -1,5 +1,4 @@
 ﻿using Pattern.Application.Services.Base.Dtos;
-using Pattern.Core.Entites.BaseEntity;
 
 namespace Pattern.Application.Services.Users.Dtos
 {
@@ -9,7 +8,6 @@ namespace Pattern.Application.Services.Users.Dtos
         public string Email { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public DateTime? BirthDate { get; set; }
 		public string PhoneNumber { get; set; }
 		public bool IsActive { get; set; }
 	}

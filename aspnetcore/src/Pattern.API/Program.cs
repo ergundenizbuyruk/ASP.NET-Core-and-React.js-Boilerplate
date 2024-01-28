@@ -97,8 +97,22 @@ builder.Services.Configure<FrontInformation>(builder.Configuration.GetSection("F
 builder.Services.AddRepositoriesForEntities(typeof(Entity).Assembly);
 builder.Services.AddServices(typeof(ApplicationService).Assembly);
 
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+{
+    builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+}));
+
+
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+
+app.UseCors(builder =>
+        builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

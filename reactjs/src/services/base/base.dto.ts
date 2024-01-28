@@ -1,15 +1,7 @@
-export interface ErrorMessage {
-  message: string;
-}
-export interface ErrorResponse {
-  errorId: string;
-  errors: ErrorMessage[];
-}
-
 export interface HttpResponse<T> {
   [x: string]: any;
   result?: T;
-  error?: ErrorResponse;
+  error?: ErrorDto;
 }
 
 export interface ResponseDto<T> {
@@ -20,6 +12,7 @@ export interface ResponseDto<T> {
 
 export interface ErrorDto {
   errors: string[];
+  isShow: boolean;
 }
 
 export interface NoContentDto {}

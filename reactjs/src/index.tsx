@@ -11,6 +11,9 @@ import RootLayout from "./layout/RootLayout";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AppRouter from "./lib/AppRouter";
+import { AuthProvider } from "./utils/auth";
+import { AxiosProvider } from "./utils/axios";
+import { ToastProvider } from "./utils/toast";
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
@@ -29,15 +32,19 @@ const queryClient = new QueryClient({
 });
 
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <RootLayout>
-          <AppRouter />
-        </RootLayout>
-      </QueryClientProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <ToastProvider>
+          <AxiosProvider>
+            <RootLayout>
+              <AppRouter />
+            </RootLayout>
+          </AxiosProvider>
+        </ToastProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
