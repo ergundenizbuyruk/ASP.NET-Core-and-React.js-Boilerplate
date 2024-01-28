@@ -10,7 +10,7 @@ namespace Pattern.Application.Services.Base
 		where TUpdateDto : IEntityDto<TPrimaryKey>
 	{
 		Task<ResponseDto<TEntityDto>> CreateAsync(TCreateDto createDto);
-		Task<ResponseDto<TEntityDto>> UpdateAsync(TUpdateDto updateAsync);
+		Task<ResponseDto<TEntityDto>> UpdateAsync(TUpdateDto updateDto);
 		Task<ResponseDto<NoContentDto>> DeleteAsync(TPrimaryKey primaryKey);
 		Task<ResponseDto<TEntityDto>> GetAsync(TPrimaryKey primaryKey);
 		Task<ResponseDto<List<TEntityDto>>> GetAllAsync(int? pageNumber, int? pageSize);

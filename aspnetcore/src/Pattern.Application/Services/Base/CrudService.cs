@@ -14,7 +14,7 @@ namespace Pattern.Application.Services.Base
 		where TEntityDto : IEntityDto<TPrimaryKey>
 		where TUpdateDto : IEntityDto<TPrimaryKey>
 	{
-		private readonly IRepository<TEntity, TPrimaryKey> repository;
+		protected readonly IRepository<TEntity, TPrimaryKey> repository;
 		protected CrudService(IUnitOfWork unitOfWork, IMapper objectMapper, IRepository<TEntity, TPrimaryKey> repository) : base(unitOfWork, objectMapper)
 		{
 			this.repository = repository;
@@ -29,9 +29,9 @@ namespace Pattern.Application.Services.Base
 			return ResponseDto<TEntityDto>.Success(entityDto, 201);
 		}
 
-		public virtual async Task<ResponseDto<TEntityDto>> UpdateAsync(TUpdateDto updateAsync)
+		public virtual async Task<ResponseDto<TEntityDto>> UpdateAsync(TUpdateDto updateDto)
 		{
-			var entity = ObjectMapper.Map<TUpdateDto, TEntity>(updateAsync);
+			var entity = ObjectMapper.Map<TUpdateDto, TEntity>(updateDto);
 			var entityFromDb = await repository.GetByIdAsync(entity.Id);
 
 			if (entityFromDb == null)
