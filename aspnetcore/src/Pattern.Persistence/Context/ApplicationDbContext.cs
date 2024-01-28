@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Pattern.Persistence.Context
 {
-    public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
+	public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
