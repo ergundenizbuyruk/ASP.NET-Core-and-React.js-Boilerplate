@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
       user.exp = new Date(decoded["exp"] * 1000);
 
-      let rawPermissions = decoded["Permission"];
+      let rawPermissions = decoded["Permissions"];
       if (rawPermissions) {
         user.permissions = rawPermissions;
       }
@@ -138,7 +138,7 @@ export function HasPermission({
   }
 
   if (permissions && permissions.length > 0) {
-    for (let permission in permissions) {
+    for (let permission of permissions) {
       if (!user.permissions.includes(permission)) {
         return <Navigate to={"/access-denied"} replace={false} />;
       }

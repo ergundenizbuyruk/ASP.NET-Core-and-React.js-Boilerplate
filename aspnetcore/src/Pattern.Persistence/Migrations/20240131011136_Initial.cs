@@ -76,9 +76,6 @@ namespace Pattern.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    BirthDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -98,6 +95,8 @@ namespace Pattern.Persistence.Migrations
                     SecurityStamp = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PhoneNumberConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -266,11 +265,51 @@ namespace Pattern.Persistence.Migrations
                     { 2, "UserCreate" },
                     { 3, "UserUpdate" },
                     { 4, "UserDelete" },
-                    { 5, "RoleDefault" },
-                    { 6, "RoleCreate" },
-                    { 7, "RoleUpdate" },
-                    { 8, "RoleDelete" }
+                    { 5, "AccountDefault" },
+                    { 6, "AccountUpdate" },
+                    { 7, "AccountDelete" },
+                    { 8, "EmailChange" },
+                    { 9, "ChangePassword" },
+                    { 10, "RoleDefault" },
+                    { 11, "RoleCreate" },
+                    { 12, "RoleUpdate" },
+                    { 13, "RoleDelete" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"), "24b3920f-e7ee-4536-9fb1-22252d0ee52f", "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreationTime", "DeletionTime", "Email", "EmailConfirmed", "FirstName", "IsActive", "IsDeleted", "LastModificationTime", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { new Guid("77438323-b0fa-414d-908a-7199a693aff0"), 0, "b779c2d1-1a19-4774-be1c-08182600c02d", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "admin@admin.com", true, "Admin", true, false, null, "Admin", false, null, "ADMİN@ADMİN.COM", "ADMIN", "AQAAAAIAAYagAAAAEJ30lL01h+K3VjFed3JjebsD/0zWERO6qz3+1EPFdMzIvf6p1qnHU8GAVWgoq3ln2w==", null, false, "71e60ed6-3b3c-422c-9ea6-74b562262bbd", false, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "RolePermissions",
+                columns: new[] { "PermissionId", "RoleId" },
+                values: new object[,]
+                {
+                    { 1, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 2, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 3, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 4, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 5, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 6, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 7, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 8, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 9, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 10, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 11, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 12, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
+                    { 13, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"), new Guid("77438323-b0fa-414d-908a-7199a693aff0") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",

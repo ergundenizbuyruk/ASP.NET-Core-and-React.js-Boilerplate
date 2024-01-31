@@ -97,6 +97,13 @@ namespace Pattern.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("77438323-b0fa-414d-908a-7199a693aff0"),
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -225,6 +232,15 @@ namespace Pattern.Persistence.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("Roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            ConcurrencyStamp = "24b3920f-e7ee-4536-9fb1-22252d0ee52f",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Pattern.Core.Entites.Authentication.RolePermission", b =>
@@ -240,6 +256,73 @@ namespace Pattern.Persistence.Migrations
                     b.HasIndex("PermissionId");
 
                     b.ToTable("RolePermissions");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 1
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 4
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 6
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 7
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 8
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 9
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 10
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 11
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 12
+                        },
+                        new
+                        {
+                            RoleId = new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"),
+                            PermissionId = 13
+                        });
                 });
 
             modelBuilder.Entity("Pattern.Core.Entites.Authentication.User", b =>
@@ -328,6 +411,29 @@ namespace Pattern.Persistence.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("Users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("77438323-b0fa-414d-908a-7199a693aff0"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "b779c2d1-1a19-4774-be1c-08182600c02d",
+                            CreationTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@admin.com",
+                            EmailConfirmed = true,
+                            FirstName = "Admin",
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = "Admin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMİN@ADMİN.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJ30lL01h+K3VjFed3JjebsD/0zWERO6qz3+1EPFdMzIvf6p1qnHU8GAVWgoq3ln2w==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "71e60ed6-3b3c-422c-9ea6-74b562262bbd",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Pattern.Core.Entites.Authentication.UserRefreshToken", b =>

@@ -45,6 +45,11 @@ const AppMenu = () => {
           icon: "pi pi-fw pi-exclamation-circle",
           to: "/not-found",
         },
+        {
+          label: "Roles",
+          icon: "pi pi-fw pi-exclamation-circle",
+          to: "/app/roles",
+        },
       ],
     },
     {

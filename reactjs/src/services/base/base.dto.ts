@@ -16,3 +16,7 @@ export interface ErrorDto {
 }
 
 export interface NoContentDto {}
+
+export interface EntityDto<T> {
+  id: T;
+}

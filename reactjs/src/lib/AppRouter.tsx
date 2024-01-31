@@ -14,6 +14,7 @@ import ChangeEmailPage from "../pages/auth/ChangeEmail";
 import NewEmailConfirmPage from "../pages/auth/NewEmailConfirm";
 import ChangePasswordPage from "../pages/auth/ChangePassword";
 import ProfilePage from "../pages/auth/Profile";
+import RolePage from "../pages/role/Role";
 
 const AppRouter = () => {
   return (
@@ -54,6 +55,14 @@ const AppRouter = () => {
           element={
             <HasPermission>
               <ChangePasswordPage />
+            </HasPermission>
+          }
+        />
+        <Route
+          path="roles"
+          element={
+            <HasPermission permissions={[Permission.RoleDefault]}>
+              <RolePage />
             </HasPermission>
           }
         />

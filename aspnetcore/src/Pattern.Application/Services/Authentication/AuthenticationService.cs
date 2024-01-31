@@ -10,7 +10,7 @@ using Pattern.Persistence.UnitOfWork;
 
 namespace Pattern.Application.Services.Authentication
 {
-    public class AuthenticationService : ApplicationService, IAuthenticationService
+	public class AuthenticationService : ApplicationService, IAuthenticationService
 	{
 		private readonly ITokenService tokenService;
 		private readonly UserManager<User> userManager;

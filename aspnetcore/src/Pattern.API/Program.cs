@@ -8,9 +8,9 @@ using Microsoft.IdentityModel.Tokens;
 using Pattern.API.Extensions;
 using Pattern.API.Filters;
 using Pattern.API.Middlewares;
-using Pattern.Application.Mapper;
 using Pattern.Application.Services.Base;
 using Pattern.Application.Services.Emails;
+using Pattern.Application.Services.Users.Mapper;
 using Pattern.Core.Authentication;
 using Pattern.Core.Entites.Authentication;
 using Pattern.Core.Entites.BaseEntity;
@@ -30,7 +30,7 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(typeof(UserMapper));
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
