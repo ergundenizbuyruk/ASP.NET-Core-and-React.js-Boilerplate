@@ -118,7 +118,6 @@ const Login = () => {
                   formik.setFieldValue("password", e.target.value)
                 }
                 placeholder={t("Password")}
-                toggleMask
                 className="w-full"
                 inputClassName="w-full p-3 md:w-30rem"
                 feedback={false}
