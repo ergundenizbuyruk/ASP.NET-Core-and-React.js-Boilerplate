@@ -157,18 +157,6 @@ namespace Pattern.Persistence.Context
 				}
 			}
 
-			var deletedEntries = ChangeTracker.Entries()
-				.Where(x => x.State == EntityState.Deleted).Select(x => x.Entity);
-
-			foreach (var deletedEntry in deletedEntries)
-			{
-				var softDeleteEntity = deletedEntry as ISoftDelete;
-				if (softDeleteEntity != null)
-				{
-					this.Entry(softDeleteEntity).State = EntityState.Modified;
-				}
-			}
-
 			var modifiedEntries = ChangeTracker.Entries().Where(x => x.State == EntityState.Modified).Select(x => x.Entity);
 			foreach (var modifiedEntry in modifiedEntries)
 			{

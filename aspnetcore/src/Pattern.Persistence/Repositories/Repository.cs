@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Pattern.Core.Interfaces;
 using Pattern.Persistence.Context;
+using System.Security.Claims;
 
 namespace Pattern.Persistence.Repositories
 {
@@ -8,10 +10,12 @@ namespace Pattern.Persistence.Repositories
 	{
 		private readonly ApplicationDbContext context;
 		private readonly DbSet<TEntity> dbSet;
-		public Repository(ApplicationDbContext context)
+		private readonly IHttpContextAccessor httpContextAccessor;
+		public Repository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
 		{
 			this.context = context;
 			dbSet = this.context.Set<TEntity>();
+			this.httpContextAccessor = httpContextAccessor;
 		}
 
 		public async Task<TEntity> CreateAsync(TEntity Entity)
@@ -59,22 +63,24 @@ namespace Pattern.Persistence.Repositories
 
 		public void Delete(TEntity Entity)
 		{
-			if (typeof(ISoftDelete).IsAssignableFrom(typeof(TEntity)))
+			var softDeleteEntity = Entity as ISoftDelete;
+			if (softDeleteEntity != null)
 			{
-				(Entity as ISoftDelete).IsDeleted = true;
-
-				if (typeof(IFullAudited).IsAssignableFrom(typeof(TEntity)))
+				Guid? userId = null;
+				var userIdStr = httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+				if (userIdStr != null)
 				{
-					(Entity as IFullAudited).DeletionTime = DateTimeOffset.UtcNow;
+					userId = Guid.Parse(userIdStr);
 				}
+
+				softDeleteEntity.IsDeleted = true;
+				softDeleteEntity.DeletionTime = DateTimeOffset.UtcNow;
+				softDeleteEntity.DeleterUserId = userId;
 
 				dbSet.Attach(Entity);
 				context.Entry(Entity).State = EntityState.Modified;
 			}
-			else
-			{
-				dbSet.Remove(Entity);
-			}
+			dbSet.Remove(Entity);
 		}
 
 		public void HardDelete(TEntity Entity)

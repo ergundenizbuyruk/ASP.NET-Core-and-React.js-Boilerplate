@@ -85,6 +85,8 @@ builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizat
 //	.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 //});
 
+builder.Services.AddHttpContextAccessor();
+
 string mySqlConnectionStr = builder.Configuration.GetConnectionString("Default")!;
 builder.Services.AddDbContext<ApplicationDbContext>(u => u
 	.UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr),
