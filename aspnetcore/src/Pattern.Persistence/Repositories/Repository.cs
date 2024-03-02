@@ -79,6 +79,7 @@ namespace Pattern.Persistence.Repositories
 
 				dbSet.Attach(Entity);
 				context.Entry(Entity).State = EntityState.Modified;
+				return;
 			}
 			dbSet.Remove(Entity);
 		}
