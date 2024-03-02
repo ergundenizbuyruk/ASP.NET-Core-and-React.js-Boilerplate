@@ -51,8 +51,8 @@ namespace Pattern.Application.Services.Users
                 return ResponseDto<UserDto>.Fail(new ErrorDto(result.Errors.Select(p => p.Description).ToList()), 400);
             }
 
-            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            await emailService.SendEmailConfirmEmailAsync(user.Email, user.Id, HttpUtility.UrlEncode(token));
+            //var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            //await emailService.SendEmailConfirmEmailAsync(user.Email, user.Id, HttpUtility.UrlEncode(token));
 
             return ResponseDto<UserDto>.Success(ObjectMapper.Map<UserDto>(user), 201);
         }
@@ -104,8 +104,8 @@ namespace Pattern.Application.Services.Users
                 return ResponseDto<NoContentDto>.Fail("Kullanıcı bulunamadı.", 404);
             }
 
-            var token = await userManager.GeneratePasswordResetTokenAsync(userFromDb);
-            await emailService.SendPasswordResetEmailAsync(userFromDb.Email, userFromDb.Id, HttpUtility.UrlEncode(token));
+            //var token = await userManager.GeneratePasswordResetTokenAsync(userFromDb);
+            //await emailService.SendPasswordResetEmailAsync(userFromDb.Email, userFromDb.Id, HttpUtility.UrlEncode(token));
 
             return ResponseDto<NoContentDto>.Success(200);
         }
@@ -119,8 +119,8 @@ namespace Pattern.Application.Services.Users
                 return ResponseDto<NoContentDto>.Fail("Kullanıcı bulunamadı.", 404);
             }
 
-            string token = await userManager.GenerateChangeEmailTokenAsync(userFromDb, newEmail);
-            await emailService.SendChangeEmailAsync(userFromDb.Email, newEmail, HttpUtility.UrlEncode(token));
+            //string token = await userManager.GenerateChangeEmailTokenAsync(userFromDb, newEmail);
+            //await emailService.SendChangeEmailAsync(userFromDb.Email, newEmail, HttpUtility.UrlEncode(token));
 
             return ResponseDto<NoContentDto>.Success(200);
         }
