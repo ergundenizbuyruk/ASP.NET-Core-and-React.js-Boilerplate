@@ -65,7 +65,7 @@ namespace Pattern.Persistence.Repositories
 
 				if (typeof(IFullAudited).IsAssignableFrom(typeof(TEntity)))
 				{
-					(Entity as IFullAudited).DeletionTime = DateTime.Now;
+					(Entity as IFullAudited).DeletionTime = DateTimeOffset.UtcNow;
 				}
 
 				dbSet.Attach(Entity);

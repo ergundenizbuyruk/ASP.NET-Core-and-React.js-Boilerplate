@@ -44,7 +44,7 @@ const ChangePasswordPage = () => {
     },
     onSubmit: (values) => {
       accountService.ChangePassword(values).then((res) => {
-        if (!res.error) {
+        if (res.result && !res.result?.error) {
           toast.show(t("ChangePasswordMessage"), "success");
           navigate("/app/homepage", { replace: true });
         }
@@ -91,10 +91,12 @@ const ChangePasswordPage = () => {
               >
                 {t("CurrentPassword")}
               </label>
-              <InputText
+              <Password
                 id="currentPassword"
                 type="password"
-                placeholder={t("EmailAddress")}
+                toggleMask
+                feedback={false}
+                placeholder={t("CurrentPassword")}
                 className={classNames("w-full md:w-30rem", {
                   "p-invalid": FormikValueIsValid(formik, "currentPassword"),
                 })}
@@ -102,7 +104,7 @@ const ChangePasswordPage = () => {
                 onChange={(e) =>
                   formik.setFieldValue("currentPassword", e.target.value)
                 }
-                style={{ padding: "1rem" }}
+                inputClassName="w-full p-3 md:w-30rem"
               />
               {FormikValueIsValid(formik, "currentPassword") && (
                 <div className="p-error mt-2">
@@ -116,18 +118,20 @@ const ChangePasswordPage = () => {
               >
                 {t("NewPassword")}
               </label>
-              <InputText
+              <Password
                 id="newPassword"
                 type="password"
-                placeholder={t("EmailAddress")}
-                className={classNames("w-full md:w-30rem", {
+                feedback={true}
+                toggleMask
+                placeholder={t("NewPassword")}
+                className={classNames("w-full", {
                   "p-invalid": FormikValueIsValid(formik, "newPassword"),
                 })}
                 value={formik.values.newPassword}
                 onChange={(e) =>
                   formik.setFieldValue("newPassword", e.target.value)
                 }
-                style={{ padding: "1rem" }}
+                inputClassName="w-full p-3 md:w-30rem"
               />
               {FormikValueIsValid(formik, "newPassword") && (
                 <div className="p-error mt-2">{formik.errors.newPassword}</div>

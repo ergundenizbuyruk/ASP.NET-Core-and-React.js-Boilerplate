@@ -9,158 +9,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Pattern.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddProvinceAndDistrict : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 1, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 2, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 3, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 4, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 5, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 6, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 7, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 8, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 9, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 10, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 11, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 12, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 13, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") });
-
-            migrationBuilder.DeleteData(
-                table: "UserRoles",
-                keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"), new Guid("77438323-b0fa-414d-908a-7199a693aff0") });
-
-            migrationBuilder.DeleteData(
-                table: "Roles",
-                keyColumn: "Id",
-                keyValue: new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"));
-
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: new Guid("77438323-b0fa-414d-908a-7199a693aff0"));
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "CreatorUserId",
-                table: "Users",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "DeleterUserId",
-                table: "Users",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "LastModifierUserId",
-                table: "Users",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "CreationTime",
-                table: "Roles",
-                type: "datetime(6)",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "CreatorUserId",
-                table: "Roles",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "DeleterUserId",
-                table: "Roles",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DeletionTime",
-                table: "Roles",
-                type: "datetime(6)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "IsDeleted",
-                table: "Roles",
-                type: "tinyint(1)",
-                nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "LastModificationTime",
-                table: "Roles",
-                type: "datetime(6)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "LastModifierUserId",
-                table: "Roles",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
+            migrationBuilder.CreateTable(
+                name: "Permissions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissions", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Provinces",
@@ -177,6 +47,94 @@ namespace Pattern.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Provinces", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    CreationTime = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
+                    CreatorUserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    LastModificationTime = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
+                    LastModifierUserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    DeletionTime = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
+                    DeleterUserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NormalizedName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UserRefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Code = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Expiration = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRefreshTokens", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    FirstName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LastName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CreationTime = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
+                    CreatorUserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    LastModificationTime = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
+                    LastModifierUserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    DeletionTime = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
+                    DeleterUserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NormalizedEmail = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EmailConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SecurityStamp = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -201,6 +159,172 @@ namespace Pattern.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "RoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    RoleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ClaimType = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClaimValue = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RoleClaims_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "RolePermissions",
+                columns: table => new
+                {
+                    RoleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    PermissionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RolePermissions", x => new { x.RoleId, x.PermissionId });
+                    table.ForeignKey(
+                        name: "FK_RolePermissions_Permissions_PermissionId",
+                        column: x => x.PermissionId,
+                        principalTable: "Permissions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RolePermissions_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ClaimType = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClaimValue = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserClaims_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ProviderKey = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ProviderDisplayName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_UserLogins_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    RoleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Value = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_UserTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "UserDefault" },
+                    { 2, "UserCreate" },
+                    { 3, "UserUpdate" },
+                    { 4, "UserDelete" },
+                    { 5, "AccountDefault" },
+                    { 6, "AccountUpdate" },
+                    { 7, "AccountDelete" },
+                    { 8, "EmailChange" },
+                    { 9, "ChangePassword" },
+                    { 10, "RoleDefault" },
+                    { 11, "RoleCreate" },
+                    { 12, "RoleUpdate" },
+                    { 13, "RoleDelete" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Provinces",
@@ -293,12 +417,12 @@ namespace Pattern.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreationTime", "CreatorUserId", "DeleterUserId", "DeletionTime", "IsDeleted", "LastModificationTime", "LastModifierUserId", "Name", "NormalizedName" },
-                values: new object[] { new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"), "bcfbcf34-e417-4e7e-a97e-59705c2da859", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, false, null, null, "Admin", "ADMIN" });
+                values: new object[] { new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"), "0fd46325-86aa-48a1-8051-128d1367d521", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, null, null, false, null, null, "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreationTime", "CreatorUserId", "DeleterUserId", "DeletionTime", "Email", "EmailConfirmed", "FirstName", "IsActive", "IsDeleted", "LastModificationTime", "LastModifierUserId", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("ed434f0a-45e6-4be9-b656-2793ecbd3820"), 0, "7c900ba7-6c42-4cca-8ce6-dc0cf25d85fd", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, "admin@admin.com", true, "Admin", true, false, null, null, "Admin", false, null, "ADMİN@ADMİN.COM", "ADMIN", "AQAAAAIAAYagAAAAEFkEw4bfh7+D4p6AGKAySbstlBmo3blKeyk39zN7u/uXhS3ENjNJ3ZFIXsjNNSF+Yg==", null, false, "43b698b4-36be-4120-8950-6deb57318b59", false, "admin" });
+                values: new object[] { new Guid("4ac09546-bc32-4332-97cb-6430c44a96fa"), 0, "79236e84-3ef8-4e30-9eb6-70d09c92d07e", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, null, null, "admin@admin.com", true, "Admin", true, false, null, null, "Admin", false, null, "ADMİN@ADMİN.COM", "ADMIN", "AQAAAAIAAYagAAAAEPZP1oOChk6E7ERU73wzZ8QitrzCah0tHLSJzLrNoL0vDL/RZ2U/JqGq3BIUjn0hUA==", null, false, "bf5de7f2-98a5-433b-9e68-245156929015", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "Districts",
@@ -1313,30 +1437,72 @@ namespace Pattern.Persistence.Migrations
                 columns: new[] { "PermissionId", "RoleId" },
                 values: new object[,]
                 {
-                    { 1, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 2, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 3, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 4, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 5, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 6, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 7, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 8, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 9, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 10, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 11, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 12, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") },
-                    { 13, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") }
+                    { 1, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 2, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 3, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 4, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 5, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 6, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 7, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 8, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 9, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 10, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 11, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 12, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") },
+                    { 13, new Guid("2263ca34-1e71-405d-942e-fbc91d35be20") }
                 });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"), new Guid("ed434f0a-45e6-4be9-b656-2793ecbd3820") });
+                values: new object[] { new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"), new Guid("4ac09546-bc32-4332-97cb-6430c44a96fa") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Districts_ProvinceId",
                 table: "Districts",
                 column: "ProvinceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoleClaims_RoleId",
+                table: "RoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RolePermissions_PermissionId",
+                table: "RolePermissions",
+                column: "PermissionId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "Roles",
+                column: "NormalizedName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserClaims_UserId",
+                table: "UserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLogins_UserId",
+                table: "UserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_RoleId",
+                table: "UserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "Users",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "Users",
+                column: "NormalizedUserName",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -1346,162 +1512,37 @@ namespace Pattern.Persistence.Migrations
                 name: "Districts");
 
             migrationBuilder.DropTable(
+                name: "RoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "RolePermissions");
+
+            migrationBuilder.DropTable(
+                name: "UserClaims");
+
+            migrationBuilder.DropTable(
+                name: "UserLogins");
+
+            migrationBuilder.DropTable(
+                name: "UserRefreshTokens");
+
+            migrationBuilder.DropTable(
+                name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "UserTokens");
+
+            migrationBuilder.DropTable(
                 name: "Provinces");
 
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 1, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
+            migrationBuilder.DropTable(
+                name: "Permissions");
 
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 2, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
+            migrationBuilder.DropTable(
+                name: "Roles");
 
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 3, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 4, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 5, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 6, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 7, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 8, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 9, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 10, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 11, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 12, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
-
-            migrationBuilder.DeleteData(
-                table: "RolePermissions",
-                keyColumns: new[] { "PermissionId", "RoleId" },
-                keyValues: new object[] { 13, new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70") });
-
-            migrationBuilder.DeleteData(
-                table: "UserRoles",
-                keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"), new Guid("ed434f0a-45e6-4be9-b656-2793ecbd3820") });
-
-            migrationBuilder.DeleteData(
-                table: "Roles",
-                keyColumn: "Id",
-                keyValue: new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"));
-
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: new Guid("ed434f0a-45e6-4be9-b656-2793ecbd3820"));
-
-            migrationBuilder.DropColumn(
-                name: "CreatorUserId",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "DeleterUserId",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "LastModifierUserId",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "CreationTime",
-                table: "Roles");
-
-            migrationBuilder.DropColumn(
-                name: "CreatorUserId",
-                table: "Roles");
-
-            migrationBuilder.DropColumn(
-                name: "DeleterUserId",
-                table: "Roles");
-
-            migrationBuilder.DropColumn(
-                name: "DeletionTime",
-                table: "Roles");
-
-            migrationBuilder.DropColumn(
-                name: "IsDeleted",
-                table: "Roles");
-
-            migrationBuilder.DropColumn(
-                name: "LastModificationTime",
-                table: "Roles");
-
-            migrationBuilder.DropColumn(
-                name: "LastModifierUserId",
-                table: "Roles");
-
-            migrationBuilder.InsertData(
-                table: "Roles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"), "24b3920f-e7ee-4536-9fb1-22252d0ee52f", "Admin", "ADMIN" });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreationTime", "DeletionTime", "Email", "EmailConfirmed", "FirstName", "IsActive", "IsDeleted", "LastModificationTime", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("77438323-b0fa-414d-908a-7199a693aff0"), 0, "b779c2d1-1a19-4774-be1c-08182600c02d", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "admin@admin.com", true, "Admin", true, false, null, "Admin", false, null, "ADMİN@ADMİN.COM", "ADMIN", "AQAAAAIAAYagAAAAEJ30lL01h+K3VjFed3JjebsD/0zWERO6qz3+1EPFdMzIvf6p1qnHU8GAVWgoq3ln2w==", null, false, "71e60ed6-3b3c-422c-9ea6-74b562262bbd", false, "admin" });
-
-            migrationBuilder.InsertData(
-                table: "RolePermissions",
-                columns: new[] { "PermissionId", "RoleId" },
-                values: new object[,]
-                {
-                    { 1, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 2, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 3, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 4, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 5, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 6, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 7, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 8, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 9, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 10, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 11, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 12, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") },
-                    { 13, new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1") }
-                });
-
-            migrationBuilder.InsertData(
-                table: "UserRoles",
-                columns: new[] { "RoleId", "UserId" },
-                values: new object[] { new Guid("2017aaf2-6acd-4fea-ba42-3697401d0cc1"), new Guid("77438323-b0fa-414d-908a-7199a693aff0") });
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

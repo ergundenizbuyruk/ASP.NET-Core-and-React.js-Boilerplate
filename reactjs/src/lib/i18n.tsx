@@ -3,6 +3,8 @@ import { initReactI18next } from "react-i18next";
 import Backend from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 import "i18next";
+import { locale } from "primereact/api";
+import { AddTrLocaleforPrimeReact } from "./AddTrLocaleforPrimeReact";
 
 declare module "i18next" {
   interface CustomTypeOptions {
@@ -13,6 +15,7 @@ declare module "i18next" {
 var i18nextLng = localStorage.getItem("i18nextLng");
 if (!i18nextLng) {
   localStorage.setItem("i18nextLng", "tr");
+  locale("tr");
 }
 
 i18n
@@ -38,7 +41,7 @@ i18n
     // }
   });
 
-// i18n.changeLanguage("tr");
+AddTrLocaleforPrimeReact();
 
 export default i18n;
 export const languages = {

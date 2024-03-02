@@ -88,19 +88,26 @@ namespace Pattern.Application.Services.Authentication
 
 			if (existRefreshToken == null)
 			{
-				return ResponseDto<AccessTokenDto>.Fail("Refresh Token Hatalı", 404);
+				return ResponseDto<AccessTokenDto>.Fail("Refresh Token Hatalı", 404, false);
 			}
 
 			var user = await userManager.FindByIdAsync(existRefreshToken.UserId.ToString());
 
 			if (user == null)
 			{
-				return ResponseDto<AccessTokenDto>.Fail("Kullanıcı Bulunamadı", 404);
+				return ResponseDto<AccessTokenDto>.Fail("Kullanıcı Bulunamadı", 404, false);
+			}
+
+			if (existRefreshToken.Expiration < DateTimeOffset.UtcNow)
+			{
+				return ResponseDto<AccessTokenDto>.Fail("Lütfen Tekrar Giriş Yapınız.", 404, true);
 			}
 
 			var tokenDto = await tokenService.CreateTokenAsync(user);
 			existRefreshToken.Code = tokenDto.RefreshToken;
 			existRefreshToken.Expiration = tokenDto.RefreshTokenExpiration;
+
+			userRefreshTokenRepository.Update(existRefreshToken);
 			await SaveChangesAsync();
 			return ResponseDto<AccessTokenDto>.Success(tokenDto, 200);
 		}
@@ -111,7 +118,7 @@ namespace Pattern.Application.Services.Authentication
 
 			if (existRefreshToken == null)
 			{
-				return ResponseDto<NoContentDto>.Fail("Refresh Token Bulunamadı", 404);
+				return ResponseDto<NoContentDto>.Fail("Refresh Token Bulunamadı", 404, false);
 			}
 
 			userRefreshTokenRepository.Delete(existRefreshToken);

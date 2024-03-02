@@ -152,19 +152,8 @@ namespace Pattern.Persistence.Context
 				var auditableEntity = insertedEntry as IFullAudited;
 				if (auditableEntity != null)
 				{
-					auditableEntity.CreationTime = DateTime.Now;
+					auditableEntity.CreationTime = DateTimeOffset.UtcNow;
 					auditableEntity.CreatorUserId = userId;
-				}
-			}
-
-			var modifiedEntries = ChangeTracker.Entries().Where(x => x.State == EntityState.Modified).Select(x => x.Entity);
-			foreach (var modifiedEntry in modifiedEntries)
-			{
-				var auditableEntity = modifiedEntry as IFullAudited;
-				if (auditableEntity != null)
-				{
-					auditableEntity.LastModificationTime = DateTime.Now;
-					auditableEntity.LastModifierUserId = userId;
 				}
 			}
 
@@ -177,6 +166,17 @@ namespace Pattern.Persistence.Context
 				if (softDeleteEntity != null)
 				{
 					this.Entry(softDeleteEntity).State = EntityState.Modified;
+				}
+			}
+
+			var modifiedEntries = ChangeTracker.Entries().Where(x => x.State == EntityState.Modified).Select(x => x.Entity);
+			foreach (var modifiedEntry in modifiedEntries)
+			{
+				var auditableEntity = modifiedEntry as IFullAudited;
+				if (auditableEntity != null)
+				{
+					auditableEntity.LastModificationTime = DateTimeOffset.UtcNow;
+					auditableEntity.LastModifierUserId = userId;
 				}
 			}
 

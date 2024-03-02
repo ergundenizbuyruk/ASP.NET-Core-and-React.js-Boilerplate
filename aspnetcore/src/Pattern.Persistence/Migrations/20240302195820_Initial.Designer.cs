@@ -11,8 +11,8 @@ using Pattern.Persistence.Context;
 namespace Pattern.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240302163402_AddProvinceAndDistrict")]
-    partial class AddProvinceAndDistrict
+    [Migration("20240302195820_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,8 +104,8 @@ namespace Pattern.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("ed434f0a-45e6-4be9-b656-2793ecbd3820"),
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70")
+                            UserId = new Guid("4ac09546-bc32-4332-97cb-6430c44a96fa"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20")
                         });
                 });
 
@@ -220,7 +220,7 @@ namespace Pattern.Persistence.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("CreationTime")
+                    b.Property<DateTimeOffset>("CreationTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("CreatorUserId")
@@ -229,13 +229,13 @@ namespace Pattern.Persistence.Migrations
                     b.Property<Guid?>("DeleterUserId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("DeletionTime")
+                    b.Property<DateTimeOffset?>("DeletionTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime?>("LastModificationTime")
+                    b.Property<DateTimeOffset?>("LastModificationTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("LastModifierUserId")
@@ -260,9 +260,9 @@ namespace Pattern.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
-                            ConcurrencyStamp = "bcfbcf34-e417-4e7e-a97e-59705c2da859",
-                            CreationTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            ConcurrencyStamp = "0fd46325-86aa-48a1-8051-128d1367d521",
+                            CreationTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             IsDeleted = false,
                             Name = "Admin",
                             NormalizedName = "ADMIN"
@@ -286,67 +286,67 @@ namespace Pattern.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 1
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 2
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 3
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 4
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 5
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 6
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 7
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 8
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 9
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 10
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 11
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 12
                         },
                         new
                         {
-                            RoleId = new Guid("5ec9cdc4-0ba1-43fa-ae57-2cc31a4f8b70"),
+                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
                             PermissionId = 13
                         });
                 });
@@ -364,7 +364,7 @@ namespace Pattern.Persistence.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("CreationTime")
+                    b.Property<DateTimeOffset>("CreationTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("CreatorUserId")
@@ -373,7 +373,7 @@ namespace Pattern.Persistence.Migrations
                     b.Property<Guid?>("DeleterUserId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("DeletionTime")
+                    b.Property<DateTimeOffset?>("DeletionTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
@@ -393,7 +393,7 @@ namespace Pattern.Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime?>("LastModificationTime")
+                    b.Property<DateTimeOffset?>("LastModificationTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("LastModifierUserId")
@@ -450,10 +450,10 @@ namespace Pattern.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ed434f0a-45e6-4be9-b656-2793ecbd3820"),
+                            Id = new Guid("4ac09546-bc32-4332-97cb-6430c44a96fa"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7c900ba7-6c42-4cca-8ce6-dc0cf25d85fd",
-                            CreationTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ConcurrencyStamp = "79236e84-3ef8-4e30-9eb6-70d09c92d07e",
+                            CreationTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -463,9 +463,9 @@ namespace Pattern.Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMİN@ADMİN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFkEw4bfh7+D4p6AGKAySbstlBmo3blKeyk39zN7u/uXhS3ENjNJ3ZFIXsjNNSF+Yg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPZP1oOChk6E7ERU73wzZ8QitrzCah0tHLSJzLrNoL0vDL/RZ2U/JqGq3BIUjn0hUA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "43b698b4-36be-4120-8950-6deb57318b59",
+                            SecurityStamp = "bf5de7f2-98a5-433b-9e68-245156929015",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -481,7 +481,7 @@ namespace Pattern.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Expiration")
+                    b.Property<DateTimeOffset>("Expiration")
                         .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("UserId")

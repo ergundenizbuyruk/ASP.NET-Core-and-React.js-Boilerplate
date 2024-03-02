@@ -17,7 +17,7 @@ async function post<TResponse>(
     const response = await axios.post(url, data, config);
     return { result: response.data as ResponseDto<TResponse> };
   } catch (error: any) {
-    return { error: error?.response?.data };
+    return { result: error?.response?.data };
   }
 }
 
@@ -29,7 +29,7 @@ async function get<TResponse>(
     const response = await axios.get(url, config);
     return { result: response.data as ResponseDto<TResponse> };
   } catch (error: any) {
-    return { error: error?.response?.data };
+    return { result: error?.response?.data };
   }
 }
 
@@ -42,7 +42,7 @@ async function put<TResponse>(
     const response = await axios.put(url, data, config);
     return { result: response.data as ResponseDto<TResponse> };
   } catch (error: any) {
-    return { error: error?.response?.data };
+    return { result: error?.response?.data };
   }
 }
 
@@ -54,7 +54,7 @@ async function remove<TResponse>(
     const response = await axios.delete(url, config);
     return { result: response.data as ResponseDto<TResponse> };
   } catch (error: any) {
-    return { error: error?.response?.data };
+    return { result: error?.response?.data };
   }
 }
 
@@ -67,7 +67,7 @@ async function patch<TResponse>(
     const response = await axios.patch(url, data, config);
     return { result: response.data as ResponseDto<TResponse> };
   } catch (error: any) {
-    return { error: error?.response?.data };
+    return { result: error?.response?.data };
   }
 }
 

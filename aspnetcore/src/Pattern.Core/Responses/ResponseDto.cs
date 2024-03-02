@@ -42,11 +42,11 @@ namespace Pattern.Core.Responses
 			};
 		}
 
-		public static ResponseDto<T> Fail(string errorMessage, int statusCode)
+		public static ResponseDto<T> Fail(string errorMessage, int statusCode, bool isShow = true)
 		{
 			return new ResponseDto<T>
 			{
-				Error = new ErrorDto(errorMessage),
+				Error = new ErrorDto(errorMessage, isShow),
 				StatusCode = statusCode,
 				IsSuccessful = false
 			};
