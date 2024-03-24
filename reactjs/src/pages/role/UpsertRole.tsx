@@ -62,7 +62,7 @@ const UpsertRole = (props: any) => {
 
       if (roleUpsertDto.id === "") {
         RoleService.Create(roleUpsertDto).then((res: any) => {
-          if (!res.error) {
+          if (res.result && !res.result?.error) {
             setVisible(false);
             formik.resetForm();
             setRole(undefined);
@@ -72,7 +72,7 @@ const UpsertRole = (props: any) => {
         });
       } else {
         RoleService.Update(roleUpsertDto).then((res: any) => {
-          if (!res.error) {
+          if (res.result && !res.result?.error) {
             setVisible(false);
             formik.resetForm();
             setRole(undefined);

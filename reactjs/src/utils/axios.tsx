@@ -24,8 +24,7 @@ export function AxiosProvider({ children }: { children: React.ReactNode }) {
   const [isAxiosInterceptorAdded, setIsAxiosInterceptorAdded] =
     useState<boolean>(false);
 
-  useEffect(() => {
-    if (isAxiosInterceptorAdded) return;
+  if (!isAxiosInterceptorAdded) {
     axios.interceptors.request.use(
       (config) => {
         if (config.blockUI === undefined) {
@@ -110,7 +109,7 @@ export function AxiosProvider({ children }: { children: React.ReactNode }) {
     );
 
     setIsAxiosInterceptorAdded(true);
-  }, []);
+  }
 
   const pageLoader = () => {
     return (
@@ -121,10 +120,12 @@ export function AxiosProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AxiosContext.Provider value={null}>
-      <BlockUI blocked={blocked} fullScreen template={pageLoader}>
-        {children}
-      </BlockUI>
-    </AxiosContext.Provider>
+    <>
+      <AxiosContext.Provider value={null}>
+        <BlockUI blocked={blocked} fullScreen template={pageLoader}>
+          {children}
+        </BlockUI>
+      </AxiosContext.Provider>
+    </>
   );
 }

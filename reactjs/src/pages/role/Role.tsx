@@ -125,7 +125,7 @@ const RolePage = () => {
 
   const deleteRole = (rowData: RoleDto) => {
     RoleService.Delete(rowData.id!).then((res) => {
-      if (!res.error) {
+      if (res.result && !res.result?.error) {
         toast.show(t("RoleDeletedSuccessfully"), "success");
         refetchRole();
       }

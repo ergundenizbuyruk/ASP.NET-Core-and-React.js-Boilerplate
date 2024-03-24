@@ -5,6 +5,7 @@ using Pattern.Application.Services.Base;
 using Pattern.Application.Services.Roles.Dtos;
 using Pattern.Core.Entites.Authentication;
 using Pattern.Core.Responses;
+using Pattern.Persistence.Context;
 using Pattern.Persistence.Repositories;
 using Pattern.Persistence.UnitOfWork;
 
@@ -12,45 +13,65 @@ namespace Pattern.Application.Services.Roles
 {
 	public class RoleService : ApplicationService, IRoleService
 	{
-		public UserManager<User> userManager { get; set; }
-		public RoleManager<Role> roleManager { get; set; }
-		public IRepository<Permission, int> permissionRepository;
+		private UserManager<User> userManager { get; set; }
+
+		private RoleManager<Role> roleManager { get; set; }
+
+		private IRepository<Permission, int> permissionRepository;
+
+		private readonly ApplicationDbContext context;
+
 
 		public RoleService(
 			IUnitOfWork unitOfWork,
 			IMapper objectMapper,
 			UserManager<User> userManager,
 			RoleManager<Role> roleManager,
-			IRepository<Permission, int> permissionRepository) :
+			IRepository<Permission, int> permissionRepository,
+			ApplicationDbContext context) :
 			base(unitOfWork, objectMapper)
 		{
 			this.userManager = userManager;
 			this.roleManager = roleManager;
 			this.permissionRepository = permissionRepository;
+			this.context = context;
 		}
 
 		public async Task<ResponseDto<RoleDto>> CreateRoleAsync(CreateRoleDto createRoleDto)
 		{
-			var role = new Role()
+			try
 			{
-				Name = createRoleDto.Name,
-				Permissions = new()
-			};
+				var role = new Role()
+				{
+					Id = Guid.NewGuid(),
+					Name = createRoleDto.Name
+				};
 
-			var permissions = await permissionRepository.GetAll()
-				.Where(p => createRoleDto.PermissionIds.Contains(p.Id))
-				.ToListAsync();
+				var permissions = await context.Permissions
+					.Where(p => createRoleDto.PermissionIds.Contains(p.Id))
+					.ToListAsync();
 
-			foreach (var permission in permissions)
+				foreach (var permission in permissions)
+				{
+					await context.RolePermissions.AddAsync(new RolePermission()
+					{
+						RoleId = role.Id,
+						PermissionId = permission.Id
+					});
+				}
+
+				await roleManager.CreateAsync(role);
+				await SaveChangesAsync();
+
+				var roleDto = ObjectMapper.Map<Role, RoleDto>(role);
+				return ResponseDto<RoleDto>.Success(roleDto, 201);
+			}
+			catch (Exception e)
 			{
-				role.Permissions.Add(permission);
+				var a = e.Message;
+				throw;
 			}
 
-			await roleManager.CreateAsync(role);
-			await SaveChangesAsync();
-
-			var roleDto = ObjectMapper.Map<Role, RoleDto>(role);
-			return ResponseDto<RoleDto>.Success(roleDto, 201);
 		}
 
 		public async Task<ResponseDto<RoleDto>> UpdateRoleAsync(UpdateRoleDto updateRoleDto)
@@ -66,14 +87,24 @@ namespace Pattern.Application.Services.Roles
 
 			role.Name = updateRoleDto.Name;
 
-			var permissions = await permissionRepository.GetAll()
-			   .Where(rp => updateRoleDto.PermissionIds.Contains(rp.Id))
+			var rolePermissions = await context.RolePermissions
+			   .Where(rp => rp.RoleId == role.Id)
 			   .ToListAsync();
 
-			role.Permissions.RemoveAll(p => !updateRoleDto.PermissionIds.Contains(p.Id));
+			context.RolePermissions.RemoveRange(rolePermissions);
 
-			var newPermission = permissions.Where(p => !role.Permissions.Contains(p));
-			role.Permissions.AddRange(newPermission);
+			var permissions = await context.Permissions
+					.Where(p => updateRoleDto.PermissionIds.Contains(p.Id))
+					.ToListAsync();
+
+			foreach (var permission in permissions)
+			{
+				await context.RolePermissions.AddAsync(new RolePermission()
+				{
+					RoleId = role.Id,
+					PermissionId = permission.Id
+				});
+			}
 
 			var result = await roleManager.UpdateAsync(role);
 			await SaveChangesAsync();

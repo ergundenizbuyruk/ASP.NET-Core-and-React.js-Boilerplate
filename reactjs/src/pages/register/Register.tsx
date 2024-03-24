@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
 import { Password } from "primereact/password";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import accountService from "../../services/account/account.service";
-import { useAuth } from "../../utils/auth";
 import { CreateUserDto } from "../../services/account/account.dto";
-import { InputNumber } from "primereact/inputnumber";
 import FormikValueIsValid from "../../utils/FormikValueIsValid";
 import { useToast } from "../../utils/toast";
 
@@ -63,7 +60,7 @@ const RegisterPage = () => {
     },
     onSubmit: (values) => {
       accountService.Register(values).then((res) => {
-        if (res && res.result) {
+        if (!res?.result?.error) {
           toast.show(t("RegisterSuccessful"), "success");
           navigate("/login");
         }

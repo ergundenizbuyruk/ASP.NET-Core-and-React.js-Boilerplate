@@ -41,7 +41,7 @@ const NewEmailConfirmPage = () => {
     };
 
     accountService.ConfirmNewEmail(confirmNewEmailDto).then((res) => {
-      if (!res.error) {
+      if (res.result && !res.result?.error) {
         toast.show(t("EmailConfirmed"), "success");
         auth.removeUserFromStorage();
       }

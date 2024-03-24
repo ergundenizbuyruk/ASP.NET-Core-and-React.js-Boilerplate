@@ -19,7 +19,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     accountService.GetUserInformation().then((res) => {
-      if (res && res.result) {
+      if (res && res.result?.data) {
         formik.setFieldValue("firstName", res.result.data.firstName);
         formik.setFieldValue("lastName", res.result.data.lastName);
         formik.setFieldValue("phoneNumber", res.result.data.phoneNumber);
@@ -57,7 +57,7 @@ const ProfilePage = () => {
     },
     onSubmit: (values) => {
       accountService.UpdateProfile(values).then((res) => {
-        if (res && res.result) {
+        if (!res?.result?.error) {
           toast.show(t("UpdateProfileSuccessful"), "success");
           navigate("/app/homepage");
         }

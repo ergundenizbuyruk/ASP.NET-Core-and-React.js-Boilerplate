@@ -43,6 +43,7 @@ const Login = () => {
     onSubmit: (values) => {
       authService.CreateToken(values).then((res) => {
         if (res.result && !res.result.error) {
+          auth.removeUserFromStorage();
           auth.setToken(res.result.data, checked);
           navigate("/app/homepage", { replace: true });
         }
@@ -119,8 +120,9 @@ const Login = () => {
                 }
                 placeholder={t("Password")}
                 className="w-full"
-                inputClassName="w-full p-3 md:w-30rem"
+                toggleMask
                 feedback={false}
+                inputClassName="w-full p-3 md:w-30rem"
               ></Password>
               {formik.errors.password && (
                 <div className="p-error mt-3">{formik.errors.password}</div>
