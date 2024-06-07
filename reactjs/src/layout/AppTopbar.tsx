@@ -79,9 +79,6 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
       },
     },
     {
-      seperator: true,
-    },
-    {
       label: t("Logout"),
       icon: "pi pi-sign-out",
       command: () => {

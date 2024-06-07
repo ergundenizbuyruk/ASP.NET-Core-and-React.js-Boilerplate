@@ -28,9 +28,11 @@ namespace Pattern.Application.Services.Authentication
 
 		public async Task<ResponseDto<AccessTokenDto>> CreateTokenAsync(LoginDto loginDto)
 		{
-			var user = await userManager.FindByEmailAsync(loginDto.Email);
+            var user = await userManager.Users
+                .Where(p => p.UserName == loginDto.Email || p.Email == loginDto.Email)
+                .FirstOrDefaultAsync();
 
-			if (user == null)
+            if (user == null)
 			{
 				return ResponseDto<AccessTokenDto>.Fail("E-posta veya Parola hatalı", 400);
 			}

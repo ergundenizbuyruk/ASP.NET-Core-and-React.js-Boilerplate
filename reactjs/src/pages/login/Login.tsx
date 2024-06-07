@@ -91,12 +91,12 @@ const Login = () => {
                 htmlFor="email"
                 className="block text-900 text-xl font-medium mb-2"
               >
-                {t("Email")}
+                {"Kullanıcı Adı veya E-Posta Adresi"}
               </label>
               <InputText
                 id="email"
                 type="text"
-                placeholder={t("EmailAddress")}
+                placeholder={"Kullanıcı Adı veya E-Posta Adresi"}
                 className="w-full md:w-30rem"
                 value={formik.values.email}
                 onChange={(e) => formik.setFieldValue("email", e.target.value)}
@@ -112,21 +112,23 @@ const Login = () => {
               >
                 {t("Password")}
               </label>
-              <Password
-                inputId="password"
-                value={formik.values.password}
-                onChange={(e) =>
-                  formik.setFieldValue("password", e.target.value)
-                }
-                placeholder={t("Password")}
-                className="w-full"
-                toggleMask
-                feedback={false}
-                inputClassName="w-full p-3 md:w-30rem"
-              ></Password>
-              {formik.errors.password && (
-                <div className="p-error mt-3">{formik.errors.password}</div>
-              )}
+              <div className="login-password">
+                <Password
+                  inputId="password"
+                  value={formik.values.password}
+                  onChange={(e) =>
+                    formik.setFieldValue("password", e.target.value)
+                  }
+                  placeholder={t("Password")}
+                  className="w-full"
+                  toggleMask={true}
+                  feedback={false}
+                  inputClassName="w-full p-3 md:w-30rem"
+                ></Password>
+                {formik.errors.password && (
+                  <div className="p-error mt-3">{formik.errors.password}</div>
+                )}
+              </div>
 
               <div className="flex align-items-center justify-content-between mb-5 gap-5 mt-5">
                 <div className="flex align-items-center">
@@ -136,7 +138,9 @@ const Login = () => {
                     onChange={(e) => setChecked(e.checked ?? false)}
                     className="mr-2"
                   ></Checkbox>
-                  <label htmlFor="rememberme">{t("RememberMe")}</label>
+                  <label className="text-primary" htmlFor="rememberme">
+                    {t("RememberMe")}
+                  </label>
                 </div>
                 <Link
                   to="/forgot-password"

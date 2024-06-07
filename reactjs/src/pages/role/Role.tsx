@@ -192,6 +192,7 @@ const RolePage = () => {
           ref={dt}
           value={roleResponse?.result?.data || []}
           dataKey="id"
+          showGridlines
           paginator
           rows={10}
           rowsPerPageOptions={[10, 25, 50, 100]}
@@ -203,7 +204,13 @@ const RolePage = () => {
           globalFilterFields={["name"]}
           emptyMessage={t("NoRecordsFound")}
           header={header}
+          columnResizeMode="expand"
         >
+          <Column
+            body={actionBodyTemplate}
+            exportable={false}
+            style={{ width: "9rem" }}
+          ></Column>
           <Column field="name" header={t("Name")} sortable></Column>
           <Column
             field="permissions"
@@ -218,12 +225,6 @@ const RolePage = () => {
                 </span>
               );
             }}
-          ></Column>
-          <Column
-            body={actionBodyTemplate}
-            exportable={false}
-            className="flex justify-content-center"
-            style={{ minWidth: "9rem" }}
           ></Column>
         </DataTable>
       </div>

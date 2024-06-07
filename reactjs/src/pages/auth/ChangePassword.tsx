@@ -84,7 +84,7 @@ const ChangePasswordPage = () => {
               </div>
             </div>
 
-            <div>
+            <div className="login-password">
               <label
                 htmlFor="currentPassword"
                 className="block text-900 text-xl font-medium mb-2"
@@ -111,7 +111,9 @@ const ChangePasswordPage = () => {
                   {formik.errors.currentPassword}
                 </div>
               )}
+            </div>
 
+            <div className="login-password">
               <label
                 htmlFor="newPassword"
                 className="block text-900 text-xl font-medium mb-2 mt-3"
@@ -136,14 +138,14 @@ const ChangePasswordPage = () => {
               {FormikValueIsValid(formik, "newPassword") && (
                 <div className="p-error mt-2">{formik.errors.newPassword}</div>
               )}
+            </div>
 
-              <div className="w-full mt-5">
-                <Button
-                  label={t("ChangePassword")}
-                  className="w-full p-3 text-xl"
-                  type="submit"
-                ></Button>
-              </div>
+            <div className="w-full mt-5">
+              <Button
+                label={t("ChangePassword")}
+                className="w-full p-3 text-xl"
+                type="submit"
+              ></Button>
             </div>
           </div>
         </div>
