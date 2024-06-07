@@ -137,38 +137,38 @@ namespace Pattern.Persistence.Context
 			builder.Entity<District>().HasData(districts);
 		}
 
-		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-		{
-			Guid? userId = null;
-			var userIdStr = httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
-			if (userIdStr != null)
-			{
-				userId = Guid.Parse(userIdStr);
-			}
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            Guid? userId = null;
+            var userIdStr = httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userIdStr != null)
+            {
+                userId = Guid.Parse(userIdStr);
+            }
 
-			var insertedEntries = ChangeTracker.Entries().Where(x => x.State == EntityState.Added).Select(x => x.Entity);
-			foreach (var insertedEntry in insertedEntries)
-			{
-				var auditableEntity = insertedEntry as IFullAudited;
-				if (auditableEntity != null)
-				{
-					auditableEntity.CreationTime = DateTimeOffset.UtcNow;
-					auditableEntity.CreatorUserId = userId;
-				}
-			}
+            var insertedEntries = ChangeTracker.Entries().Where(x => x.State == EntityState.Added).Select(x => x.Entity);
+            foreach (var insertedEntry in insertedEntries)
+            {
+                var auditableEntity = insertedEntry as IFullAudited;
+                if (auditableEntity != null)
+                {
+                    auditableEntity.CreationTime = DateTimeOffset.UtcNow;
+                    auditableEntity.CreatorUserId = userId;
+                }
+            }
 
-			var modifiedEntries = ChangeTracker.Entries().Where(x => x.State == EntityState.Modified).Select(x => x.Entity);
-			foreach (var modifiedEntry in modifiedEntries)
-			{
-				var auditableEntity = modifiedEntry as IFullAudited;
-				if (auditableEntity != null)
-				{
-					auditableEntity.LastModificationTime = DateTimeOffset.UtcNow;
-					auditableEntity.LastModifierUserId = userId;
-				}
-			}
+            var modifiedEntries = ChangeTracker.Entries().Where(x => x.State == EntityState.Modified).Select(x => x.Entity);
+            foreach (var modifiedEntry in modifiedEntries)
+            {
+                var auditableEntity = modifiedEntry as IFullAudited;
+                if (auditableEntity != null)
+                {
+                    auditableEntity.LastModificationTime = DateTimeOffset.UtcNow;
+                    auditableEntity.LastModifierUserId = userId;
+                }
+            }
 
-			return base.SaveChangesAsync(cancellationToken);
-		}
-	}
+            return base.SaveChangesAsync(cancellationToken);
+        }
+    }
 }

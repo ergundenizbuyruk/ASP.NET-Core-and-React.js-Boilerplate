@@ -70,7 +70,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ToastContext.Provider value={value}>
-      <Toast ref={toast} position="bottom-right" />
+      <Toast ref={toast} position="top-right" />
       <ConfirmDialog />
       {children}
     </ToastContext.Provider>

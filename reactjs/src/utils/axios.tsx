@@ -132,7 +132,7 @@ export function AxiosProvider({ children }: { children: React.ReactNode }) {
           });
         } else if (error.response.status === 403) {
           auth.removeUserFromStorage();
-          navigate("/login", { replace: true });
+          navigate("/access-denied", { replace: true });
           return Promise.reject(error);
         } else if (
           error.response.status === 400 ||

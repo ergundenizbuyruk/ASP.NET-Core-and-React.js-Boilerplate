@@ -30,7 +30,6 @@ export const AddTrLocaleforPrimeReact = () => {
     choose: "Seç",
     upload: "Yükle",
     cancel: "Vazgeç",
-    completed: "Tamamlandı",
     pending: "Askıda",
     fileSizeTypes: ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
     dayNames: [
@@ -100,10 +99,6 @@ export const AddTrLocaleforPrimeReact = () => {
     strong: "Güçlü",
     passwordPrompt: "Parola Giriniz",
     emptyFilterMessage: "Kullanılabilir seçenek yok",
-    searchMessage: "{0} sonuç bulundu",
-    selectionMessage: "{0} öge seçildi",
-    emptySelectionMessage: "Öge seçilmedi",
-    emptySearchMessage: "Sonuç bulunmadı",
     emptyMessage: "Sonuç bulunamadı",
     aria: {
       trueLabel: "Doğru",
