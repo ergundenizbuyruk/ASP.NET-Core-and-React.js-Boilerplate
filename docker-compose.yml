@@ -1,0 +1,63 @@
+version: "3.7"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./aspnetcore/Dockerfile
+    image: pattern-api
+    container_name: pattern-api
+    restart: always
+    volumes:
+      - pattern-api-volume:/var/lib/api
+      # create certificate in your home directory with password <CREDENTIAL_PLACEHOLDER> and trust it
+      # dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p <CREDENTIAL_PLACEHOLDER>
+      # dotnet dev-certs https --trust
+      - ~/.aspnet/https:/https:ro 
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Pattern.123 #<CREDENTIAL_PLACEHOLDER>=Pattern.123
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - "ConnectionStrings:Default=server=db;database=PatternDb;user=root;password=Local.Pass123"
+      - TZ=Europe/Istanbul
+      - "FrontInformation:BaseUrl=front"
+      - "FrontInformation:EmailConfirmUrl=front/email-confirm"
+      - "FrontInformation:ChangeEmailConfirmUrl=front/change-email-confirm"
+      - "FrontInformation:PasswordResetUrl=front/reset-password"
+    ports:
+      - 8000:80
+      - 8001:443
+    depends_on:
+      - db
+
+  front:
+    build:
+      context: .
+      dockerfile: ./reactjs/Dockerfile
+    image: pattern-front
+    container_name: pattern-front
+    restart: always
+    environment:
+      - REACT_APP_BASE_URL=https://localhost:8001/api/
+      - WDS_SOCKET_PORT=0
+    ports:
+      - 8002:3000
+    depends_on:
+      - api
+
+  db:
+    image: mysql:8.0-debian
+    container_name: pattern-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Local.Pass123
+      TZ: Europe/Istanbul
+    ports:
+      - 3306:3306
+    volumes:
+      - pattern-db-volume:/var/lib/mysql
+
+volumes:
+  pattern-api-volume:
+  pattern-db-volume:
