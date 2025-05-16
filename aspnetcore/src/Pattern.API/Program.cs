@@ -1,3 +1,4 @@
+using System.Globalization;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,8 +23,11 @@ using Pattern.Core.Options;
 using Pattern.Persistence.Context;
 using System.Text;
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using NpgsqlTypes;
+using Pattern.API;
 using Serilog;
 using Serilog.Sinks.PostgreSQL;
 
@@ -148,6 +152,8 @@ builder.Services.Configure<FrontInformation>(builder.Configuration.GetSection("F
 builder.Services.AddRepositoriesForEntities(typeof(Entity).Assembly);
 builder.Services.AddServices(typeof(ApplicationService).Assembly);
 
+
+// Cors
 builder.Services
     .AddCors(options =>
         options.AddPolicy("MyPolicy", policyBuilder =>
@@ -160,6 +166,7 @@ builder.Services
         ));
 
 
+// Rate Limiting
 builder.Services.AddRateLimiter(options =>
 {
     options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
@@ -191,6 +198,8 @@ builder.Services.AddRateLimiter(options =>
     options.RejectionStatusCode = 429;
 });
 
+
+// Serilog
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
     .WriteTo.PostgreSQL(
@@ -202,9 +211,32 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
+// Localization
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddScoped<IResourceLocalizer, ResourceLocalizer>();
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+        new CultureInfo("en-US"),
+        new CultureInfo("tr-TR")
+    };
+
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+
+    options.RequestCultureProviders = new List<IRequestCultureProvider>
+    {
+        new AcceptLanguageHeaderRequestCultureProvider()
+    };
+});
+
 var app = builder.Build();
 
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+
+app.UseRequestLocalization();
 
 if (app.Environment.IsDevelopment())
 {

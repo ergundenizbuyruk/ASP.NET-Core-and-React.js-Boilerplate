@@ -9,8 +9,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="32496c39-1469-4e68-ac92-8114f7936973" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Pattern.API/Resources/SharedResource.en-US.resx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pattern.API/Resources/SharedResource.tr-TR.resx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pattern.API/SharedResource.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Pattern/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pattern.API/Controllers/RoleController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Controllers/RoleController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.API/Pattern.API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Pattern.API.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pattern.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Pattern.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Pattern.Core.csproj" afterDir="false" />
     </list>
@@ -26,6 +30,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7d81b2d4f22bee75e5438c707251ae43cb0974c207db91ffc159118c84b4eb9/ServiceProvider.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock:///Users/ergundenizbuyruk/Projects/dotnet/ASP.NET-Core-and-React.js-Boilerplate/aspnetcore/src/Pattern.Application/Services/Users/Mapper/UserMapper.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -91,7 +96,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1747394670064</updated>
-      <workItem from="1747394671160" duration="6812000" />
+      <workItem from="1747394671160" duration="11472000" />
     </task>
     <servers />
   </component>

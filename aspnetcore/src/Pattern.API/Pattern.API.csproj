@@ -20,4 +20,12 @@
     <ProjectReference Include="..\Pattern.Application\Pattern.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Resources\SharedResource.tr-TR.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Languages\" />
+  </ItemGroup>
+
 </Project>
