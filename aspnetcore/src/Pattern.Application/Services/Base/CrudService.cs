@@ -15,7 +15,9 @@ namespace Pattern.Application.Services.Base
         where TUpdateDto : IEntityDto<TPrimaryKey>
     {
         protected readonly IRepository<TEntity, TPrimaryKey> repository;
-        protected CrudService(IUnitOfWork unitOfWork, IMapper objectMapper, IRepository<TEntity, TPrimaryKey> repository) : base(unitOfWork, objectMapper)
+
+        protected CrudService(IUnitOfWork unitOfWork, IMapper objectMapper,
+            IRepository<TEntity, TPrimaryKey> repository) : base(unitOfWork, objectMapper)
         {
             this.repository = repository;
         }
@@ -72,7 +74,8 @@ namespace Pattern.Application.Services.Base
             return ResponseDto<TEntityDto>.Success(entityDto, 200);
         }
 
-        public virtual async Task<ResponseDto<List<TEntityDto>>> GetAllAsync(int? pageNumber = null, int? pageSize = null)
+        public virtual async Task<ResponseDto<List<TEntityDto>>> GetAllAsync(int? pageNumber = null,
+            int? pageSize = null)
         {
             var entities = await repository.GetAllAsync(pageNumber, pageSize);
 

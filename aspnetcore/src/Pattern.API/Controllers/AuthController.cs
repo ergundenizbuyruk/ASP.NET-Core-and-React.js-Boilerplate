@@ -4,7 +4,7 @@ using Pattern.Application.Services.Authentication.Dtos;
 
 namespace Pattern.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthController : BaseController
     {
@@ -15,7 +15,7 @@ namespace Pattern.API.Controllers
             _authenticationService = authenticationService;
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> CreateToken(LoginDto loginDto)
         {
             var result = await _authenticationService.CreateTokenAsync(loginDto);
@@ -23,14 +23,14 @@ namespace Pattern.API.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpDelete("revoke")]
         public async Task<IActionResult> RevokeRefreshToken(RefreshTokenDto refreshTokenDto)
         {
             var result = await _authenticationService.RevokeRefreshTokenAsync(refreshTokenDto);
             return ActionResultInstance(result);
         }
 
-        [HttpPost]
+        [HttpPost("refresh")]
         public async Task<IActionResult> CreateTokenByRefreshToken(RefreshTokenDto refreshTokenDto)
 
         {

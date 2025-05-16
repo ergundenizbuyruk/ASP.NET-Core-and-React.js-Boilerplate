@@ -6,7 +6,7 @@ namespace Pattern.API.Filters
 {
     public class ValidateFilterAttribute : ActionFilterAttribute
     {
-        override public void OnActionExecuting(ActionExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (!context.ModelState.IsValid)
             {

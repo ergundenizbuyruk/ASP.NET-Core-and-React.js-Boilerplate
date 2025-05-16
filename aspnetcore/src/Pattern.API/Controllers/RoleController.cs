@@ -6,7 +6,7 @@ using Pattern.Core.Enums;
 
 namespace Pattern.API.Controllers
 {
-	[Route("api/[controller]/[action]")]
+	[Route("api/[controller]")]
 	[ApiController]
 	public class RoleController : BaseController
 	{
@@ -57,7 +57,7 @@ namespace Pattern.API.Controllers
 			return ActionResultInstance(result);
 		}
 
-		[HttpGet]
+		[HttpGet("permissions")]
 		[HasPermissions]
 		public async Task<IActionResult> GetAllPermissions()
 		{

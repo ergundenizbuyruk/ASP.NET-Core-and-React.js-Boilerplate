@@ -25,6 +25,5 @@ namespace Pattern.Core.Authentication
             context.Succeed(requirement);
             return Task.CompletedTask;
         }
-
     }
 }

@@ -3,19 +3,16 @@ using Microsoft.Extensions.Options;
 
 namespace Pattern.Core.Authentication
 {
-    public class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
+    public class PermissionAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options)
+        : DefaultAuthorizationPolicyProvider(options)
     {
-        public PermissionAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options) : base(options)
-        {
-        }
-
-        override public Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
+        public override Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
         {
             var policy = new AuthorizationPolicyBuilder()
                 .AddRequirements(new PermissionRequirement(policyName.Split(",")))
                 .Build();
 
-            return Task.FromResult(policy);
+            return Task.FromResult(policy)!;
         }
     }
 }

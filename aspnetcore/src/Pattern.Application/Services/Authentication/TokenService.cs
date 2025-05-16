@@ -8,7 +8,6 @@ using Pattern.Application.Services.Base;
 using Pattern.Core.Authentication;
 using Pattern.Core.Entites.Authentication;
 using Pattern.Core.Options;
-using Pattern.Persistence.Repositories;
 using Pattern.Persistence.UnitOfWork;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,88 +16,81 @@ using System.Text;
 
 namespace Pattern.Application.Services.Authentication
 {
-	public class TokenService : ApplicationService, ITokenService
-	{
-		private readonly UserManager<User> userManager;
-		private readonly RoleManager<Role> roleManager;
-		private readonly CustomTokenOption tokenOption;
+    public class TokenService(
+        IUnitOfWork unitOfWork,
+        IMapper objectMapper,
+        UserManager<User> userManager,
+        RoleManager<Role> roleManager,
+        IOptions<CustomTokenOption> tokenOption)
+        : ApplicationService(unitOfWork, objectMapper), ITokenService
+    {
+        private readonly CustomTokenOption tokenOption = tokenOption.Value;
 
-		public TokenService(
-			IUnitOfWork unitOfWork,
-			IMapper objectMapper,
-			UserManager<User> userManager,
-			RoleManager<Role> roleManager,
-			IOptions<CustomTokenOption> tokenOption
-			) : base(unitOfWork, objectMapper)
-		{
-			this.userManager = userManager;
-			this.roleManager = roleManager;
-			this.tokenOption = tokenOption.Value;
-		}
+        public async Task<AccessTokenDto> CreateTokenAsync(User userApp)
+        {
+            var accessTokenExpiration = DateTimeOffset.UtcNow.AddMinutes(tokenOption.AccessTokenExpiration);
+            var refreshTokenExpiration = DateTimeOffset.UtcNow.AddMinutes(tokenOption.RefreshTokenExpiration);
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOption.SecurityKey));
 
-		public string CreateRefreshToken()
-		{
-			var numberByte = new byte[32];
-			using var rnd = RandomNumberGenerator.Create();
-			rnd.GetBytes(numberByte);
-			return Convert.ToBase64String(numberByte);
-		}
+            SigningCredentials signingCredentials =
+                new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
-		private async Task<IEnumerable<Claim>> GetClaims(User user)
-		{
-			var userClaimList = new List<Claim>
-			{
-				new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-				new Claim(JwtRegisteredClaimNames.Email, user.Email),
-				new Claim(ClaimTypes.Name, user.UserName),
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-			};
+            JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
+                issuer: tokenOption.Issuer,
+                audience: tokenOption.Audience,
+                expires: accessTokenExpiration.UtcDateTime,
+                notBefore: DateTimeOffset.UtcNow.UtcDateTime,
+                claims: await GetClaims(userApp),
+                signingCredentials: signingCredentials);
 
-			var roles = await userManager.GetRolesAsync(user);
-			//userClaimList.AddRange(roles.Select(x => new Claim(ClaimTypes.Role, x)));
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.WriteToken(jwtSecurityToken);
+            var tokenDto = new AccessTokenDto
+            {
+                AccessToken = token,
+                RefreshToken = CreateRefreshToken(),
+                AccessTokenExpiration = accessTokenExpiration,
+                RefreshTokenExpiration = refreshTokenExpiration
+            };
 
-			if (!roles.Any())
-			{
-				return userClaimList;
-			}
+            return tokenDto;
+        }
 
-			var permissions = await roleManager.Roles
-				.Include(p => p.Permissions)
-				.Where(p => roles.Contains(p.Name))
-				.SelectMany(p => p.Permissions)
-				.Distinct()
-				.ToListAsync();
+        private string CreateRefreshToken()
+        {
+            var numberByte = new byte[32];
+            using var rnd = RandomNumberGenerator.Create();
+            rnd.GetBytes(numberByte);
+            return Convert.ToBase64String(numberByte);
+        }
 
-			userClaimList.AddRange(permissions.Select(x => new Claim(CustomClaims.Permissions, x.Name)));
-			return userClaimList;
-		}
-		public async Task<AccessTokenDto> CreateTokenAsync(User userApp)
-		{
-			var accessTokenExpiration = DateTimeOffset.UtcNow.AddMinutes(tokenOption.AccessTokenExpiration);
-			var refreshTokenExpiration = DateTimeOffset.UtcNow.AddMinutes(tokenOption.RefreshTokenExpiration);
-			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOption.SecurityKey));
+        private async Task<IEnumerable<Claim>> GetClaims(User user)
+        {
+            var userClaimList = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(JwtRegisteredClaimNames.Email, user.Email),
+                new(ClaimTypes.Name, user.UserName),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
 
-			SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+            var roles = await userManager.GetRolesAsync(user);
 
-			JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
-				issuer: tokenOption.Issuer,
-				audience: tokenOption.Audience,
-				expires: accessTokenExpiration.UtcDateTime,
-				 notBefore: DateTimeOffset.UtcNow.UtcDateTime,
-				 claims: await GetClaims(userApp),
-				 signingCredentials: signingCredentials);
+            if (!roles.Any())
+            {
+                return userClaimList;
+            }
 
-			var handler = new JwtSecurityTokenHandler();
-			var token = handler.WriteToken(jwtSecurityToken);
-			var tokenDto = new AccessTokenDto
-			{
-				AccessToken = token,
-				RefreshToken = CreateRefreshToken(),
-				AccessTokenExpiration = accessTokenExpiration,
-				RefreshTokenExpiration = refreshTokenExpiration
-			};
+            var permissions = await roleManager.Roles
+                .Include(p => p.Permissions)
+                .Where(p => roles.Contains(p.Name))
+                .SelectMany(p => p.Permissions)
+                .Distinct()
+                .ToListAsync();
 
-			return tokenDto;
-		}
-	}
+            userClaimList.AddRange(permissions.Select(x =>
+                new Claim(CustomClaims.Permissions, x.Id.ToString())));
+            return userClaimList;
+        }
+    }
 }

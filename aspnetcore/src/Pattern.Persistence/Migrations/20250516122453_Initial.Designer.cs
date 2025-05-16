@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pattern.Persistence.Context;
 
 #nullable disable
@@ -11,7 +12,7 @@ using Pattern.Persistence.Context;
 namespace Pattern.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240302195820_Initial")]
+    [Migration("20250516122453_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,22 +21,26 @@ namespace Pattern.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -48,16 +53,18 @@ namespace Pattern.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -69,16 +76,16 @@ namespace Pattern.Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -90,10 +97,10 @@ namespace Pattern.Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -104,24 +111,24 @@ namespace Pattern.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("4ac09546-bc32-4332-97cb-6430c44a96fa"),
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20")
+                            UserId = new Guid("b8c4f733-8811-47dc-83f1-6a88d3edf782"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5")
                         });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -132,15 +139,17 @@ namespace Pattern.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permissions");
+                    b.ToTable("Permissions", (string)null);
 
                     b.HasData(
                         new
@@ -214,40 +223,40 @@ namespace Pattern.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("CreationTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset?>("DeletionTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LastModificationTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -260,8 +269,8 @@ namespace Pattern.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
-                            ConcurrencyStamp = "0fd46325-86aa-48a1-8051-128d1367d521",
+                            Id = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
+                            ConcurrencyStamp = "0043caf9-939f-431b-8c7c-885a451c41e2",
                             CreationTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             IsDeleted = false,
                             Name = "Admin",
@@ -272,81 +281,81 @@ namespace Pattern.Persistence.Migrations
             modelBuilder.Entity("Pattern.Core.Entites.Authentication.RolePermission", b =>
                 {
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("PermissionId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("RoleId", "PermissionId");
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("RolePermissions");
+                    b.ToTable("RolePermissions", (string)null);
 
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 1
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 2
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 3
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 4
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 5
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 6
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 7
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 8
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 9
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 10
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 11
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 12
                         },
                         new
                         {
-                            RoleId = new Guid("2263ca34-1e71-405d-942e-fbc91d35be20"),
+                            RoleId = new Guid("3382e069-ec63-48c6-bf92-c76987d43fc5"),
                             PermissionId = 13
                         });
                 });
@@ -355,86 +364,86 @@ namespace Pattern.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("CreationTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset?>("DeletionTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LastModificationTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -450,9 +459,9 @@ namespace Pattern.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4ac09546-bc32-4332-97cb-6430c44a96fa"),
+                            Id = new Guid("b8c4f733-8811-47dc-83f1-6a88d3edf782"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "79236e84-3ef8-4e30-9eb6-70d09c92d07e",
+                            ConcurrencyStamp = "c2e96e54-6a11-4aba-a899-67160fbebdae",
                             CreationTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
@@ -461,11 +470,11 @@ namespace Pattern.Persistence.Migrations
                             IsDeleted = false,
                             LastName = "Admin",
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMİN@ADMİN.COM",
+                            NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPZP1oOChk6E7ERU73wzZ8QitrzCah0tHLSJzLrNoL0vDL/RZ2U/JqGq3BIUjn0hUA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKbcPpIrFuX+G69GogAX6Caisc0GGujyFAuV6mkOF1adKoRHHmT0R94NHsq1MW/fXA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bf5de7f2-98a5-433b-9e68-245156929015",
+                            SecurityStamp = "9b92a510-afcb-452e-93d6-bc817f9fe2e3",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -475,35 +484,41 @@ namespace Pattern.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("Expiration")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserRefreshTokens");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("Pattern.Core.Entites.District", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DistrictText")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("ProvinceId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -6524,18 +6539,20 @@ namespace Pattern.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AreaCode")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("Plaka")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ProvinceText")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -7181,6 +7198,17 @@ namespace Pattern.Persistence.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("Pattern.Core.Entites.Authentication.UserRefreshToken", b =>
+                {
+                    b.HasOne("Pattern.Core.Entites.Authentication.User", "User")
+                        .WithMany("UserRefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Pattern.Core.Entites.District", b =>
                 {
                     b.HasOne("Pattern.Core.Entites.Province", "Province")
@@ -7190,6 +7218,11 @@ namespace Pattern.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Province");
+                });
+
+            modelBuilder.Entity("Pattern.Core.Entites.Authentication.User", b =>
+                {
+                    b.Navigation("UserRefreshTokens");
                 });
 
             modelBuilder.Entity("Pattern.Core.Entites.Province", b =>

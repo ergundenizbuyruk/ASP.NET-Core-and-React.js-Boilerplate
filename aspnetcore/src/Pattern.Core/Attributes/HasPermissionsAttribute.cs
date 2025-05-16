@@ -3,14 +3,9 @@ using Pattern.Core.Enums;
 
 namespace Pattern.Core.Attributes
 {
-    public sealed class HasPermissionsAttribute : AuthorizeAttribute
+    public sealed class HasPermissionsAttribute(params Permission[] permissions)
+        : AuthorizeAttribute(policy: string.Join(",", permissions.Select(p => (int)p)))
     {
-        public Permission[] Permissions { get; set; }
-
-        public HasPermissionsAttribute(params Permission[] permissions)
-            : base(policy: string.Join(",", permissions))
-        {
-            Permissions = permissions;
-        }
+        public Permission[] Permissions { get; set; } = permissions;
     }
 }

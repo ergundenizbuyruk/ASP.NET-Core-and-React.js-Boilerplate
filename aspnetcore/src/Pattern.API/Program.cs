@@ -21,13 +21,12 @@ using Pattern.Core.Localization;
 using Pattern.Core.Options;
 using Pattern.Persistence.Context;
 using System.Text;
+using System.Threading.RateLimiting;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add<ValidateFilterAttribute>();
-});
+builder.Services.AddControllers(options => { options.Filters.Add<ValidateFilterAttribute>(); });
 
 builder.Services
     .AddFluentValidationAutoValidation()
@@ -56,34 +55,31 @@ builder.Services.AddSwaggerGen(opt =>
             {
                 Reference = new OpenApiReference
                 {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
                 }
             },
-            new string[]{}
+            []
         }
     });
 });
 
 builder.Services.AddAutoMapper(typeof(UserMapper));
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-});
+builder.Services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 
 builder.Services.AddIdentity<User, Role>(options =>
-{
-    options.User.RequireUniqueEmail = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequiredLength = 8;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireDigit = true;
-    options.SignIn.RequireConfirmedPhoneNumber = false;
-    options.SignIn.RequireConfirmedEmail = false;
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-    options.Lockout.MaxFailedAccessAttempts = 5;
-})
+    {
+        options.User.RequireUniqueEmail = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireDigit = true;
+        options.SignIn.RequireConfirmedPhoneNumber = false;
+        options.SignIn.RequireConfirmedEmail = false;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+        options.Lockout.MaxFailedAccessAttempts = 5;
+    })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
     .AddErrorDescriber<LocalizationIdentityErrorDescriber>();
@@ -97,7 +93,7 @@ builder.Services.AddAuthentication(options =>
     var tokenOptions = builder.Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
     opts.TokenValidationParameters = new TokenValidationParameters()
     {
-        ValidIssuer = tokenOptions.Issuer,
+        ValidIssuer = tokenOptions!.Issuer,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey)),
         ValidateIssuerSigningKey = true,
         ValidateAudience = true,
@@ -112,6 +108,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
+// Microsoft Sql Server
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //{
 //	options
@@ -119,18 +116,28 @@ builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizat
 //	.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 //});
 
-builder.Services.AddHttpContextAccessor();
 
-string mySqlConnectionStr = builder.Configuration.GetConnectionString("Default")!;
-builder.Services.AddDbContext<ApplicationDbContext>(u => u
-    .UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr),
-        options => options.EnableRetryOnFailure(
-            maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(30),
-            errorNumbersToAdd: null
-        ))
-    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-);
+// MySql
+// string mySqlConnectionStr = builder.Configuration.GetConnectionString("Default")!;
+// builder.Services.AddDbContext<ApplicationDbContext>(u => u
+//     .UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr),
+//         options => options.EnableRetryOnFailure(
+//             maxRetryCount: 5,
+//             maxRetryDelay: TimeSpan.FromSeconds(30),
+//             errorNumbersToAdd: null
+//         ))
+//     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+// );
+
+// PostgreSql
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options
+        .UseNpgsql(builder.Configuration.GetConnectionString("Default"))
+        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+});
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("TokenOption"));
 builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
@@ -138,19 +145,52 @@ builder.Services.Configure<FrontInformation>(builder.Configuration.GetSection("F
 builder.Services.AddRepositoriesForEntities(typeof(Entity).Assembly);
 builder.Services.AddServices(typeof(ApplicationService).Assembly);
 
-builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-{
-    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-}));
+builder.Services
+    .AddCors(options =>
+        options.AddPolicy("MyPolicy", policyBuilder =>
+            policyBuilder
+                .WithOrigins("http://localhost:3000")
+                .SetIsOriginAllowedToAllowWildcardSubdomains()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+        ));
 
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+    {
+        if (context.User.Identity is { IsAuthenticated: true })
+        {
+            var userId = context.User.Identity.Name ?? "unknownUser";
+            return RateLimitPartition.GetFixedWindowLimiter(userId, _ =>
+                new FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = 100,
+                    Window = TimeSpan.FromMinutes(1),
+                    QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                    QueueLimit = 3
+                });
+        }
+
+        var ipAddress = context.Connection.RemoteIpAddress?.ToString() ?? "unknownIP";
+        return RateLimitPartition.GetFixedWindowLimiter(ipAddress, _ =>
+            new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 50,
+                Window = TimeSpan.FromMinutes(1),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 3
+            });
+    });
+
+    options.RejectionStatusCode = 429;
+});
 
 var app = builder.Build();
 
-app.UseCors(builder =>
-        builder
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
@@ -160,11 +200,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseGlobalExceptionHandler();
+app.UseRouting();
+
+app.UseCors("MyPolicy");
 
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseRateLimiter();
 
 app.MapControllers();
 

@@ -1,7 +1,4 @@
 ﻿namespace Pattern.Core.Exceptions
 {
-	public class EntityNotFoundException : Exception
-	{
-		public EntityNotFoundException(string entityName) : base(entityName + " not found.") { }
-	}
+    public class EntityNotFoundException(string entityName) : Exception(entityName + " not found.");
 }

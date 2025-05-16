@@ -3,25 +3,18 @@ using Pattern.Persistence.UnitOfWork;
 
 namespace Pattern.Application.Services.Base
 {
-	public abstract class BaseService : IBaseService
-	{
-		private readonly IUnitOfWork unitOfWork;
-		protected IMapper ObjectMapper { get; private set; }
+    public abstract class BaseService(IUnitOfWork unitOfWork, IMapper objectMapper) : IBaseService
+    {
+        protected IMapper ObjectMapper { get; private set; } = objectMapper;
 
-		public BaseService(IUnitOfWork unitOfWork, IMapper objectMapper)
-		{
-			this.unitOfWork = unitOfWork;
-			ObjectMapper = objectMapper;
-		}
+        public async Task SaveChangesAsync()
+        {
+            await unitOfWork.SaveChangesAsync();
+        }
 
-		public async Task SaveChangesAsync()
-		{
-			await unitOfWork.SaveChangesAsync();
-		}
-
-		public void SaveChanges()
-		{
-			unitOfWork.SaveChanges();
-		}
-	}
+        public void SaveChanges()
+        {
+            unitOfWork.SaveChanges();
+        }
+    }
 }
