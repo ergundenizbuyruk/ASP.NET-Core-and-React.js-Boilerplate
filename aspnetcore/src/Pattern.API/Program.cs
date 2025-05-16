@@ -23,6 +23,9 @@ using Pattern.Persistence.Context;
 using System.Text;
 using System.Threading.RateLimiting;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using NpgsqlTypes;
+using Serilog;
+using Serilog.Sinks.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -187,6 +190,17 @@ builder.Services.AddRateLimiter(options =>
 
     options.RejectionStatusCode = 429;
 });
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.PostgreSQL(
+        connectionString: builder.Configuration.GetConnectionString("Default"),
+        tableName: "logs",
+        needAutoCreateTable: true)
+    .MinimumLevel.Warning()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 

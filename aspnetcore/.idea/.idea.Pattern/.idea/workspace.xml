@@ -9,41 +9,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="32496c39-1469-4e68-ac92-8114f7936973" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Pattern/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Pattern/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Pattern/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Pattern.API/Middlewares/GlobalExceptionHandlerMiddleware.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.API/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Controllers/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Pattern/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pattern.API/Controllers/RoleController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Controllers/RoleController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.API/Filters/ValidateFilterAttribute.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Filters/ValidateFilterAttribute.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.API/Middlewares/UseCustomGlobalExceptionHandler.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pattern.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.API/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/AuthenticationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/AuthenticationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/IAuthenticationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/IAuthenticationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/ITokenService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/ITokenService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/TokenService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/TokenService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/ApplicationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/ApplicationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/BaseService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/BaseService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/CrudService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/CrudService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/IApplicationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/IApplicationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/IBaseService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/IBaseService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/ICrudService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/ICrudService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Attributes/HasPermissionsAttribute.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Attributes/HasPermissionsAttribute.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Authentication/PermissionAuthorizationHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Authentication/PermissionAuthorizationHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Authentication/PermissionAuthorizationPolicyProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Authentication/PermissionAuthorizationPolicyProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Authentication/PermissionRequirement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Authentication/PermissionRequirement.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Entites/Authentication/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Entites/Authentication/User.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Entites/Authentication/UserRefreshToken.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Entites/Authentication/UserRefreshToken.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Exceptions/EntityNotFoundException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Exceptions/EntityNotFoundException.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Pattern.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Pattern.Core.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Responses/ErrorDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Responses/ErrorDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Responses/ResponseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Responses/ResponseDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Persistence/Context/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Persistence/Context/ApplicationDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Persistence/Migrations/20240302195820_Initial.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Persistence/Migrations/20240302195820_Initial.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Persistence/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pattern.Persistence/Pattern.Persistence.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Persistence/Pattern.Persistence.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +91,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1747394670064</updated>
-      <workItem from="1747394671160" duration="4723000" />
+      <workItem from="1747394671160" duration="6812000" />
     </task>
     <servers />
   </component>
