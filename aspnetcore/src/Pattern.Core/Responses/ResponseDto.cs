@@ -2,54 +2,49 @@
 
 namespace Pattern.Core.Responses
 {
-    public class ResponseDto<T>
+    public class ResponseDto
     {
         private ResponseDto()
         {
         }
 
-        public T Data { get; private set; }
+        public object? Data { get; private set; }
         public int StatusCode { get; private set; }
-        [JsonIgnore] public bool IsSuccessful { get; private set; }
         public ErrorDto Error { get; private set; }
 
-        public static ResponseDto<T> Success(T data, int statusCode)
+        public static ResponseDto Success(object? data = null, int statusCode = 200)
         {
-            return new ResponseDto<T>
+            return new ResponseDto
             {
                 Data = data,
-                StatusCode = statusCode,
-                IsSuccessful = true
+                StatusCode = statusCode
             };
         }
 
-        public static ResponseDto<T> Success(int statusCode)
+        public static ResponseDto Success(int statusCode)
         {
-            return new ResponseDto<T>
+            return new ResponseDto
             {
-                Data = default,
-                StatusCode = statusCode,
-                IsSuccessful = true
+                Data = null,
+                StatusCode = statusCode
             };
         }
 
-        public static ResponseDto<T> Fail(ErrorDto errorDto, int statusCode)
+        public static ResponseDto Fail(ErrorDto errorDto, int statusCode)
         {
-            return new ResponseDto<T>
+            return new ResponseDto
             {
                 Error = errorDto,
-                StatusCode = statusCode,
-                IsSuccessful = false
+                StatusCode = statusCode
             };
         }
 
-        public static ResponseDto<T> Fail(string errorMessage, int statusCode, bool isShow = true)
+        public static ResponseDto Fail(string errorMessage, int statusCode, bool isShow = true)
         {
-            return new ResponseDto<T>
+            return new ResponseDto
             {
                 Error = new ErrorDto(errorMessage, isShow),
-                StatusCode = statusCode,
-                IsSuccessful = false
+                StatusCode = statusCode
             };
         }
     }

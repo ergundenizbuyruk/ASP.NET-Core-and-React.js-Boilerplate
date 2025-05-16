@@ -6,12 +6,12 @@ namespace Pattern.Application.Services.Roles
 {
 	public interface IRoleService : IApplicationService
 	{
-		public Task<ResponseDto<RoleDto>> CreateRoleAsync(CreateRoleDto createRoleDto);
-		public Task<ResponseDto<RoleDto>> UpdateRoleAsync(UpdateRoleDto updateRoleDto);
-		public Task<ResponseDto<RoleDto>> GetRoleByIdAsync(Guid id);
-		public Task<ResponseDto<List<RoleDto>>> GetRolesAsync();
-		public Task<ResponseDto<NoContentDto>> DeleteRoleAsync(Guid id);
-		public Task<ResponseDto<List<PermissionDto>>> GetAllPermissionsAsync();
+		public Task<RoleDto> CreateRoleAsync(CreateRoleDto createRoleDto);
+		public Task<RoleDto> UpdateRoleAsync(UpdateRoleDto updateRoleDto);
+		public Task<RoleDto> GetRoleByIdAsync(Guid id);
+		public Task<List<RoleDto>> GetRolesAsync();
+		public Task DeleteRoleAsync(Guid id);
+		public Task<List<PermissionDto>> GetAllPermissionsAsync();
 
 	}
 }

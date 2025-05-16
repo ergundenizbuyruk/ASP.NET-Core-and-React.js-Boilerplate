@@ -3,11 +3,11 @@
     public class ErrorDto
     {
         public List<string> Errors { get; private set; }
-        public bool IsShow { get; set; }
+        public bool IsShow { get; private set; }
 
         public ErrorDto(string error, bool isShow = true)
         {
-            Errors = new List<string>() { error };
+            Errors = [error];
             IsShow = isShow;
         }
 

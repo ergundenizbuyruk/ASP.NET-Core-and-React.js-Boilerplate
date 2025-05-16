@@ -11,10 +11,10 @@ namespace Pattern.API.Filters
             if (!context.ModelState.IsValid)
             {
                 var errors = context.ModelState.Values
-                    .SelectMany(x => x.Errors.Select(x => x.ErrorMessage)).ToList();
+                    .SelectMany(x => x.Errors.Select(error => error.ErrorMessage)).ToList();
 
                 context.Result = new BadRequestObjectResult(
-                    ResponseDto<NoContentDto>.Fail(new ErrorDto(errors), 400));
+                    ResponseDto.Fail(new ErrorDto(errors), 400));
             }
         }
     }

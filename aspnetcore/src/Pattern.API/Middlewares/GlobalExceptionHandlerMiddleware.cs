@@ -22,13 +22,16 @@ namespace Pattern.API.Middlewares
 
                 var exceptionResponseModel = exception switch
                 {
-                    EntityNotFoundException => new ExceptionResponseModel(404, exception.Message),
+                    BadRequestException => new ExceptionResponseModel(400, exception.Message),
+                    NotFoundException => new ExceptionResponseModel(404, exception.Message),
+                    UserIsLockedOutException => new ExceptionResponseModel(400, exception.Message),
+                    UserIsNotActiveException => new ExceptionResponseModel(400, exception.Message),
+                    UserNotVerifiedException => new ExceptionResponseModel(400, exception.Message),
                     _ => new ExceptionResponseModel(500, "Bir hata oluştu."),
                 };
 
                 context.Response.StatusCode = exceptionResponseModel.StatusCode;
-                var response =
-                    ResponseDto<NoContentDto>.Fail(exceptionResponseModel.Message, exceptionResponseModel.StatusCode);
+                var response = ResponseDto.Fail(exceptionResponseModel.Message, exceptionResponseModel.StatusCode);
                 await context.Response.WriteAsJsonAsync(response);
             }
         }

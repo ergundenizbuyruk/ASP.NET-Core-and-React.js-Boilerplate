@@ -9,14 +9,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="32496c39-1469-4e68-ac92-8114f7936973" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Pattern.API/Resources/SharedResource.en-US.resx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Pattern.API/Resources/SharedResource.tr-TR.resx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Pattern.API/SharedResource.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pattern.Core/Exceptions/BadRequestException.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pattern.Core/Exceptions/NotFoundException.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pattern.Core/Exceptions/UserIsLockedOutException.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pattern.Core/Exceptions/UserIsNotActiveException.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pattern.Core/Exceptions/UserNotVerifiedException.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pattern.Core/SharedResource.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Pattern/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Pattern/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.API/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Controllers/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.API/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Controllers/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.API/Controllers/BaseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Controllers/BaseController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pattern.API/Controllers/RoleController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Controllers/RoleController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.API/Filters/ValidateFilterAttribute.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Filters/ValidateFilterAttribute.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.API/Middlewares/GlobalExceptionHandlerMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Middlewares/GlobalExceptionHandlerMiddleware.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pattern.API/Pattern.API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Pattern.API.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pattern.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.API/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.API/Resources/SharedResource.en-US.resx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Resources/SharedResource.en-US.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.API/Resources/SharedResource.tr-TR.resx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Resources/SharedResource.tr-TR.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.API/SharedResource.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/AuthenticationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/AuthenticationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/IAuthenticationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Authentication/IAuthenticationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/CrudService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/CrudService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/ICrudService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Base/ICrudService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Roles/IRoleService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Roles/IRoleService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Roles/RoleService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Roles/RoleService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Users/IUserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Users/IUserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.Application/Services/Users/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Application/Services/Users/UserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Exceptions/EntityNotFoundException.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Pattern.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Pattern.Core.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Responses/ErrorDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Responses/ErrorDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pattern.Core/Responses/ResponseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pattern.Core/Responses/ResponseDto.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,28 +56,31 @@
     <setting file="mock:///Users/ergundenizbuyruk/Projects/dotnet/ASP.NET-Core-and-React.js-Boilerplate/aspnetcore/src/Pattern.Application/Services/Users/Mapper/UserMapper.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2xAxRLabXACPSqgZnW5YQfnZhtG" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.Pattern.API: https.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.Pattern.API: https.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Pattern.API: https">
     <configuration name="Pattern.API: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/src/Pattern.API/Pattern.API.csproj" />
@@ -96,7 +121,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1747394670064</updated>
-      <workItem from="1747394671160" duration="11472000" />
+      <workItem from="1747394671160" duration="14047000" />
+      <workItem from="1747416910089" duration="473000" />
     </task>
     <servers />
   </component>

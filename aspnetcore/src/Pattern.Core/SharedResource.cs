@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.Extensions.Localization;
 
-namespace Pattern.API;
+namespace Pattern.Core;
 
 public class SharedResource
 {

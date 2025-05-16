@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pattern.Core.Responses;
 
-namespace Pattern.API.Controllers
+namespace Pattern.API.Controllers;
+
+public class BaseController : ControllerBase
 {
-    public class BaseController : ControllerBase
+    protected IActionResult Success(object? response = null, int statusCode = 200)
     {
-        protected IActionResult ActionResultInstance<T>(ResponseDto<T> response) where T : class
+        var res = ResponseDto.Success(response, statusCode);
+
+        return new ObjectResult(res)
         {
-            return new ObjectResult(response)
-            {
-                StatusCode = response.StatusCode,
-            };
-        }
+            StatusCode = res.StatusCode,
+        };
     }
 }

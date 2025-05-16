@@ -24,12 +24,8 @@ using Pattern.Persistence.Context;
 using System.Text;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Options;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
-using NpgsqlTypes;
-using Pattern.API;
+using Pattern.Core;
 using Serilog;
-using Serilog.Sinks.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 

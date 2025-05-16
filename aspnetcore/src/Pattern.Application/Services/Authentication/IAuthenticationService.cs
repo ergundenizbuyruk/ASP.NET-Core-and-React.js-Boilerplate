@@ -6,10 +6,10 @@ namespace Pattern.Application.Services.Authentication
 {
     public interface IAuthenticationService : IApplicationService
     {
-        Task<ResponseDto<AccessTokenDto>> CreateTokenAsync(LoginDto loginDto);
+        Task<AccessTokenDto> CreateTokenAsync(LoginDto loginDto);
 
-        Task<ResponseDto<AccessTokenDto>> CreateTokenByRefreshTokenAsync(RefreshTokenDto refreshToken);
+        Task<AccessTokenDto> CreateTokenByRefreshTokenAsync(RefreshTokenDto refreshToken);
 
-        Task<ResponseDto<NoContentDto>> RevokeRefreshTokenAsync(RefreshTokenDto refreshToken);
+        Task RevokeRefreshTokenAsync(RefreshTokenDto refreshToken);
     }
 }

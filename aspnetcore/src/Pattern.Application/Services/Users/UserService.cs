@@ -5,201 +5,187 @@ using Pattern.Application.Services.Base;
 using Pattern.Application.Services.Emails;
 using Pattern.Application.Services.Users.Dtos;
 using Pattern.Core.Entites.Authentication;
-using Pattern.Core.Responses;
+using Pattern.Core.Exceptions;
 using Pattern.Persistence.UnitOfWork;
-using System.Web;
 
-namespace Pattern.Application.Services.Users
+namespace Pattern.Application.Services.Users;
+
+public class UserService(
+    IUnitOfWork unitOfWork,
+    IMapper objectMapper,
+    UserManager<User> userManager,
+    IEmailService emailService)
+    : ApplicationService(unitOfWork, objectMapper), IUserService
 {
-    public class UserService : ApplicationService, IUserService
+    private readonly IEmailService emailService = emailService;
+
+    public async Task<UserDto> GetUserByIdAsync(Guid userId)
     {
-        private readonly UserManager<User> userManager;
-        private readonly IEmailService emailService;
-
-        public UserService(IUnitOfWork unitOfWork, IMapper objectMapper, UserManager<User> userManager,
-            IEmailService emailService) : base(unitOfWork, objectMapper)
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        if (user is null)
         {
-            this.userManager = userManager;
-            this.emailService = emailService;
+            throw new NotFoundException("Kullanıcı Bulunamadı");
         }
 
-        public async Task<ResponseDto<UserDto>> GetUserByIdAsync(Guid userId)
+        return ObjectMapper.Map<UserDto>(user);
+    }
+
+    public async Task<List<UserDto>> GetUsersAsync()
+    {
+        var userList = await userManager.Users.ToListAsync();
+        return ObjectMapper.Map<List<UserDto>>(userList);
+    }
+
+    public async Task<UserDto> CreateUserAsync(CreateUserDto userDto)
+    {
+        var user = ObjectMapper.Map<User>(userDto);
+        user.IsActive = true;
+
+        var result = await userManager.CreateAsync(user, userDto.Password);
+
+        if (!result.Succeeded)
         {
-            var user = await userManager.FindByIdAsync(userId.ToString());
-            if (user == null)
-            {
-                return ResponseDto<UserDto>.Fail("Kullanıcı Bulunamadı", 404);
-            }
-            return ResponseDto<UserDto>.Success(ObjectMapper.Map<UserDto>(user), 200);
+            // TODO: message list parameter
+            throw new BadRequestException(string.Join(';', result.Errors.Select(p => p.Description)));
         }
 
-        public async Task<ResponseDto<List<UserDto>>> GetUsersAsync()
+        //var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+        //await emailService.SendEmailConfirmEmailAsync(user.Email, user.Id, HttpUtility.UrlEncode(token));
+
+        return ObjectMapper.Map<UserDto>(user);
+    }
+
+    public async Task<UserDto> UpdateProfileAsync(UpdateProfileDto updateProfileDto, Guid userId)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        if (user is null)
         {
-            var userList = await userManager.Users.ToListAsync();
-            return ResponseDto<List<UserDto>>.Success(ObjectMapper.Map<List<UserDto>>(userList), 200);
+            throw new NotFoundException("Kullanıcı Bulunamadı");
         }
 
-        public async Task<ResponseDto<UserDto>> CreateUserAsync(CreateUserDto userDto)
+        user.FirstName = updateProfileDto.FirstName;
+        user.LastName = updateProfileDto.LastName;
+        user.PhoneNumber = updateProfileDto.PhoneNumber;
+
+        var result = await userManager.UpdateAsync(user);
+        if (!result.Succeeded)
         {
-            var user = ObjectMapper.Map<User>(userDto);
-            user.IsActive = true;
-
-            var result = await userManager.CreateAsync(user, userDto.Password);
-
-            if (!result.Succeeded)
-            {
-                return ResponseDto<UserDto>.Fail(new ErrorDto(result.Errors.Select(p => p.Description).ToList()), 400);
-            }
-
-            //var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            //await emailService.SendEmailConfirmEmailAsync(user.Email, user.Id, HttpUtility.UrlEncode(token));
-
-            return ResponseDto<UserDto>.Success(ObjectMapper.Map<UserDto>(user), 201);
+            throw new BadRequestException(string.Join(';', result.Errors.Select(p => p.Description)));
         }
 
-        public async Task<ResponseDto<UserDto>> UpdateProfileAsync(UpdateProfileDto updateProfileDto, Guid userId)
+        return ObjectMapper.Map<UserDto>(user);
+    }
+
+    public async Task DeleteUserAsync(Guid userId)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        if (user is null)
         {
-            var user = await userManager.FindByIdAsync(userId.ToString());
-            if (user == null)
-            {
-                return ResponseDto<UserDto>.Fail("Kullanıcı Bulunamadı", 404);
-            }
-
-            user.FirstName = updateProfileDto.FirstName;
-            user.LastName = updateProfileDto.LastName;
-            user.PhoneNumber = updateProfileDto.PhoneNumber;
-
-            var result = await userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-            {
-                return ResponseDto<UserDto>.Fail(new ErrorDto(result.Errors.Select(p => p.Description).ToList()), 400);
-            }
-
-            return ResponseDto<UserDto>.Success(ObjectMapper.Map<UserDto>(user), 200);
+            throw new NotFoundException("Kullanıcı Bulunamadı");
         }
 
-        public async Task<ResponseDto<NoContentDto>> DeleteUserAsync(Guid userId)
+        var result = await userManager.DeleteAsync(user);
+        if (!result.Succeeded)
         {
-            var user = await userManager.FindByIdAsync(userId.ToString());
-            if (user == null)
-            {
-                return ResponseDto<NoContentDto>.Fail("Kullanıcı Bulunamadı.", 400);
-            }
+            throw new BadRequestException(string.Join(';', result.Errors.Select(p => p.Description)));
+        }
+    }
 
-            var result = await userManager.DeleteAsync(user);
-            if (!result.Succeeded)
-            {
-                return ResponseDto<NoContentDto>.Fail(new ErrorDto(result.Errors.Select(p => p.Description).ToList()), 400);
-            }
+    public async Task GeneratePasswordResetTokenAndSendEmailAsync(string userEmail)
+    {
+        var userFromDb = await userManager.FindByEmailAsync(userEmail);
 
-            return ResponseDto<NoContentDto>.Success(200);
+        if (userFromDb == null)
+        {
+            throw new NotFoundException("Kullanıcı Bulunamadı");
         }
 
-        public async Task<ResponseDto<NoContentDto>> GeneratePasswordResetTokenAndSendEmailAsync(string userEmail)
+        //var token = await userManager.GeneratePasswordResetTokenAsync(userFromDb);
+        //await emailService.SendPasswordResetEmailAsync(userFromDb.Email, userFromDb.Id, HttpUtility.UrlEncode(token));
+    }
+
+    public async Task GenerateChangeEmailTokenAndSendEmailAsync(Guid userId,
+        string newEmail)
+    {
+        var userFromDb = await userManager.FindByIdAsync(userId.ToString());
+
+        if (userFromDb == null)
         {
-            var userFromDb = await userManager.FindByEmailAsync(userEmail);
-
-            if (userFromDb == null)
-            {
-                return ResponseDto<NoContentDto>.Fail("Kullanıcı bulunamadı.", 404);
-            }
-
-            //var token = await userManager.GeneratePasswordResetTokenAsync(userFromDb);
-            //await emailService.SendPasswordResetEmailAsync(userFromDb.Email, userFromDb.Id, HttpUtility.UrlEncode(token));
-
-            return ResponseDto<NoContentDto>.Success(200);
+            throw new NotFoundException("Kullanıcı Bulunamadı");
         }
 
-        public async Task<ResponseDto<NoContentDto>> GenerateChangeEmailTokenAndSendEmailAsync(Guid userId, string newEmail)
+        //string token = await userManager.GenerateChangeEmailTokenAsync(userFromDb, newEmail);
+        //await emailService.SendChangeEmailAsync(userFromDb.Email, newEmail, HttpUtility.UrlEncode(token));
+    }
+
+    public async Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+    {
+        var userFromDb = await userManager.FindByIdAsync(resetPasswordDto.UserId.ToString());
+
+        if (userFromDb == null)
         {
-            var userFromDb = await userManager.FindByIdAsync(userId.ToString());
-
-            if (userFromDb == null)
-            {
-                return ResponseDto<NoContentDto>.Fail("Kullanıcı bulunamadı.", 404);
-            }
-
-            //string token = await userManager.GenerateChangeEmailTokenAsync(userFromDb, newEmail);
-            //await emailService.SendChangeEmailAsync(userFromDb.Email, newEmail, HttpUtility.UrlEncode(token));
-
-            return ResponseDto<NoContentDto>.Success(200);
+            throw new NotFoundException("Kullanıcı Bulunamadı");
         }
 
-        public async Task<ResponseDto<NoContentDto>> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+        var result =
+            await userManager.ResetPasswordAsync(userFromDb, resetPasswordDto.Token, resetPasswordDto.NewPassword);
+
+        if (!result.Succeeded)
         {
-            var userFromDb = await userManager.FindByIdAsync(resetPasswordDto.UserId.ToString());
+            throw new BadRequestException(string.Join(';', result.Errors.Select(p => p.Description)));
+        }
+    }
 
-            if (userFromDb == null)
-            {
-                return ResponseDto<NoContentDto>.Fail("Kullanıcı bulunamadı.", 404);
-            }
+    public async Task ConfirmEmailAsync(ConfirmEmailDto confirmEmailDto)
+    {
+        var user = await userManager.FindByIdAsync(confirmEmailDto.UserId.ToString());
 
-            var result = await userManager.ResetPasswordAsync(userFromDb, resetPasswordDto.Token, resetPasswordDto.NewPassword);
-
-            if (!result.Succeeded)
-            {
-                return ResponseDto<NoContentDto>.Fail(new ErrorDto(result.Errors.Select(x => x.Description).ToList()), 400);
-            }
-
-            return ResponseDto<NoContentDto>.Success(200);
+        if (user == null)
+        {
+            throw new NotFoundException("Kullanıcı Bulunamadı");
         }
 
-        public async Task<ResponseDto<NoContentDto>> ConfirmEmailAsync(ConfirmEmailDto confirmEmailDto)
+        var result = await userManager.ConfirmEmailAsync(user, confirmEmailDto.Token);
+
+        if (!result.Succeeded)
         {
-            var user = await userManager.FindByIdAsync(confirmEmailDto.UserId.ToString());
+            throw new BadRequestException(string.Join(';', result.Errors.Select(p => p.Description)));
+        }
+    }
 
-            if (user == null)
-            {
-                return ResponseDto<NoContentDto>.Fail("Kullanıcı Bulunamadı.", 404);
-            }
+    public async Task ConfirmNewEmailAsync(string oldEmail, string newEmail,
+        string token)
+    {
+        var user = await userManager.FindByEmailAsync(oldEmail);
 
-            var result = await userManager.ConfirmEmailAsync(user, confirmEmailDto.Token);
-
-            if (!result.Succeeded)
-            {
-                return ResponseDto<NoContentDto>
-                    .Fail(new ErrorDto(result.Errors.Select(p => p.Description).ToList()), 400);
-            }
-
-            return ResponseDto<NoContentDto>.Success(200);
+        if (user == null)
+        {
+            throw new NotFoundException("Kullanıcı Bulunamadı");
         }
 
-        public async Task<ResponseDto<NoContentDto>> ConfirmNewEmailAsync(string oldEmail, string newEmail, string token)
+        var result = await userManager.ChangeEmailAsync(user, newEmail, token);
+
+        if (!result.Succeeded)
         {
-            var user = await userManager.FindByEmailAsync(oldEmail);
+            throw new BadRequestException(string.Join(';', result.Errors.Select(p => p.Description)));
+        }
+    }
 
-            if (user == null)
-            {
-                return ResponseDto<NoContentDto>.Fail("Bu Email'e ait kullanıcı bulunamadı.", 404);
-            }
+    public async Task ChangePasswordAsync(Guid userId, ChangePasswordDto password)
+    {
+        var userFromDb = await userManager.FindByIdAsync(userId.ToString());
 
-            var result = await userManager.ChangeEmailAsync(user, newEmail, token);
-
-            if (!result.Succeeded)
-            {
-                return ResponseDto<NoContentDto>.Fail(new ErrorDto(result.Errors.Select(x => x.Description).ToList()), 400);
-            }
-
-            return ResponseDto<NoContentDto>.Success(200);
+        if (userFromDb == null)
+        {
+            throw new NotFoundException("Kullanıcı Bulunamadı");
         }
 
-        public async Task<ResponseDto<NoContentDto>> ChangePasswordAsync(Guid userId, ChangePasswordDto password)
+        var result =
+            await userManager.ChangePasswordAsync(userFromDb, password.CurrentPassword, password.NewPassword);
+
+        if (!result.Succeeded)
         {
-            var userFromDb = await userManager.FindByIdAsync(userId.ToString());
-
-            if (userFromDb == null)
-            {
-                return ResponseDto<NoContentDto>.Fail("Kullanıcı bulunamadı.", 404);
-            }
-
-            var result = await userManager.ChangePasswordAsync(userFromDb, password.CurrentPassword, password.NewPassword);
-
-            if (!result.Succeeded)
-            {
-                return ResponseDto<NoContentDto>.Fail(new ErrorDto(result.Errors.Select(x => x.Description).ToList()), 400);
-            }
-
-            return ResponseDto<NoContentDto>.Success(200);
+            throw new BadRequestException(string.Join(';', result.Errors.Select(p => p.Description)));
         }
     }
 }
