@@ -1,11 +1,12 @@
-﻿using Pattern.Core.Exceptions;
+﻿using Pattern.Core;
+using Pattern.Core.Exceptions;
 using Pattern.Core.Responses;
 
 namespace Pattern.API.Middlewares
 {
     public class GlobalExceptionHandlerMiddleware(
-        ILogger<GlobalExceptionHandlerMiddleware> logger,
-        RequestDelegate next)
+        RequestDelegate next,
+        ILogger<GlobalExceptionHandlerMiddleware> logger)
     {
         public async Task InvokeAsync(HttpContext context)
         {
@@ -13,33 +14,28 @@ namespace Pattern.API.Middlewares
             {
                 await next(context);
             }
-            catch (Exception exception)
+            catch (BaseHttpException exception)
             {
-                string errorMessage = $"Bir hata oluştu. Hata mesajı :  {exception.Message}";
-                logger.LogError(exception, errorMessage);
+                logger.LogError(exception, exception.Message);
 
                 context.Response.ContentType = "application/json";
 
-                var exceptionResponseModel = exception switch
-                {
-                    BadRequestException => new ExceptionResponseModel(400, exception.Message),
-                    NotFoundException => new ExceptionResponseModel(404, exception.Message),
-                    UserIsLockedOutException => new ExceptionResponseModel(400, exception.Message),
-                    UserIsNotActiveException => new ExceptionResponseModel(400, exception.Message),
-                    UserNotVerifiedException => new ExceptionResponseModel(400, exception.Message),
-                    _ => new ExceptionResponseModel(500, "Bir hata oluştu."),
-                };
+                context.Response.StatusCode = (int)exception.StatusCode;
+                var response = ResponseDto.Fail(exception.Message, (int)exception.StatusCode);
+                await context.Response.WriteAsJsonAsync(response);
+            }
+            catch (Exception exception)
+            {
+                logger.LogError(exception, exception.Message);
 
-                context.Response.StatusCode = exceptionResponseModel.StatusCode;
-                var response = ResponseDto.Fail(exceptionResponseModel.Message, exceptionResponseModel.StatusCode);
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = 500;
+                var localizer = context.RequestServices.GetRequiredService<IResourceLocalizer>();
+                var message = localizer.Localize("InternalServerError");
+
+                var response = ResponseDto.Fail(message, 500);
                 await context.Response.WriteAsJsonAsync(response);
             }
         }
-    }
-
-    public class ExceptionResponseModel(int statusCode, string message)
-    {
-        public int StatusCode { get; } = statusCode;
-        public string Message { get; } = message;
     }
 }

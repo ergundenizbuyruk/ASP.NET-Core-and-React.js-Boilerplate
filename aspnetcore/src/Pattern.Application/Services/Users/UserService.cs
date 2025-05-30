@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Pattern.Application.Services.Base;
 using Pattern.Application.Services.Emails;
 using Pattern.Application.Services.Users.Dtos;
+using Pattern.Core;
 using Pattern.Core.Entites.Authentication;
 using Pattern.Core.Exceptions;
 using Pattern.Persistence.UnitOfWork;
@@ -14,7 +15,8 @@ public class UserService(
     IUnitOfWork unitOfWork,
     IMapper objectMapper,
     UserManager<User> userManager,
-    IEmailService emailService)
+    IEmailService emailService,
+    IResourceLocalizer localizer)
     : ApplicationService(unitOfWork, objectMapper), IUserService
 {
     private readonly IEmailService emailService = emailService;
@@ -24,7 +26,7 @@ public class UserService(
         var user = await userManager.FindByIdAsync(userId.ToString());
         if (user is null)
         {
-            throw new NotFoundException("Kullanıcı Bulunamadı");
+            throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
         return ObjectMapper.Map<UserDto>(user);
@@ -60,7 +62,7 @@ public class UserService(
         var user = await userManager.FindByIdAsync(userId.ToString());
         if (user is null)
         {
-            throw new NotFoundException("Kullanıcı Bulunamadı");
+            throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
         user.FirstName = updateProfileDto.FirstName;
@@ -81,7 +83,7 @@ public class UserService(
         var user = await userManager.FindByIdAsync(userId.ToString());
         if (user is null)
         {
-            throw new NotFoundException("Kullanıcı Bulunamadı");
+            throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
         var result = await userManager.DeleteAsync(user);
@@ -97,7 +99,7 @@ public class UserService(
 
         if (userFromDb == null)
         {
-            throw new NotFoundException("Kullanıcı Bulunamadı");
+            throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
         //var token = await userManager.GeneratePasswordResetTokenAsync(userFromDb);
@@ -111,7 +113,7 @@ public class UserService(
 
         if (userFromDb == null)
         {
-            throw new NotFoundException("Kullanıcı Bulunamadı");
+            throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
         //string token = await userManager.GenerateChangeEmailTokenAsync(userFromDb, newEmail);
@@ -124,7 +126,7 @@ public class UserService(
 
         if (userFromDb == null)
         {
-            throw new NotFoundException("Kullanıcı Bulunamadı");
+            throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
         var result =
@@ -142,7 +144,7 @@ public class UserService(
 
         if (user == null)
         {
-            throw new NotFoundException("Kullanıcı Bulunamadı");
+            throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
         var result = await userManager.ConfirmEmailAsync(user, confirmEmailDto.Token);
@@ -160,7 +162,7 @@ public class UserService(
 
         if (user == null)
         {
-            throw new NotFoundException("Kullanıcı Bulunamadı");
+            throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
         var result = await userManager.ChangeEmailAsync(user, newEmail, token);
@@ -177,7 +179,7 @@ public class UserService(
 
         if (userFromDb == null)
         {
-            throw new NotFoundException("Kullanıcı Bulunamadı");
+            throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
         var result =

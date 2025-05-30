@@ -1,5 +1,11 @@
+using System.Net;
+
 namespace Pattern.Core.Exceptions;
 
-public class NotFoundException(string message) : Exception(message)
+public sealed class NotFoundException : BaseHttpException
 {
+    public NotFoundException(string message) : base(message)
+    {
+        StatusCode = HttpStatusCode.NotFound;
+    }
 }

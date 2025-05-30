@@ -4,18 +4,17 @@ using Pattern.Core.Responses;
 
 namespace Pattern.API.Filters
 {
-    public class ValidateFilterAttribute : ActionFilterAttribute
+    public abstract class ValidateFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (!context.ModelState.IsValid)
-            {
-                var errors = context.ModelState.Values
-                    .SelectMany(x => x.Errors.Select(error => error.ErrorMessage)).ToList();
+            if (context.ModelState.IsValid) return;
 
-                context.Result = new BadRequestObjectResult(
-                    ResponseDto.Fail(new ErrorDto(errors), 400));
-            }
+            var errors = context.ModelState.Values
+                .SelectMany(x => x.Errors.Select(error => error.ErrorMessage)).ToList();
+
+            context.Result = new BadRequestObjectResult(
+                ResponseDto.Fail(new ErrorDto(errors), 400));
         }
     }
 }

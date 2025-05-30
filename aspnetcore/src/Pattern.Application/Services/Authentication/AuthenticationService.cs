@@ -32,20 +32,20 @@ public class AuthenticationService(
 
         if (!user.IsActive)
         {
-            throw new UserIsNotActiveException("Kullanıcı pasif durumundadır.");
+            throw new BadRequestException("Kullanıcı pasif durumundadır.");
         }
 
         var result = await signInManager.PasswordSignInAsync(user, loginDto.Password, false, true);
 
         if (result.IsLockedOut)
         {
-            throw new UserIsLockedOutException(
+            throw new BadRequestException(
                 "Hesabınız kilitli durumdadır. Daha sonra giriş yapmayı deneyiniz.");
         }
 
         if (result.IsNotAllowed)
         {
-            throw new UserNotVerifiedException("Lütfen önce e-posta adresinizi onaylayınız.");
+            throw new BadRequestException("Lütfen önce e-posta adresinizi onaylayınız.");
         }
 
         if (!result.Succeeded)

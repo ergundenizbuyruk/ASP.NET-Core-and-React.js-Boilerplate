@@ -6,19 +6,12 @@ namespace Pattern.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController : BaseController
+public class AuthController(IAuthenticationService authenticationService) : BaseController
 {
-    private readonly IAuthenticationService _authenticationService;
-
-    public AuthController(IAuthenticationService authenticationService)
-    {
-        _authenticationService = authenticationService;
-    }
-
     [HttpPost("login")]
     public async Task<IActionResult> CreateToken(LoginDto loginDto)
     {
-        var result = await _authenticationService.CreateTokenAsync(loginDto);
+        var result = await authenticationService.CreateTokenAsync(loginDto);
         return Success(result);
     }
 
@@ -26,15 +19,14 @@ public class AuthController : BaseController
     [HttpDelete("revoke")]
     public async Task<IActionResult> RevokeRefreshToken(RefreshTokenDto refreshTokenDto)
     {
-        await _authenticationService.RevokeRefreshTokenAsync(refreshTokenDto);
+        await authenticationService.RevokeRefreshTokenAsync(refreshTokenDto);
         return Success();
     }
 
     [HttpPost("refresh")]
     public async Task<IActionResult> CreateTokenByRefreshToken(RefreshTokenDto refreshTokenDto)
-
     {
-        var result = await _authenticationService.CreateTokenByRefreshTokenAsync(refreshTokenDto);
+        var result = await authenticationService.CreateTokenByRefreshTokenAsync(refreshTokenDto);
         return Success(result);
     }
 }

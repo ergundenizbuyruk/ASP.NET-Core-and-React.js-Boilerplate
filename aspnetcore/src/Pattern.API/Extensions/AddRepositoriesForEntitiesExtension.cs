@@ -18,13 +18,15 @@ namespace Pattern.API.Extensions
                 services.AddScoped(repositoryType, implementationType);
             }
         }
+
         private static IEnumerable<Type> GetEntities(Assembly assembly)
         {
             var entityDefinition = typeof(Entity<>).GetGenericTypeDefinition();
             return assembly.GetTypes()
-                .Where(type => type.IsClass && !type.IsAbstract && type.BaseType is not null &&
-                (type.BaseType == typeof(Entity) ||
-                type.BaseType.IsGenericType && type.BaseType.GetGenericTypeDefinition() == entityDefinition));
+                .Where(type => type is { IsClass: true, IsAbstract: false, BaseType: not null } &&
+                               (type.BaseType == typeof(Entity) ||
+                                type.BaseType.IsGenericType &&
+                                type.BaseType.GetGenericTypeDefinition() == entityDefinition));
         }
     }
 }

@@ -1,5 +1,11 @@
+using System.Net;
+
 namespace Pattern.Core.Exceptions;
 
-public class BadRequestException(string message) : Exception(message)
+public sealed class BadRequestException : BaseHttpException
 {
+    public BadRequestException(string message) : base(message)
+    {
+        StatusCode = HttpStatusCode.BadRequest;
+    }
 }
