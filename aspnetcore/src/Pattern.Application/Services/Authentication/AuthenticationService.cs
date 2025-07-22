@@ -54,7 +54,9 @@ public class AuthenticationService(
         }
 
         var token = await tokenService.CreateTokenAsync(user);
-        var userRefreshToken = await userRefreshTokenRepository.GetAll().Where(x => x.UserId == user.Id)
+
+        var userRefreshToken = await userRefreshTokenRepository.GetAll()
+            .Where(x => x.UserId == user.Id)
             .SingleOrDefaultAsync();
 
         if (userRefreshToken == null)
@@ -80,8 +82,10 @@ public class AuthenticationService(
 
     public async Task<AccessTokenDto> CreateTokenByRefreshTokenAsync(RefreshTokenDto refreshToken)
     {
-        var existRefreshToken = await userRefreshTokenRepository.GetAll()
-            .Where(x => x.Code == refreshToken.Token).SingleOrDefaultAsync();
+        var existRefreshToken = await userRefreshTokenRepository
+            .GetAll()
+            .Where(x => x.Code == refreshToken.Token)
+            .SingleOrDefaultAsync();
 
         if (existRefreshToken == null)
         {
