@@ -1,6 +1,3 @@
-﻿namespace Pattern.Application.Services.Base
-{
-    public interface IApplicationService : IBaseService
-    {
-    }
-}
+﻿namespace Pattern.Application.Services.Base;
+
+public interface IApplicationService : IBaseService;

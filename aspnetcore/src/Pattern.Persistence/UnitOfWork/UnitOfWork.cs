@@ -1,25 +1,16 @@
 ﻿using Pattern.Persistence.Context;
 
-namespace Pattern.Persistence.UnitOfWork
+namespace Pattern.Persistence.UnitOfWork;
+
+public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork
+    public void SaveChanges()
     {
-        private readonly ApplicationDbContext _context;
+        context.SaveChanges();
+    }
 
-        public UnitOfWork(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
-        }
-
-        public async Task SaveChangesAsync()
-        {
-
-            await _context.SaveChangesAsync();
-        }
+    public async Task SaveChangesAsync()
+    {
+        await context.SaveChangesAsync();
     }
 }

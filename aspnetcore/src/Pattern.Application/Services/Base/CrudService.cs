@@ -16,8 +16,8 @@ public abstract class CrudService<TEntity, TPrimaryKey, TEntityDto, TCreateDto, 
     ApplicationService(unitOfWork, objectMapper),
     ICrudService<TEntity, TPrimaryKey, TEntityDto, TCreateDto, TUpdateDto>
     where TEntity : class, IEntity<TPrimaryKey>
-    where TEntityDto : IEntityDto<TPrimaryKey>
-    where TUpdateDto : IEntityDto<TPrimaryKey>
+    where TEntityDto : class, IEntityDto<TPrimaryKey>
+    where TUpdateDto : class, IEntityDto<TPrimaryKey>
 {
     protected readonly IRepository<TEntity, TPrimaryKey> Repository = repository;
 
@@ -69,10 +69,9 @@ public abstract class CrudService<TEntity, TPrimaryKey, TEntityDto, TCreateDto, 
         return ObjectMapper.Map<TEntity, TEntityDto>(entityFromDb);
     }
 
-    public virtual async Task<List<TEntityDto>> GetAllAsync(int? pageNumber = null,
-        int? pageSize = null)
+    public virtual async Task<List<TEntityDto>> GetAllAsync()
     {
-        var entities = await Repository.GetAllAsync(pageNumber, pageSize);
+        var entities = await Repository.GetAllAsync();
         return ObjectMapper.Map<List<TEntity>, List<TEntityDto>>(entities);
     }
 }

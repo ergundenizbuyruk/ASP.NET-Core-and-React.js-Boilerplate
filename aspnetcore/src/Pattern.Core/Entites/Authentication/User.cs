@@ -7,7 +7,6 @@ namespace Pattern.Core.Entites.Authentication
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
         public List<UserRefreshToken> UserRefreshTokens { get; set; }
         public bool IsActive { get; set; }
         public DateTimeOffset CreationTime { get; set; }

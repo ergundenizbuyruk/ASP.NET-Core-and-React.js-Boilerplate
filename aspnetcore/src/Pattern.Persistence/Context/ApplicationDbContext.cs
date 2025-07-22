@@ -20,8 +20,6 @@ namespace Pattern.Persistence.Context
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
-        public DbSet<Province> Provinces { get; set; }
-        public DbSet<District> Districts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -38,8 +36,6 @@ namespace Pattern.Persistence.Context
             builder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins");
             builder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
             builder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens");
-            builder.Entity<Province>().ToTable("Provinces");
-            builder.Entity<District>().ToTable("Districts");
 
             foreach (var entityType in builder.Model.GetEntityTypes())
             {
@@ -119,43 +115,22 @@ namespace Pattern.Persistence.Context
             builder.Entity<Role>().HasData(role);
             builder.Entity<IdentityUserRole<Guid>>().HasData(userRole);
             builder.Entity<RolePermission>().HasData(rolePermissions);
-
-
-            string ilJson = File.ReadAllText("iller.json");
-            string ilceJson = File.ReadAllText("ilceler.json");
-            List<ProvinceJsonModel> iller = JsonSerializer.Deserialize<List<ProvinceJsonModel>>(ilJson);
-            List<DistrictJsonModel> ilceler = JsonSerializer.Deserialize<List<DistrictJsonModel>>(ilceJson);
-
-            var provinces = iller.Select(p => new Province
-            {
-                Id = int.Parse(p.id),
-                Plaka = int.Parse(p.plaka),
-                ProvinceText = p.il,
-                AreaCode = p.alanKodu
-            });
-
-            var districts = ilceler.Select(p => new District
-            {
-                Id = int.Parse(p.id),
-                DistrictText = p.ilce,
-                ProvinceId = int.Parse(p.ilId)
-            });
-
-            builder.Entity<Province>().HasData(provinces);
-            builder.Entity<District>().HasData(districts);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             Guid? userId = null;
-            var userIdStr = httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIdStr = httpContextAccessor?.HttpContext?.User
+                .FindFirstValue(ClaimTypes.NameIdentifier);
+
             if (userIdStr != null)
             {
                 userId = Guid.Parse(userIdStr);
             }
 
             var insertedEntries =
-                ChangeTracker.Entries().Where(x => x.State == EntityState.Added)
+                ChangeTracker.Entries()
+                    .Where(x => x.State == EntityState.Added)
                     .Select(x => x.Entity);
 
             foreach (var insertedEntry in insertedEntries)

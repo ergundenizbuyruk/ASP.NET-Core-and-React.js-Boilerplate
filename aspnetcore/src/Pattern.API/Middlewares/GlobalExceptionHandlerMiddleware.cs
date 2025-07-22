@@ -19,7 +19,6 @@ namespace Pattern.API.Middlewares
                 logger.LogError(exception, exception.Message);
 
                 context.Response.ContentType = "application/json";
-
                 context.Response.StatusCode = (int)exception.StatusCode;
                 var response = ResponseDto.Fail(exception.Message, (int)exception.StatusCode);
                 await context.Response.WriteAsJsonAsync(response);

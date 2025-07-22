@@ -3,90 +3,75 @@ using Microsoft.EntityFrameworkCore;
 using Pattern.Core.Interfaces;
 using Pattern.Persistence.Context;
 using System.Security.Claims;
+using Pattern.Core.Entites.BaseEntity;
 
-namespace Pattern.Persistence.Repositories
+namespace Pattern.Persistence.Repositories;
+
+public class Repository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey>
+    where TEntity : class, IEntity<TPrimaryKey>
 {
-    public class Repository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : class
+    private readonly ApplicationDbContext context;
+    private readonly DbSet<TEntity> dbSet;
+    private readonly IHttpContextAccessor httpContextAccessor;
+
+    public Repository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
     {
-        private readonly ApplicationDbContext context;
-        private readonly DbSet<TEntity> dbSet;
-        private readonly IHttpContextAccessor httpContextAccessor;
-        public Repository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
-        {
-            this.context = context;
-            dbSet = this.context.Set<TEntity>();
-            this.httpContextAccessor = httpContextAccessor;
-        }
+        this.context = context;
+        dbSet = this.context.Set<TEntity>();
+        this.httpContextAccessor = httpContextAccessor;
+    }
 
-        public async Task<TEntity> CreateAsync(TEntity Entity)
-        {
-            var result = await dbSet.AddAsync(Entity);
-            return result.Entity;
-        }
+    public async Task CreateAsync(TEntity entity)
+    {
+        await dbSet.AddAsync(entity);
+    }
 
-        public IQueryable<TEntity> GetAll()
-        {
-            return dbSet.AsQueryable<TEntity>();
-        }
+    public IQueryable<TEntity> GetAll()
+    {
+        return dbSet.AsQueryable<TEntity>();
+    }
 
-        public async Task<List<TEntity>> GetAllAsync(int? pageNumber = null, int? pageSize = null)
+    public async Task<List<TEntity>> GetAllAsync()
+    {
+        return await dbSet.ToListAsync();
+    }
+
+    public async Task<TEntity?> GetByIdAsync(TPrimaryKey key)
+    {
+        return await dbSet.FindAsync(key);
+    }
+
+    public void Update(TEntity entity)
+    {
+        dbSet.Update(entity);
+    }
+
+    public void Delete(TEntity entity)
+    {
+        if (entity is ISoftDelete softDeleteEntity)
         {
-            if (pageNumber is null || pageSize is null)
+            Guid? userId = null;
+            var userIdStr = httpContextAccessor?.HttpContext?.User
+                .FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userIdStr != null)
             {
-                return await dbSet.ToListAsync();
+                userId = Guid.Parse(userIdStr);
             }
 
-            int skipAmount = ((int)pageNumber - 1) * (int)pageSize;
+            softDeleteEntity.IsDeleted = true;
+            softDeleteEntity.DeletionTime = DateTimeOffset.UtcNow;
+            softDeleteEntity.DeleterUserId = userId;
 
-            return await dbSet
-                .Skip(skipAmount)
-                .Take((int)pageSize)
-                .ToListAsync();
+            context.Entry(entity).State = EntityState.Modified;
+            return;
         }
 
-        public async Task<TEntity> GetByIdAsync(TPrimaryKey Id)
-        {
-            return await dbSet.FindAsync(Id);
-        }
+        dbSet.Remove(entity);
+    }
 
-        public TEntity Update(TEntity Entity)
-        {
-            var result = dbSet.Update(Entity);
-            return result.Entity;
-        }
-
-        public TEntity SetValuesAndUpdate(TEntity EntityFromDb, TEntity EntityFromDto)
-        {
-            dbSet.Entry(EntityFromDb).CurrentValues.SetValues(EntityFromDto);
-            return Update(EntityFromDb);
-        }
-
-        public void Delete(TEntity Entity)
-        {
-            var softDeleteEntity = Entity as ISoftDelete;
-            if (softDeleteEntity != null)
-            {
-                Guid? userId = null;
-                var userIdStr = httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (userIdStr != null)
-                {
-                    userId = Guid.Parse(userIdStr);
-                }
-
-                softDeleteEntity.IsDeleted = true;
-                softDeleteEntity.DeletionTime = DateTimeOffset.UtcNow;
-                softDeleteEntity.DeleterUserId = userId;
-
-                dbSet.Attach(Entity);
-                context.Entry(Entity).State = EntityState.Modified;
-                return;
-            }
-            dbSet.Remove(Entity);
-        }
-
-        public void HardDelete(TEntity Entity)
-        {
-            dbSet.Remove(Entity);
-        }
+    public void HardDelete(TEntity entity)
+    {
+        dbSet.Remove(entity);
     }
 }

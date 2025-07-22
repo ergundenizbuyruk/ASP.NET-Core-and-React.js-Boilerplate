@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Pattern.Application\Pattern.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Languages\" />
-  </ItemGroup>
-
 </Project>

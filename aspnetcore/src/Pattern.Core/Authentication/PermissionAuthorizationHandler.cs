@@ -12,8 +12,7 @@ namespace Pattern.Core.Authentication
                 .Where(c => c.Type == CustomClaims.Permissions)
                 .Select(c => c.Value)
                 .ToArray();
-
-
+            
             foreach (var requiredPermission in requirement.Permissions)
             {
                 if (!userPermissions.Contains(requiredPermission))

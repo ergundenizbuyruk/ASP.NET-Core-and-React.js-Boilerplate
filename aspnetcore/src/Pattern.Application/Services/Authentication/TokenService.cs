@@ -32,10 +32,10 @@ namespace Pattern.Application.Services.Authentication
             var refreshTokenExpiration = DateTimeOffset.UtcNow.AddMinutes(tokenOption.RefreshTokenExpiration);
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOption.SecurityKey));
 
-            SigningCredentials signingCredentials =
+            var signingCredentials =
                 new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
-            JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
+            var jwtSecurityToken = new JwtSecurityToken(
                 issuer: tokenOption.Issuer,
                 audience: tokenOption.Audience,
                 expires: accessTokenExpiration.UtcDateTime,
@@ -90,6 +90,7 @@ namespace Pattern.Application.Services.Authentication
 
             userClaimList.AddRange(permissions.Select(x =>
                 new Claim(CustomClaims.Permissions, x.Id.ToString())));
+
             return userClaimList;
         }
     }

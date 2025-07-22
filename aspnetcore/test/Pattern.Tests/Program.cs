@@ -1,0 +1,1 @@
+Console.WriteLine("Pattern.Tests project is set up. You can add your tests here.");
