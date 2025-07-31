@@ -4,7 +4,7 @@ using Pattern.Core.Responses;
 
 namespace Pattern.API.Filters
 {
-    public abstract class ValidateFilterAttribute : ActionFilterAttribute
+    public class ValidateFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {

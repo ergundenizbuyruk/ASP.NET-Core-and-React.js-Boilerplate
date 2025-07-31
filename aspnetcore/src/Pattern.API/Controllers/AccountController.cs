@@ -7,18 +7,18 @@ using System.Security.Claims;
 
 namespace Pattern.API.Controllers;
 
-[Route("api/[controller]/[action]")]
+[Route("api/[controller]")]
 [ApiController]
 public class AccountController(IUserService userService) : BaseController
 {
-    [HttpPost]
+    [HttpPost("register")]
     public async Task<IActionResult> Register(CreateUserDto createUserDto)
     {
         var result = await userService.CreateUserAsync(createUserDto);
         return Success(result);
     }
 
-    [HttpGet]
+    [HttpGet("profile")]
     [HasPermissions(Permission.AccountDefault)]
     public async Task<IActionResult> GetUserInformation()
     {
@@ -27,7 +27,7 @@ public class AccountController(IUserService userService) : BaseController
         return Success(result);
     }
 
-    [HttpPut]
+    [HttpPut("profile")]
     [HasPermissions(Permission.AccountUpdate)]
     public async Task<IActionResult> UpdateProfile(UpdateProfileDto updateProfileDto)
     {
@@ -36,7 +36,7 @@ public class AccountController(IUserService userService) : BaseController
         return Success(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("profile")]
     [HasPermissions(Permission.AccountDelete)]
     public async Task<IActionResult> DeleteAccount()
     {
@@ -45,21 +45,28 @@ public class AccountController(IUserService userService) : BaseController
         return Success();
     }
 
-    [HttpPost]
+    [HttpPost("reset-password-request")]
     public async Task<IActionResult> SendPasswordResetEmail(PasswordResetTokenDto passwordResetTokenDto)
     {
         await userService.GeneratePasswordResetTokenAndSendEmailAsync(passwordResetTokenDto.Email);
         return Success();
     }
 
-    [HttpPost]
+    [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
     {
         await userService.ResetPasswordAsync(resetPasswordDto);
         return Success();
     }
+    
+    [HttpPost("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
+    {
+        await userService.ConfirmEmailAsync(confirmEmailDto);
+        return Success();
+    }
 
-    [HttpPost]
+    [HttpPost("change-email-request")]
     [HasPermissions(Permission.EmailChange)]
     public async Task<IActionResult> SendEmailChangeEmail(SendEmailChangeEmailDto sendEmailChangeEmailDto)
     {
@@ -68,14 +75,7 @@ public class AccountController(IUserService userService) : BaseController
         return Success();
     }
 
-    [HttpPost]
-    public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
-    {
-        await userService.ConfirmEmailAsync(confirmEmailDto);
-        return Success();
-    }
-
-    [HttpPost]
+    [HttpPost("change-email")]
     public async Task<IActionResult> ConfirmNewEmail(ConfirmNewEmailDto confirmNewEmailDto)
     {
         await userService.ConfirmNewEmailAsync(confirmNewEmailDto.OldEmail, confirmNewEmailDto.NewEmail,
@@ -83,7 +83,7 @@ public class AccountController(IUserService userService) : BaseController
         return Success();
     }
 
-    [HttpPost]
+    [HttpPost("change-password")]
     [HasPermissions(Permission.ChangePassword)]
     public async Task<IActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
     {

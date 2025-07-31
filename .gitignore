@@ -476,3 +476,15 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+
+**/.env
+**/.env.*
+**/package-lock.json
+
+.expo/
+.expo-shared/
+**/expo-env.d.ts
+
+.vscode/
+

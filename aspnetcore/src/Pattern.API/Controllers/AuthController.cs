@@ -16,7 +16,7 @@ public class AuthController(IAuthenticationService authenticationService) : Base
     }
 
 
-    [HttpDelete("revoke")]
+    [HttpPost("revoke")]
     public async Task<IActionResult> RevokeRefreshToken(RefreshTokenDto refreshTokenDto)
     {
         await authenticationService.RevokeRefreshTokenAsync(refreshTokenDto);

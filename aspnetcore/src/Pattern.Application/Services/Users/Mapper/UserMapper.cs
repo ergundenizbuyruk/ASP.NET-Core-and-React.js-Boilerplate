@@ -8,9 +8,9 @@ namespace Pattern.Application.Services.Users.Mapper
 	{
 		public UserMapper()
 		{
-			CreateMap<User, UserDto>().ReverseMap();
-			CreateMap<User, CreateUserDto>().ReverseMap();
-			CreateMap<User, UpdateUserDto>().ReverseMap();
+			CreateMap<User, UserDto>();
+			CreateMap<CreateUserDto, User>();
+			CreateMap<UpdateUserDto, User>();
 		}
 	}
 }

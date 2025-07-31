@@ -42,6 +42,7 @@ public class UserService(
     {
         var user = ObjectMapper.Map<User>(userDto);
         user.IsActive = true;
+        user.UserName = userDto.Email;
 
         var result = await userManager.CreateAsync(user, userDto.Password);
 

@@ -7,10 +7,6 @@ namespace Pattern.Application.Services.Users.Validators
 	{
 		public CreateUserValidator()
 		{
-			RuleFor(x => x.UserName)
-				.NotNull().WithMessage("UserName is required.")
-				.NotEmpty().WithMessage("UserName is required.");
-
 			RuleFor(x => x.Email)
 				.NotNull().WithMessage("Email is required.")
 				.NotEmpty().WithMessage("Email is required.");

@@ -154,11 +154,9 @@ builder.Services
     .AddCors(options =>
         options.AddPolicy("MyPolicy", policyBuilder =>
             policyBuilder
-                .WithOrigins("http://localhost:3000")
-                .SetIsOriginAllowedToAllowWildcardSubdomains()
+                .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowCredentials()
         ));
 
 
@@ -240,7 +238,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseRouting();
 
