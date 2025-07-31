@@ -50,6 +50,22 @@ namespace Pattern.Persistence.Context
                 }
             }
 
+            builder.Entity<User>()
+                .Property(e => e.Email)
+                .IsRequired();
+
+            builder.Entity<User>()
+                .HasIndex(e => e.Email)
+                .IsUnique();
+
+            builder.Entity<User>()
+                .Property(e => e.UserName)
+                .IsRequired();
+
+            builder.Entity<User>()
+                .HasIndex(e => e.UserName)
+                .IsUnique();
+
             // Configure RolePermission many-to-many relationship
             builder.Entity<Role>()
                 .HasMany(r => r.Permissions).WithMany(p => p.Roles)
