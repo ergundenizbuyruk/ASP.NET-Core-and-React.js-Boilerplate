@@ -25,6 +25,7 @@ using System.Text;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Localization;
 using Pattern.Core;
+using Pattern.Core.Providers;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -79,13 +80,20 @@ builder.Services.AddIdentity<User, Role>(options =>
         options.Password.RequireLowercase = true;
         options.Password.RequireDigit = true;
         options.SignIn.RequireConfirmedPhoneNumber = false;
-        options.SignIn.RequireConfirmedEmail = false;
+        options.SignIn.RequireConfirmedEmail = true;
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
         options.Lockout.MaxFailedAccessAttempts = 5;
+        options.Tokens.EmailConfirmationTokenProvider = "NumericToken";
+        options.Tokens.PasswordResetTokenProvider = "NumericToken";
+        options.Tokens.ChangePhoneNumberTokenProvider = "NumericToken";
+        options.Tokens.ChangeEmailTokenProvider = "NumericToken";
     })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
+    .AddTokenProvider<NumericTokenProvider<User>>("NumericToken")
     .AddErrorDescriber<LocalizationIdentityErrorDescriber>();
+
+builder.Services.AddCustomTokenProvider();
 
 builder.Services.AddAuthentication(options =>
 {

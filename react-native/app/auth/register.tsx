@@ -9,7 +9,6 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -32,17 +31,13 @@ const RegisterScreen = () => {
 
   const onSubmit = async (data: CreateUserDto) => {
     const response = await AccountService.Register(data);
-    if (response.error) {
-      Alert.alert(
-        "Hata",
-        response.error.errors.join(", ") || "Kayıt işlemi başarısız oldu."
-      );
-      return;
+    if (response.data) {
+      router.push({
+        pathname: "/auth/verify-code",
+        params: { email: response.data.email },
+      });
+      reset();
     }
-
-    Alert.alert("Başarılı", "Kayıt başarılı!");
-    reset();
-    router.push("/auth/login");
   };
 
   return (
@@ -74,16 +69,16 @@ const RegisterScreen = () => {
                 icon: "user" as const,
               },
               {
-                name: "phoneNumber",
-                placeholder: "Telefon Numarası",
-                keyboard: "phone-pad" as const,
-                icon: "phone" as const,
-              },
-              {
                 name: "email",
                 placeholder: "E-posta",
                 keyboard: "email-address" as const,
                 icon: "mail" as const,
+              },
+              {
+                name: "phoneNumber",
+                placeholder: "Telefon Numarası",
+                keyboard: "phone-pad" as const,
+                icon: "phone" as const,
               },
               {
                 name: "password",
@@ -108,7 +103,7 @@ const RegisterScreen = () => {
                         className="mr-2"
                       />
                       <TextInput
-                        className="flex-1 text-base text-black"
+                        className="flex-1 text-black"
                         placeholder={placeholder}
                         onBlur={onBlur}
                         onChangeText={onChange}

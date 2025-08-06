@@ -1,4 +1,4 @@
-﻿namespace Pattern.Application.Services.Emails;
+﻿namespace Pattern.Core.Options;
 
 public class EmailConfiguration
 {

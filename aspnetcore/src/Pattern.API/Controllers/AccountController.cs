@@ -15,7 +15,7 @@ public class AccountController(IUserService userService) : BaseController
     public async Task<IActionResult> Register(CreateUserDto createUserDto)
     {
         var result = await userService.CreateUserAsync(createUserDto);
-        return Success(result);
+        return Success(result, 201);
     }
 
     [HttpGet("profile")]
@@ -45,6 +45,13 @@ public class AccountController(IUserService userService) : BaseController
         return Success();
     }
 
+    [HttpPost("email-confirmation-request")]
+    public async Task<IActionResult> SendEmailConfirmationToken(PasswordResetTokenDto dto)
+    {
+        await userService.GenerateEmailConfirmationTokenAndSendEmailAsync(dto.Email);
+        return Success();
+    }
+
     [HttpPost("reset-password-request")]
     public async Task<IActionResult> SendPasswordResetEmail(PasswordResetTokenDto passwordResetTokenDto)
     {
@@ -58,7 +65,7 @@ public class AccountController(IUserService userService) : BaseController
         await userService.ResetPasswordAsync(resetPasswordDto);
         return Success();
     }
-    
+
     [HttpPost("confirm-email")]
     public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
     {

@@ -19,8 +19,6 @@ public class UserService(
     IResourceLocalizer localizer)
     : ApplicationService(unitOfWork, objectMapper), IUserService
 {
-    private readonly IEmailService emailService = emailService;
-
     public async Task<UserDto> GetUserByIdAsync(Guid userId)
     {
         var user = await userManager.FindByIdAsync(userId.ToString());
@@ -52,9 +50,8 @@ public class UserService(
             throw new BadRequestException(string.Join(';', result.Errors.Select(p => p.Description)));
         }
 
-        //var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-        //await emailService.SendEmailConfirmEmailAsync(user.Email, user.Id, HttpUtility.UrlEncode(token));
-
+        var emailConfirmToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+        await emailService.SendEmailConfirmationTokenAsync(user.Email!, emailConfirmToken);
         return ObjectMapper.Map<UserDto>(user);
     }
 
@@ -66,9 +63,7 @@ public class UserService(
             throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
-        user.FirstName = updateProfileDto.FirstName;
-        user.LastName = updateProfileDto.LastName;
-        user.PhoneNumber = updateProfileDto.PhoneNumber;
+        ObjectMapper.Map(updateProfileDto, user);
 
         var result = await userManager.UpdateAsync(user);
         if (!result.Succeeded)
@@ -82,6 +77,7 @@ public class UserService(
     public async Task DeleteUserAsync(Guid userId)
     {
         var user = await userManager.FindByIdAsync(userId.ToString());
+
         if (user is null)
         {
             throw new NotFoundException(localizer.Localize("UserNotFound"));
@@ -94,38 +90,50 @@ public class UserService(
         }
     }
 
+    public async Task GenerateEmailConfirmationTokenAndSendEmailAsync(string email)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+
+        if (user is null)
+        {
+            throw new BadRequestException("User not found with the provided email.");
+        }
+
+        var emailConfirmToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+        await emailService.SendEmailConfirmationTokenAsync(user.Email!, emailConfirmToken);
+    }
+
     public async Task GeneratePasswordResetTokenAndSendEmailAsync(string userEmail)
     {
         var userFromDb = await userManager.FindByEmailAsync(userEmail);
 
-        if (userFromDb == null)
+        if (userFromDb is null)
         {
             throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
-        //var token = await userManager.GeneratePasswordResetTokenAsync(userFromDb);
-        //await emailService.SendPasswordResetEmailAsync(userFromDb.Email, userFromDb.Id, HttpUtility.UrlEncode(token));
+        var token = await userManager.GeneratePasswordResetTokenAsync(userFromDb);
+        await emailService.SendPasswordResetEmailAsync(userFromDb.Email!, token);
     }
 
-    public async Task GenerateChangeEmailTokenAndSendEmailAsync(Guid userId,
-        string newEmail)
+    public async Task GenerateChangeEmailTokenAndSendEmailAsync(Guid userId, string newEmail)
     {
         var userFromDb = await userManager.FindByIdAsync(userId.ToString());
 
-        if (userFromDb == null)
+        if (userFromDb is null)
         {
             throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
 
-        //string token = await userManager.GenerateChangeEmailTokenAsync(userFromDb, newEmail);
-        //await emailService.SendChangeEmailAsync(userFromDb.Email, newEmail, HttpUtility.UrlEncode(token));
+        var token = await userManager.GenerateChangeEmailTokenAsync(userFromDb, newEmail);
+        await emailService.SendChangeEmailAsync(newEmail, token);
     }
 
     public async Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
     {
         var userFromDb = await userManager.FindByIdAsync(resetPasswordDto.UserId.ToString());
 
-        if (userFromDb == null)
+        if (userFromDb is null)
         {
             throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
@@ -141,9 +149,9 @@ public class UserService(
 
     public async Task ConfirmEmailAsync(ConfirmEmailDto confirmEmailDto)
     {
-        var user = await userManager.FindByIdAsync(confirmEmailDto.UserId.ToString());
+        var user = await userManager.FindByEmailAsync(confirmEmailDto.Email);
 
-        if (user == null)
+        if (user is null)
         {
             throw new NotFoundException(localizer.Localize("UserNotFound"));
         }
@@ -154,10 +162,12 @@ public class UserService(
         {
             throw new BadRequestException(string.Join(';', result.Errors.Select(p => p.Description)));
         }
+
+        user.EmailConfirmed = true;
+        await userManager.UpdateAsync(user);
     }
 
-    public async Task ConfirmNewEmailAsync(string oldEmail, string newEmail,
-        string token)
+    public async Task ConfirmNewEmailAsync(string oldEmail, string newEmail, string token)
     {
         var user = await userManager.FindByEmailAsync(oldEmail);
 
@@ -178,7 +188,7 @@ public class UserService(
     {
         var userFromDb = await userManager.FindByIdAsync(userId.ToString());
 
-        if (userFromDb == null)
+        if (userFromDb is null)
         {
             throw new NotFoundException(localizer.Localize("UserNotFound"));
         }

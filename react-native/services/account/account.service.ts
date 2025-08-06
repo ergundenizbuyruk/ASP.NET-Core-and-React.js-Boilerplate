@@ -19,6 +19,16 @@ const services = {
   DeleteAccount(config?: AxiosRequestConfig<any> | undefined) {
     return httpClient.delete("Account/profile", config);
   },
+  EmailConfirmationTokenRequest(
+    email: string,
+    config?: AxiosRequestConfig<any> | undefined
+  ) {
+    return httpClient.post(
+      "Account/email-confirmation-request",
+      { email },
+      config
+    );
+  },
   ResetPasswordRequest(
     email: string,
     config?: AxiosRequestConfig<any> | undefined
@@ -39,11 +49,11 @@ const services = {
   },
 
   ConfirmEmail(
-    userId: string,
+    email: string,
     token: string,
     config?: AxiosRequestConfig<any> | undefined
   ) {
-    return httpClient.post("Account/confirm-email", { userId, token }, config);
+    return httpClient.post("Account/confirm-email", { email, token }, config);
   },
 
   ChangeEmailRequest(

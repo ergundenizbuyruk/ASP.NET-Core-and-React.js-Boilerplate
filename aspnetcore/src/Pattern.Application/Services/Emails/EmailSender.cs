@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MimeKit;
 using Pattern.Application.Services.Emails.Dtos;
+using Pattern.Core.Options;
 
 namespace Pattern.Application.Services.Emails;
 

@@ -1,7 +1,7 @@
 import { logout, refreshToken } from "@/redux/auth/auth-slice";
 import { store } from "@/redux/store";
+import { showErrorToast } from "@/utils/toast";
 import { AxiosRequestConfig } from "axios";
-import { Alert } from "react-native";
 import apiClient from "./axios-instance";
 
 interface RetryQueueItem {
@@ -68,13 +68,27 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError, null);
         store.dispatch(logout());
-        Alert.alert("Oturum Süresi Doldu", "Lütfen tekrar giriş yapın.");
+        showErrorToast("Your session has expired, please log in again.");
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }
+    } else if (error.response.status === 403) {
+      // TODO: Handle 403 Forbidden error: navigate to a forbidden page or show a message
+      showErrorToast("Access denied. You do not have permission.");
+      return Promise.reject(error);
+    } else if (error.response.status === 400 || error.response.status === 404) {
+      if (error.response?.data && error.response?.data.error?.isShow) {
+        const errors: string[] = error.response?.data.error.errors || [];
+        errors.forEach((err) => showErrorToast(err));
+      }
+      return Promise.reject(error);
+    } else if (error.response.status === 429) {
+      showErrorToast("Too many requests. Please try again later.");
+      return Promise.reject(error);
+    } else {
+      showErrorToast("Something went wrong. Please try again.");
+      return Promise.reject(error);
     }
-
-    return Promise.reject(error);
   }
 );

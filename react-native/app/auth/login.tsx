@@ -1,14 +1,15 @@
 import { fetchUserInfo, login } from "@/redux/auth/auth-slice";
 import { AppDispatch } from "@/redux/store";
 import { hideLoading, showLoading } from "@/redux/ui/ui-slice";
+import AccountService from "@/services/account/account.service";
 import { LoginDto, loginSchema } from "@/services/auth/auth.schemas";
+import { showInfoToast } from "@/utils/toast";
 import { Feather } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -34,7 +35,7 @@ const RegisterScreen = () => {
 
   const onSubmit = async (data: LoginDto) => {
     dispatch(showLoading());
-    
+
     const resultAction = await dispatch(
       login({ email: data.email, password: data.password })
     );
@@ -43,11 +44,26 @@ const RegisterScreen = () => {
       await dispatch(fetchUserInfo());
       router.push("/dashboard");
       reset();
-    } else {
-      Alert.alert(
-        "Giriş Hatası",
-        (resultAction.payload as string) || "Bir hata oluştu"
+    }
+
+    if (
+      typeof resultAction.payload === "string" &&
+      resultAction.payload?.includes("e-posta adresinizi onaylayınız")
+    ) {
+      const res = await AccountService.EmailConfirmationTokenRequest(
+        data.email
       );
+      if (!res.error) {
+        showInfoToast(
+          "Lütfen e-posta adresinizi onaylayınız.",
+          "E-posta Onayı"
+        );
+        router.push({
+          pathname: "/auth/verify-code",
+          params: { email: data.email },
+        });
+        reset();
+      }
     }
 
     dispatch(hideLoading());

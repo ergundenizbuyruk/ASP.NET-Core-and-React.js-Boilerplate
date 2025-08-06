@@ -2,13 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Pattern.Core.Entites;
 using Pattern.Core.Entites.Authentication;
 using Pattern.Core.Interfaces;
-using Pattern.Core.Options;
 using System.Linq.Expressions;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace Pattern.Persistence.Context
 {

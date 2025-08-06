@@ -7,6 +7,7 @@ import { Slot, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { SafeAreaView } from "react-native";
 import "react-native-reanimated";
+import Toast from "react-native-toast-message";
 import { Provider, useSelector } from "react-redux";
 
 export default function RootLayout() {
@@ -37,9 +38,12 @@ function ThemedLayout() {
   }, [isAuthenticated]);
 
   return (
-    <SafeAreaView className={`${theme === "dark" ? "dark" : ""} flex-1`}>
-      <GlobalSpinner />
-      <Slot />
-    </SafeAreaView>
+    <>
+      <SafeAreaView className={`${theme === "dark" ? "dark" : ""} flex-1`}>
+        <GlobalSpinner />
+        <Slot />
+      </SafeAreaView>
+      <Toast />
+    </>
   );
 }

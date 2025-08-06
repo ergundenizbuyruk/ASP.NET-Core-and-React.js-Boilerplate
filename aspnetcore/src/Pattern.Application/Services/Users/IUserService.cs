@@ -11,6 +11,7 @@ public interface IUserService : IApplicationService
     public Task<UserDto> CreateUserAsync(CreateUserDto userDto);
     public Task<UserDto> UpdateProfileAsync(UpdateProfileDto updateProfileDto, Guid userId);
     public Task DeleteUserAsync(Guid userId);
+    public Task GenerateEmailConfirmationTokenAndSendEmailAsync(string email);
     public Task GeneratePasswordResetTokenAndSendEmailAsync(string userEmail);
     public Task GenerateChangeEmailTokenAndSendEmailAsync(Guid userId, string newEmail);
     public Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto);

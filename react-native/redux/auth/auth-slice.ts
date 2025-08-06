@@ -47,9 +47,11 @@ export const login = createAsyncThunk(
         credentials.password
       );
 
+      console.log("Login response:", response);
+
       if (response.error) {
         return thunkAPI.rejectWithValue(
-          response.error.errors.join(", ") || "Login failed"
+          response.error.errors.join(",") || "Login failed"
         );
       }
 
@@ -75,8 +77,9 @@ export const login = createAsyncThunk(
         } as UserDto,
       };
     } catch (err: any) {
+      console.log("Login error:", err.response);
       return thunkAPI.rejectWithValue(
-        err.response?.data?.message || "Login failed"
+        err.response?.data?.error?.errors?.join(",") || "Login failed"
       );
     }
   }
