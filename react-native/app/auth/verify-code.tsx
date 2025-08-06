@@ -4,11 +4,11 @@ import { showErrorToast, showSuccessToast } from "@/utils/toast";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
-    Keyboard,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  Keyboard,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { useDispatch } from "react-redux";
 
@@ -80,14 +80,14 @@ const VerifyCodeScreen = () => {
   const handleSubmit = async () => {
     const finalCode = code.join("");
     if (finalCode.length !== CODE_LENGTH) {
-      showErrorToast("Lütfen 6 haneli kodu girin.", "Eksik Kod");
+      showErrorToast("Please enter the 6-digit code.", "Invalid Code");
       return;
     }
 
     const res = await AccountService.ConfirmEmail(email, finalCode);
 
     if (!res.error) {
-      showSuccessToast("Kod başarıyla doğrulandı.");
+      showSuccessToast("Code verified successfully.");
       router.push("/auth/login");
     }
   };
@@ -100,7 +100,7 @@ const VerifyCodeScreen = () => {
     const res = await AccountService.EmailConfirmationTokenRequest(email);
 
     if (!res.error) {
-      showSuccessToast("Kod başarıyla gönderildi.");
+      showSuccessToast("Code sent successfully.");
       setCode(Array(CODE_LENGTH).fill(""));
       setSecondsLeft(RESEND_TIMEOUT);
       inputRefs.current[0]?.focus();
@@ -146,7 +146,7 @@ const VerifyCodeScreen = () => {
 
         <TouchableOpacity
           onPress={handleSubmit}
-          className="bg-blue-500 p-4 rounded-full w-full mb-4"
+          className="p-4 rounded-full mt-10 shadow active:opacity-90 bg-blue-400"
         >
           <Text className="text-white font-bold text-center text-lg">
             Verify

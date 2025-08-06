@@ -78,9 +78,11 @@ apiClient.interceptors.response.use(
       showErrorToast("Access denied. You do not have permission.");
       return Promise.reject(error);
     } else if (error.response.status === 400 || error.response.status === 404) {
-      if (error.response?.data && error.response?.data.error?.isShow) {
-        const errors: string[] = error.response?.data.error.errors || [];
-        errors.forEach((err) => showErrorToast(err));
+      if (error.response?.data && error.response?.data?.error?.isShow) {
+        const errors: string[] = error.response?.data?.error?.errors || [];
+        for (const err of errors) {
+          showErrorToast(err);
+        }
       }
       return Promise.reject(error);
     } else if (error.response.status === 429) {

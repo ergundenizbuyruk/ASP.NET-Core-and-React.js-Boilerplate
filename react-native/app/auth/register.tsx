@@ -42,15 +42,15 @@ const RegisterScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      className="flex-1 bg-blue-100"
+      className="flex-1 "
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
       >
-        <View className="flex-1 justify-center items-center px-4">
-          <View className="w-full max-w-xl bg-blue-50 p-6 rounded-2xl shadow-md">
+        <View className="flex-1 justify-center items-center px-4 bg-blue-100">
+          <View className="w-full max-w-xl bg-white p-6 rounded-2xl shadow-md">
             <Text className="text-2xl font-bold text-center mb-6">
               Kayıt Ol
             </Text>
@@ -94,23 +94,23 @@ const RegisterScreen = () => {
                   name={name as keyof CreateUserDto}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <View
-                      className={`flex-row items-center border border-gray-300 p-3 rounded-full bg-white mt-3 ${errors[name as keyof CreateUserDto] ? "border-red-500" : ""}`}
+                      className={`flex-row items-center mt-3 p-3 border border-gray-400 bg-gray-100 rounded-xl text-black ${errors[name as keyof CreateUserDto] ? "border-red-500" : ""}`}
                     >
                       <Feather
                         name={icon}
                         size={20}
-                        color="#888"
+                        color="#000"
                         className="mr-2"
                       />
                       <TextInput
-                        className="flex-1 text-black"
+                        className="flex-1 text-black h-8"
                         placeholder={placeholder}
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
                         secureTextEntry={secure}
                         keyboardType={keyboard}
-                        placeholderTextColor="#aaa"
+                        placeholderTextColor="#000"
                       />
                     </View>
                   )}
@@ -124,7 +124,7 @@ const RegisterScreen = () => {
             ))}
 
             <TouchableOpacity
-              className="bg-blue-500 p-4 rounded-full mt-4 shadow active:opacity-90"
+              className="p-4 rounded-full mt-5 shadow active:opacity-90 bg-blue-400"
               onPress={handleSubmit(onSubmit)}
               disabled={isSubmitting}
             >

@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { hideLoading, showLoading } from "@/redux/ui/ui-slice";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Button, Text, View } from "react-native";
+import { Button, StatusBar, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard: React.FC = () => {
@@ -12,7 +12,8 @@ const Dashboard: React.FC = () => {
   const router = useRouter();
 
   return (
-    <View className="flex-1 justify-center items-center bg-blue-100">
+    <View className="flex-1 justify-center items-center bg-blue-50">
+      <StatusBar barStyle="dark-content" />
       <Text className="text-2xl font-bold">Dashboard</Text>
       <Text className="text-xl font-semibold mt-4">
         Hello {auth.user?.firstName} {auth.user?.lastName}

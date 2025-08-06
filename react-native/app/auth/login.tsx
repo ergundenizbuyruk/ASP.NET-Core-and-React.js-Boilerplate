@@ -71,15 +71,15 @@ const RegisterScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      className="flex-1 bg-blue-100"
+      className="flex-1"
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
       >
-        <View className="flex-1 justify-center items-center px-4">
-          <View className="w-full max-w-xl p-6 rounded-2xl shadow-md bg-blue-50">
+        <View className="flex-1 justify-center items-center px-4 bg-blue-100">
+          <View className="w-full max-w-xl p-6 rounded-2xl shadow-md bg-white">
             <Text className="text-2xl font-bold text-center mb-6">
               Giriş Yap
             </Text>
@@ -104,19 +104,18 @@ const RegisterScreen = () => {
                   name={name as keyof LoginDto}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <View
-                      className={`flex-row items-center border border-blue-700 p-3 rounded-full mt-3 ${errors[name as keyof LoginDto] ? "border-red-500" : "border-blue-700"}`}
+                      className={`flex-row items-center mt-3 p-3 border border-gray-400 bg-gray-100 rounded-xl text-black ${errors[name as keyof LoginDto] ? "border-red-500" : "border-gray-400"}`}
                     >
                       <Feather
                         name={icon}
                         size={20}
-                        color="#1d4ed8"
+                        color="#000"
                         className="mr-2"
                       />
                       <TextInput
-                        className="flex-1 text-base text-blue-700"
+                        className="flex-1 text-black h-8"
                         placeholder={placeholder}
-                        placeholderClassName="text-blue-700"
-                        placeholderTextColor="#1d4ed8"
+                        placeholderTextColor="#000"
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
@@ -135,7 +134,7 @@ const RegisterScreen = () => {
             ))}
 
             <TouchableOpacity
-              className="p-4 rounded-full mt-4 shadow active:opacity-90 bg-blue-400"
+              className="p-4 mt-5 rounded-full shadow active:opacity-90 bg-blue-400"
               onPress={handleSubmit(onSubmit)}
               disabled={isSubmitting}
             >
@@ -149,6 +148,12 @@ const RegisterScreen = () => {
               onPress={() => router.push("/auth/register")}
             >
               Hesabınız yok mu? Kayıt Olun.
+            </Text>
+            <Text
+              className="text-lg text-center mt-2 font-semibold text-blue-700"
+              onPress={() => router.push("/auth/forgot-password")}
+            >
+              Parolanızı mı unuttunuz?
             </Text>
           </View>
         </View>

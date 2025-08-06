@@ -16,8 +16,12 @@ async function get<T>(
   url: string,
   config?: AxiosRequestConfig
 ): Promise<ResponseDto<T>> {
-  const response = await apiClient.get<ResponseDto<T>>(url, config);
-  return response.data;
+  try {
+    const response = await apiClient.get<ResponseDto<T>>(url, config);
+    return response.data;
+  } catch (error: any) {
+    return error?.response?.data as ResponseDto<T>;
+  }
 }
 
 async function post<T>(
@@ -25,8 +29,12 @@ async function post<T>(
   body: any,
   config?: AxiosRequestConfig
 ): Promise<ResponseDto<T>> {
-  const response = await apiClient.post<ResponseDto<T>>(url, body, config);
-  return response.data;
+  try {
+    const response = await apiClient.post<ResponseDto<T>>(url, body, config);
+    return response.data;
+  } catch (error: any) {
+    return error?.response?.data as ResponseDto<T>;
+  }
 }
 
 async function put<T>(
@@ -34,16 +42,24 @@ async function put<T>(
   body: any,
   config?: AxiosRequestConfig
 ): Promise<ResponseDto<T>> {
-  const response = await apiClient.put<ResponseDto<T>>(url, body, config);
-  return response.data;
+  try {
+    const response = await apiClient.put<ResponseDto<T>>(url, body, config);
+    return response.data;
+  } catch (error: any) {
+    return error?.response?.data as ResponseDto<T>;
+  }
 }
 
 async function del<T>(
   url: string,
   config?: AxiosRequestConfig
 ): Promise<ResponseDto<T>> {
-  const response = await apiClient.delete<ResponseDto<T>>(url, config);
-  return response.data;
+  try {
+    const response = await apiClient.delete<ResponseDto<T>>(url, config);
+    return response.data;
+  } catch (error: any) {
+    return error?.response?.data as ResponseDto<T>;
+  }
 }
 
 export default {

@@ -62,9 +62,9 @@ namespace Pattern.Application.Services.Users.Validators
 	{
 		public ResetPasswordValidator()
 		{
-			RuleFor(x => x.UserId)
-				.NotNull().WithMessage("UserId is required.")
-				.NotEmpty().WithMessage("UserId is required.");
+			RuleFor(x => x.Email)
+				.NotNull().WithMessage("Email is required.")
+				.NotEmpty().WithMessage("Email is required.");
 
 			RuleFor(x => x.Token)
 				.NotNull().WithMessage("Token is required.")

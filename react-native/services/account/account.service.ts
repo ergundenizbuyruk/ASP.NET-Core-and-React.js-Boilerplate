@@ -23,7 +23,7 @@ const services = {
     email: string,
     config?: AxiosRequestConfig<any> | undefined
   ) {
-    return httpClient.post(
+    return httpClient.post<any>(
       "Account/email-confirmation-request",
       { email },
       config
@@ -33,17 +33,21 @@ const services = {
     email: string,
     config?: AxiosRequestConfig<any> | undefined
   ) {
-    return httpClient.post("Account/reset-password-request", { email }, config);
+    return httpClient.post<any>(
+      "Account/reset-password-request",
+      { email },
+      config
+    );
   },
   ResetPassword(
-    userId: string,
+    email: string,
     token: string,
     newPassword: string,
     config?: AxiosRequestConfig<any> | undefined
   ) {
-    return httpClient.post(
+    return httpClient.post<any>(
       "Account/reset-password",
-      { userId, token, newPassword },
+      { email, token, newPassword },
       config
     );
   },
@@ -53,14 +57,18 @@ const services = {
     token: string,
     config?: AxiosRequestConfig<any> | undefined
   ) {
-    return httpClient.post("Account/confirm-email", { email, token }, config);
+    return httpClient.post<any>(
+      "Account/confirm-email",
+      { email, token },
+      config
+    );
   },
 
   ChangeEmailRequest(
     newEmail: string,
     config?: AxiosRequestConfig<any> | undefined
   ) {
-    return httpClient.post(
+    return httpClient.post<any>(
       "Account/change-email-request",
       { newEmail },
       config
@@ -73,7 +81,7 @@ const services = {
     newEmail: string,
     config?: AxiosRequestConfig<any> | undefined
   ) {
-    return httpClient.post(
+    return httpClient.post<any>(
       "Account/change-email",
       { oldEmail, token, newEmail },
       config
@@ -85,7 +93,7 @@ const services = {
     newPassword: string,
     config?: AxiosRequestConfig<any> | undefined
   ) {
-    return httpClient.post(
+    return httpClient.post<any>(
       "Account/change-password",
       { currentPassword, newPassword },
       config

@@ -131,7 +131,7 @@ public class UserService(
 
     public async Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
     {
-        var userFromDb = await userManager.FindByIdAsync(resetPasswordDto.UserId.ToString());
+        var userFromDb = await userManager.FindByEmailAsync(resetPasswordDto.Email);
 
         if (userFromDb is null)
         {
