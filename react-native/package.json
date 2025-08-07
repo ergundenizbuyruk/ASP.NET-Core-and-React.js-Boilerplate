@@ -32,12 +32,14 @@
     "expo-symbols": "~0.4.5",
     "expo-system-ui": "~5.0.10",
     "expo-web-browser": "~14.2.0",
+    "i18next": "^25.3.2",
     "jwt-decode": "^4.0.0",
     "nativewind": "^4.1.23",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-hook-form": "^7.61.1",
+    "react-i18next": "^15.6.1",
     "react-native": "0.79.5",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-reanimated": "~3.17.4",
@@ -48,7 +50,8 @@
     "react-native-webview": "13.13.5",
     "react-redux": "^9.2.0",
     "tailwindcss": "^3.4.17",
-    "zod": "^4.0.14"
+    "zod": "^4.0.14",
+    "expo-localization": "~16.1.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

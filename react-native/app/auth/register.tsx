@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -20,6 +21,7 @@ import {
 
 const RegisterScreen = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const {
     control,
     handleSubmit,
@@ -52,37 +54,37 @@ const RegisterScreen = () => {
         <View className="flex-1 justify-center items-center px-4 bg-blue-100">
           <View className="w-full max-w-xl bg-white p-6 rounded-2xl shadow-md">
             <Text className="text-2xl font-bold text-center mb-6">
-              Kayıt Ol
+              {t("register")}
             </Text>
 
             {[
               {
                 name: "firstName",
-                placeholder: "Ad",
+                placeholder: t("firstName"),
                 keyboard: "default" as const,
                 icon: "user" as const,
               },
               {
                 name: "lastName",
-                placeholder: "Soyad",
+                placeholder: t("lastName"),
                 keyboard: "default" as const,
                 icon: "user" as const,
               },
               {
                 name: "email",
-                placeholder: "E-posta",
+                placeholder: t("email"),
                 keyboard: "email-address" as const,
                 icon: "mail" as const,
               },
               {
                 name: "phoneNumber",
-                placeholder: "Telefon Numarası",
+                placeholder: t("phoneNumber"),
                 keyboard: "phone-pad" as const,
                 icon: "phone" as const,
               },
               {
                 name: "password",
-                placeholder: "Parola",
+                placeholder: t("password"),
                 secure: true,
                 keyboard: "default" as const,
                 icon: "lock" as const,
@@ -115,11 +117,6 @@ const RegisterScreen = () => {
                     </View>
                   )}
                 />
-                {/* {errors[name as keyof CreateUserDto] && (
-                  <Text className="text-red-500 text-sm mt-1">
-                    {errors[name as keyof CreateUserDto]?.message?.toString()}
-                  </Text>
-                )} */}
               </View>
             ))}
 
@@ -129,7 +126,7 @@ const RegisterScreen = () => {
               disabled={isSubmitting}
             >
               <Text className="text-white font-bold text-lg text-center">
-                {isSubmitting ? "Gönderiliyor..." : "Kayıt Ol"}
+                {isSubmitting ? t("sending") : t("register")}
               </Text>
             </TouchableOpacity>
 
@@ -137,7 +134,7 @@ const RegisterScreen = () => {
               className="text-lg text-center mt-3 text-blue-600"
               onPress={() => router.push("/auth/login")}
             >
-              Zaten bir hesabınız var mı? Giriş Yapın.
+              {t("login-msg")}
             </Text>
           </View>
         </View>

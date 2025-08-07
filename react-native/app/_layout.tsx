@@ -1,5 +1,6 @@
 import GlobalSpinner from "@/components/global-spinner";
 import "@/global.css";
+import "@/i18n/i18n";
 import { RootState, store } from "@/redux/store";
 import "@/services/api/interceptors";
 import { useFonts } from "expo-font";

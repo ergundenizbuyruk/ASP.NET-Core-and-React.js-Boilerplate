@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import {
   Keyboard,
   Text,
@@ -25,6 +26,7 @@ const RESEND_TIMEOUT = 300; // 5 minutes
 const ResetPasswordScreen = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const inputRefs = useRef<Array<TextInput | null>>([]);
   const [secondsLeft, setSecondsLeft] = useState(RESEND_TIMEOUT);
   const { email } = useLocalSearchParams<{ email: string }>();
@@ -102,7 +104,7 @@ const ResetPasswordScreen = () => {
     );
 
     if (!res.error) {
-      showSuccessToast("Password reset successfully.");
+      showSuccessToast(t("password-reset-success"));
       router.push("/auth/login");
     }
   };
@@ -115,7 +117,7 @@ const ResetPasswordScreen = () => {
     const res = await AccountService.ResetPasswordRequest(email);
 
     if (!res.error) {
-      showSuccessToast("Code sent successfully.");
+      showSuccessToast(t("code-send-success"));
       setValue("token", "");
       setSecondsLeft(RESEND_TIMEOUT);
       inputRefs.current[0]?.focus();
@@ -137,18 +139,18 @@ const ResetPasswordScreen = () => {
 
       <View className="w-full max-w-md p-6 bg-white rounded-2xl shadow-md items-center">
         <Text className="text-2xl font-bold mb-2 text-center">
-          Reset Password
+          {t("reset-password")}
         </Text>
 
         <Text className="text-sm text-gray-600 mb-4">
-          Time Left:{" "}
+          {t("time-left")}{" "}
           <Text className="font-semibold text-black">
             {formatTime(secondsLeft)}
           </Text>
         </Text>
 
         <Text className="text-center text-gray-600 mb-6">
-          Enter the 6-digit verification code sent to your email address.
+          {t("enter-verification-code-msg")}
         </Text>
 
         <Controller
@@ -185,7 +187,7 @@ const ResetPasswordScreen = () => {
               <Feather name="lock" size={20} color="#000" className="mr-2" />
               <TextInput
                 className="flex-1 text-black h-8"
-                placeholder={"New Password"}
+                placeholder={t("new-password")}
                 placeholderTextColor={"#000"}
                 onBlur={onBlur}
                 onChangeText={onChange}
@@ -207,7 +209,7 @@ const ResetPasswordScreen = () => {
               <Feather name="lock" size={20} color="#000" className="mr-2" />
               <TextInput
                 className="flex-1 text-black h-8"
-                placeholder={"Confirm Password"}
+                placeholder={t("confirm-password")}
                 placeholderTextColor="#000"
                 onBlur={onBlur}
                 onChangeText={onChange}
@@ -224,7 +226,7 @@ const ResetPasswordScreen = () => {
           className="p-4 w-full rounded-full mt-10 shadow active:opacity-90 bg-blue-400"
         >
           <Text className="text-white font-bold text-center text-lg">
-            Reset Password
+            {t("reset-my-password")}
           </Text>
         </TouchableOpacity>
 
@@ -242,7 +244,7 @@ const ResetPasswordScreen = () => {
               secondsLeft > 0 ? "text-gray-400" : "text-blue-500"
             }`}
           >
-            Resend Code
+            {t("resend-code")}
           </Text>
         </TouchableOpacity>
       </View>

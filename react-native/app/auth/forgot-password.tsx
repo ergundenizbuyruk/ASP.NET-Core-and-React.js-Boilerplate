@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -22,9 +23,10 @@ import z from "zod";
 const ForgotPasswordScreen = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation();
 
   const schema = z.object({
-    email: z.email("Geçerli bir e-posta girin"),
+    email: z.email(t("email-validation")),
   });
 
   const {
@@ -49,7 +51,7 @@ const ForgotPasswordScreen = () => {
     const res = await AccountService.ResetPasswordRequest(data.email);
 
     if (!res.error) {
-      showSuccessToast("Password reset link sent to your email.");
+      showSuccessToast(t("forgot-password-success"));
 
       router.push({
         pathname: "/auth/reset-password",
@@ -82,7 +84,7 @@ const ForgotPasswordScreen = () => {
 
           <View className="w-full max-w-xl p-6 rounded-2xl shadow-md bg-white">
             <Text className="text-2xl font-bold text-center">
-              Parola Sıfırlama
+              {t("forgot-password")}
             </Text>
 
             <Controller
@@ -100,7 +102,7 @@ const ForgotPasswordScreen = () => {
                   />
                   <TextInput
                     className="flex-1 text-black h-8"
-                    placeholder={"E-posta Adresi"}
+                    placeholder={t("email")}
                     placeholderTextColor="#000"
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -116,7 +118,7 @@ const ForgotPasswordScreen = () => {
               onPress={handleSubmit(onSubmit)}
             >
               <Text className="text-white font-bold text-lg text-center">
-                Parolamı Sıfırla
+                {t("reset-my-password")}
               </Text>
             </TouchableOpacity>
           </View>

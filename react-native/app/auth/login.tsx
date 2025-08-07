@@ -7,9 +7,12 @@ import { showInfoToast } from "@/utils/toast";
 import { Feather } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
+import i18n from "i18next";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import {
+  Button,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -23,6 +26,7 @@ import { useDispatch } from "react-redux";
 const RegisterScreen = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation();
 
   const {
     control,
@@ -81,18 +85,18 @@ const RegisterScreen = () => {
         <View className="flex-1 justify-center items-center px-4 bg-blue-100">
           <View className="w-full max-w-xl p-6 rounded-2xl shadow-md bg-white">
             <Text className="text-2xl font-bold text-center mb-6">
-              Giriş Yap
+              {t("login")}
             </Text>
             {[
               {
                 name: "email",
-                placeholder: "E-posta",
+                placeholder: t("email"),
                 keyboard: "email-address" as const,
                 icon: "mail" as const,
               },
               {
                 name: "password",
-                placeholder: "Parola",
+                placeholder: t("password"),
                 secure: true,
                 keyboard: "default" as const,
                 icon: "lock" as const,
@@ -125,11 +129,6 @@ const RegisterScreen = () => {
                     </View>
                   )}
                 />
-                {/* {errors[name as keyof CreateUserDto] && (
-                  <Text className="text-red-500 text-sm mt-1">
-                    {errors[name as keyof CreateUserDto]?.message?.toString()}
-                  </Text>
-                )} */}
               </View>
             ))}
 
@@ -139,7 +138,7 @@ const RegisterScreen = () => {
               disabled={isSubmitting}
             >
               <Text className="text-white font-bold text-lg text-center">
-                {isSubmitting ? "Gönderiliyor..." : "Giriş Yap"}
+                {isSubmitting ? t("sending") : t("login")}
               </Text>
             </TouchableOpacity>
 
@@ -147,15 +146,18 @@ const RegisterScreen = () => {
               className="text-lg text-center mt-3 font-semibold text-blue-700"
               onPress={() => router.push("/auth/register")}
             >
-              Hesabınız yok mu? Kayıt Olun.
+              {t("register-msg")}
             </Text>
             <Text
               className="text-lg text-center mt-2 font-semibold text-blue-700"
               onPress={() => router.push("/auth/forgot-password")}
             >
-              Parolanızı mı unuttunuz?
+              {t("forgot-password-msg")}
             </Text>
           </View>
+
+          <Button title="Türkçe" onPress={() => i18n.changeLanguage("tr")} />
+          <Button title="English" onPress={() => i18n.changeLanguage("en")} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
