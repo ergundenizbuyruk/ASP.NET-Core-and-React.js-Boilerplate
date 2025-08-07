@@ -5,7 +5,7 @@ import {
 } from "@/services/account/account.schemas";
 import AccountService from "@/services/account/account.service";
 import { showSuccessToast } from "@/utils/toast";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
@@ -25,15 +25,9 @@ const RESEND_TIMEOUT = 300; // 5 minutes
 const ResetPasswordScreen = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  // const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(""));
   const inputRefs = useRef<Array<TextInput | null>>([]);
   const [secondsLeft, setSecondsLeft] = useState(RESEND_TIMEOUT);
   const { email } = useLocalSearchParams<{ email: string }>();
-
-  // if (!email) {
-  //   showErrorToast("Email address is required to verify the code.");
-  //   return null;
-  // }
 
   const {
     control,
@@ -131,6 +125,16 @@ const ResetPasswordScreen = () => {
 
   return (
     <View className="flex-1 justify-center items-center bg-blue-100 px-4">
+      <TouchableOpacity
+        onPress={() => {
+          reset();
+          router.back();
+        }}
+        style={{ position: "absolute", top: 40, left: 20 }}
+      >
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
+
       <View className="w-full max-w-md p-6 bg-white rounded-2xl shadow-md items-center">
         <Text className="text-2xl font-bold mb-2 text-center">
           Reset Password
@@ -217,7 +221,7 @@ const ResetPasswordScreen = () => {
 
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
-          className="p-4 rounded-full mt-10 shadow active:opacity-90 bg-blue-400"
+          className="p-4 w-full rounded-full mt-10 shadow active:opacity-90 bg-blue-400"
         >
           <Text className="text-white font-bold text-center text-lg">
             Reset Password
